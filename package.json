@@ -23,6 +23,7 @@
     "@mantine/core": "^8.3.18",
     "@mantine/dates": "^8.3.18",
     "@mantine/hooks": "^8.3.18",
+    "@mantine/notifications": "^8.3.18",
     "@tabler/icons-react": "^3.41.1",
     "electron-updater": "^6.3.9",
     "react-router-dom": "^7.13.2"

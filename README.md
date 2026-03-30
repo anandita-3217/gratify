@@ -7,38 +7,54 @@ An Electron application with React
 - [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 ## Project Setup
-
-### New Folder Structure
+### Full file structure for Gratify
 ```
-src/
-├── main/
-│   └── index.ts          # Electron main process (tiny)
-├── preload/
-│   └── index.ts          # contextBridge IPC bridge
-└── renderer/
-    └── src/
-        ├── App.tsx
-        ├── components/
-        │   ├── Layout/
-        │   ├── Sidebar/
-        │   └── shared/
-        ├── features/
-        │   ├── pomodoro/
-        │   │   ├── PomodoroTimer.tsx
-        │   │   ├── usePomodoroTimer.ts   ← all timer logic as a hook
-        │   │   └── types.ts
-        │   ├── tasks/
-        │   │   ├── TaskList.tsx
-        │   │   ├── TaskCard.tsx
-        │   │   ├── useTaskManager.ts
-        │   │   └── types.ts
-        │   ├── notes/
-        │   ├── calendar/
-        │   └── stats/
-        ├── store/
-        │   └── index.ts  # Zustand store
-        └── lib/
-            └── storage.ts  # centralized localStorage wrapper
+src/renderer/src/
+├── main.jsx                  ← React root, MantineProvider goes here
+├── App.jsx                   ← Layout: Sidebar + page router
+│
+├── components/
+│   ├── Sidebar.jsx           ← Nav sidebar (built in prev message)
+│   └── shared/
+│       ├── ConfirmModal.jsx  ← Reusable confirm dialog
+│       └── ToastProvider.jsx ← Mantine notifications setup
+│
+├── pages/
+│   ├── Pomodoro/
+│   │   ├── index.jsx         ← Main timer UI
+│   │   ├── TimerRing.jsx     ← Animated SVG progress ring
+│   │   ├── SessionControls.jsx
+│   │   └── usePomodoro.js    ← All timer logic as a hook
+│   │
+│   ├── Tasks/
+│   │   ├── index.jsx         ← Task list + stats bar
+│   │   ├── TaskItem.jsx      ← Single task row
+│   │   ├── TaskModal.jsx     ← Create/edit modal
+│   │   └── useTasks.js       ← Task CRUD + recurrence logic
+│   │
+│   ├── Notes/
+│   │   ├── index.jsx         ← Note grid
+│   │   ├── NoteCard.jsx      ← Individual note card
+│   │   ├── NoteModal.jsx     ← Create/edit modal
+│   │   └── useNotes.js       ← Notes logic
+│   │
+│   ├── Calendar/
+│   │   ├── index.jsx         ← Calendar shell + view switcher
+│   │   ├── MonthView.jsx
+│   │   ├── WeekView.jsx
+│   │   ├── DayView.jsx
+│   │   └── useCalendar.js    ← Event CRUD logic
+│   │
+│   ├── Stats/
+│   │   └── index.jsx         ← Charts pulling from localStorage
+│   │
+│   └── Settings/
+│       └── index.jsx         ← Preferences form
+│
+└── hooks/
+    ├── useLocalStorage.js    ← Persistent state (replaces all manual LS calls)
+    └── useNotifications.js   ← Browser notification permission + dispatch
+
 
 ### Install
 

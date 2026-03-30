@@ -1,6 +1,6 @@
 import Versions from './components/Versions'
 import electronLogo from './assets/electron.svg'
-
+import Sidebar from './components/Sidebar'
 function App() {
   const ipcHandle = () => window.electron.ipcRenderer.send('ping')
 
@@ -16,9 +16,7 @@ function App() {
       </p>
       <div className="actions">
         <div className="action">
-          <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">
-            Documentation
-          </a>
+          
         </div>
         <div className="action">
           <a target="_blank" rel="noreferrer" onClick={ipcHandle}>

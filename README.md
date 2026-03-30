@@ -8,6 +8,38 @@ An Electron application with React
 
 ## Project Setup
 
+### New Folder Structure
+```
+src/
+├── main/
+│   └── index.ts          # Electron main process (tiny)
+├── preload/
+│   └── index.ts          # contextBridge IPC bridge
+└── renderer/
+    └── src/
+        ├── App.tsx
+        ├── components/
+        │   ├── Layout/
+        │   ├── Sidebar/
+        │   └── shared/
+        ├── features/
+        │   ├── pomodoro/
+        │   │   ├── PomodoroTimer.tsx
+        │   │   ├── usePomodoroTimer.ts   ← all timer logic as a hook
+        │   │   └── types.ts
+        │   ├── tasks/
+        │   │   ├── TaskList.tsx
+        │   │   ├── TaskCard.tsx
+        │   │   ├── useTaskManager.ts
+        │   │   └── types.ts
+        │   ├── notes/
+        │   ├── calendar/
+        │   └── stats/
+        ├── store/
+        │   └── index.ts  # Zustand store
+        └── lib/
+            └── storage.ts  # centralized localStorage wrapper
+
 ### Install
 
 ```bash

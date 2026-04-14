@@ -1,10 +1,9 @@
-import { NavLink } from "react-router-dom"
-import { useState } from "react"
-
-export default function NavItem({ label, icon,isActive }) {
-    // const [active, setActive] = useState<Boolean>(false);
+export default function NavItem({ label, icon, isActive, onClick }) {
   return (
-    <button className={isActive ? "text-blue-400" : "text-white/40"}>
+    <button
+      onClick={onClick}
+      style={{color: isActive ? 'blue' : 'gray'}}
+    >
       {icon}
       {label}
     </button>

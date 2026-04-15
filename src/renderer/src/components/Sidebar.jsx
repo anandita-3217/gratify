@@ -186,27 +186,31 @@
 import { CheckSquare, TextAlignJustify, Calendar,Timer ,ChartLine      } from 'lucide-react'
 import NavItem from './NavItem'
 import { useState } from 'react';
-import {Box, Stack} from '@mantine/core'
 
 export default function Sidebar(){
   const [activePage, setActivePage] = useState('tasks')
-  return (
-    <div className='flex flex-row gap-2'>
-
-      <NavItem
-        label="Tasks"
-        icon={<CheckSquare size={20} />}
-        isActive={activePage === 'tasks'}
-        onClick={() => setActivePage('tasks')}
-      />
-      <NavItem
-        label="Notes"
-        icon={<TextAlignJustify size={20} />}
-        isActive={activePage === 'notes'}
-        onClick={() => setActivePage('notes')}
-      />
+  const navItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: <ChartLine size={20} /> },
+    { id: 'tasks', label: 'Tasks', icon: <CheckSquare size={20} /> },
+    { id: 'notes', label: 'Notes', icon: <TextAlignJustify size={20} /> },
+    { id: 'timer', label: 'Timer', icon: <Timer size={20} /> },
+    { id: 'calendar', label: 'Calendar', icon: <Calendar size={20} /> },
     
+  ]
+  return (
+    <div className='flex flex-col gap-2'>
 
+      {navItems.map(
+        item => (
+          <NavItem
+          key={item.id}
+          label={item.label}
+          icon={item.icon}
+          isActive={activePage === item.id}
+          onClick={() => setActivePage(item.id)}
+          />
+        )
+      ) }
     </div>
   );
 }

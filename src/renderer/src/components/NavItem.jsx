@@ -1,8 +1,9 @@
 export default function NavItem({ label, icon, isActive, onClick }) {
   return (
     <button
+
       onClick={onClick}
-      style={{color: isActive ? 'blue' : 'gray'}}
+      className={ isActive ? 'text-blue-500' : 'text-gray-500'}
     >
       {icon}
       {label}

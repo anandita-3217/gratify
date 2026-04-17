@@ -198,7 +198,7 @@ export default function Sidebar(){
     
   ]
   return (
-    <div className='flex flex-col gap-2'>
+    <div className='flex flex-col gap-2 h-full w-1/6'>
 
       {navItems.map(
         item => (

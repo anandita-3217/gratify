@@ -3,7 +3,8 @@ export default function NavItem({ label, icon, isActive, onClick }) {
     <button
 
       onClick={onClick}
-      className={ isActive ? 'text-blue-500' : 'text-gray-500'}
+      // className={ isActive ? 'text-blue-500' : 'text-gray-500'} 
+      className={`flex flex-row items-center gap-2 cursor-pointer ${isActive ? 'text-blue-500' : 'text-gray-500'}`}
     >
       {icon}
       {label}

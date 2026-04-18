@@ -25,9 +25,9 @@ export default function App() {
     <MantineProvider defaultColorScheme="dark">
       <Notifications position="top-right" />
       <HashRouter>
-        <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+        <div className='flex h-screen w-screen overflow-hidden'>
           <Sidebar />
-          <main style={{ flex: 1, overflow: 'auto' }}>
+          <main className='flex-1'>
             <Routes>
               <Route path="/"          element={<Dashboard />} />
               <Route path="/pomodoro"  element={<Stub name="Pomodoro Timer" />} />

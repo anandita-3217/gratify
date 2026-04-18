@@ -10,14 +10,15 @@ function ThemeToggle(){
 
   return(
     <button
+    className='text-gray-500'
     onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
     >{computedColorScheme === 'light' ? <Moon size={20}/> : <Sun size={20} />}</button>
   )
 
 }
 
-export default function Sidebar(){
-  const [activePage, setActivePage] = useState('tasks')
+export default function Sidebar({activePage, onNavigate}){
+  // const [activePage, setActivePage] = useState('tasks')
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: <ChartLine size={20} /> },
     { id: 'tasks', label: 'Tasks', icon: <CheckSquare size={20} /> },
@@ -29,7 +30,7 @@ export default function Sidebar(){
   return (
     <div className='flex flex-col gap-2 h-full w-56'>
       <div className='flex items-center gap-2 p-4'>
-        <div className='w-8 h-8 eounded-lg bg-blue-500'/>
+        <div className='w-8 h-8 rounded-lg bg-blue-500'/>
         <span className='text-white font-semibold'>Gratify</span>
       </div>
       {navItems.map(
@@ -39,7 +40,7 @@ export default function Sidebar(){
           label={item.label}
           icon={item.icon}
           isActive={activePage === item.id}
-          onClick={() => setActivePage(item.id)}
+          onClick={() => onNavigate(item.id)}
           />
         )
       ) }

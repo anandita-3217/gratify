@@ -1,4 +1,4 @@
-import { MantineProvider } from '@mantine/core'
+
 import { Notifications } from '@mantine/notifications'
 import '@mantine/core/styles.css'
 import '@mantine/notifications/styles.css'
@@ -25,22 +25,21 @@ export default function App() {
   const [activePage, setActivePage] = useState('dashboard');
 
   return (
-    <>
+    <div className='flex h-screen w-screen overflow-hidden'>
       <Notifications position="top-right" />
       <HashRouter>
-        <div className='flex h-screen w-screen overflow-hidden'>
+        <div className='flex h-full w-full'>
           <Sidebar activePage={activePage} onNavigate={setActivePage} />
           <main className='flex-1'>
-            {activePage === 'dashboard' && <div><Dashboard/></div>}
-            {activePage === 'tasks' && <div><Stub name="Tasks" /></div>}
-            {activePage === 'notes' && <div><Stub name="Notes" /></div>}
-            {activePage === 'timer' && <div><Stub name="Pomodoro Timer" /></div>}
-            {activePage === 'calendar' && <div><Stub name="Calendar" /></div>}
-            {/* {activePage === 'stats' && <div>Stats Page</div>} */}
-            
+            {activePage === 'dashboard' && <Dashboard />}
+            {activePage === 'tasks'     && <Stub name="Tasks" />}
+            {activePage === 'notes'     && <Stub name="Notes" />}
+            {activePage === 'timer'     && <Stub name="Pomodoro Timer" />}
+            {activePage === 'calendar'  && <Stub name="Calendar" />}
           </main>
         </div>
       </HashRouter>
-    </>
+    </div>
+
   )
 }

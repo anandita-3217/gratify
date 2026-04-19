@@ -28,11 +28,12 @@ export default function Sidebar({activePage, onNavigate}){
     
   ]
   return (
-    <div className='flex flex-col gap-2 h-full w-56'>
+    <div className='flex flex-col  h-full w-56 '>
       <div className='flex items-center gap-2 p-4'>
         <div className='w-8 h-8 rounded-lg bg-blue-500'/>
         <span className='text-white font-semibold'>Gratify</span>
       </div>
+      <div className='flex flex-col'>
       {navItems.map(
         item => (
           <NavItem
@@ -44,6 +45,8 @@ export default function Sidebar({activePage, onNavigate}){
           />
         )
       ) }
+
+      </div>
       <div className='mt-auto p-4'>
         <ThemeToggle/>
       </div>

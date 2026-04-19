@@ -1,4 +1,4 @@
-import { CheckSquare, TextAlignJustify, Calendar,Timer ,ChartLine      } from 'lucide-react'
+import { CheckSquare, TextAlignJustify, Calendar,Timer ,ChartLine , Settings      } from 'lucide-react'
 import NavItem from './NavItem'
 import { useState } from 'react';
 import { useMantineColorScheme, useComputedColorScheme } from '@mantine/core'
@@ -25,10 +25,11 @@ export default function Sidebar({activePage, onNavigate}){
     { id: 'notes', label: 'Notes', icon: <TextAlignJustify size={20} /> },
     { id: 'timer', label: 'Timer', icon: <Timer size={20} /> },
     { id: 'calendar', label: 'Calendar', icon: <Calendar size={20} /> },
+    { id: 'settings', label: 'Settings', icon: <Settings  size={20} /> },
     
   ]
   return (
-    <div className='flex flex-col  h-full w-56 '>
+    <div className='flex flex-col gap-2  h-full w-56 '>
       <div className='flex items-center gap-2 p-4'>
         <div className='w-8 h-8 rounded-lg bg-blue-500'/>
         <span className='text-white font-semibold'>Gratify</span>

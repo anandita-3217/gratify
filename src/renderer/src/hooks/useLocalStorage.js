@@ -1,24 +1,40 @@
-import { useState } from 'react'
+// Code skeleton
 
-export function useLocalStorage(key, initialValue) {
-  const [stored, setStored] = useState(() => {
-    try {
-      const item = localStorage.getItem(key)
-      return item ? JSON.parse(item) : initialValue
-    } catch {
-      return initialValue
+// import { useState, useEffect } from "react"
+
+// export function useLocalStorage(key, defaultValue) {
+
+//   const [value, setValue] = useState(() => {
+//     // 1. try to read from localStorage here
+//     // 2. if something exists, parse it with JSON.parse and return it
+//     // 3. if nothing exists (null), return defaultValue
+//     // 4. if it errors, return defaultValue
+//   })
+
+//   useEffect(() => {
+//     // save value to localStorage whenever it changes
+//     // use JSON.stringify because localStorage only stores strings
+//   }, [key, value])
+
+//   // return exactly like useState does
+//   return [value, setValue]
+// }
+import { useState,useEffect } from "react";
+
+export function useLocalStorage(key, defaultValues){
+  const [value, setValue] = useState(() =>{
+    try{
+      const saved = localStorage.getItem(key);
+      return saved ? JSON.parse(saved) : defaultValues;
     }
+    catch(err){
+      console.error("Could not read value: ", err);
+      return defaultValues;
+    }
+
   })
-
-  const setValue = (value) => {
-    try {
-      const next = value instanceof Function ? value(stored) : value
-      setStored(next)
-      localStorage.setItem(key, JSON.stringify(next))
-    } catch (err) {
-      console.error('useLocalStorage error:', err)
-    }
-  }
-
-  return [stored, setValue]
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  },[key,value]);
+  return ([value , setValue]);
 }

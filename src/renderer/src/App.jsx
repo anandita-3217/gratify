@@ -36,6 +36,7 @@ export default function App() {
             {activePage === 'notes'     && <Stub name="Notes" />}
             {activePage === 'timer'     && <Stub name="Pomodoro Timer" />}
             {activePage === 'calendar'  && <Stub name="Calendar" />}
+            {activePage === 'settings'  && <Stub name="Settings" />}
           </main>
         </div>
       </HashRouter>

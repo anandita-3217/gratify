@@ -9,6 +9,7 @@ import Sidebar from './components/Sidebar'
 
 // Pages — create stub files for any you haven't built yet
 import Dashboard from './pages/Dashboard'
+import Tasks from './pages/Tasks'
 import Settings  from './pages/Settings'
 import { useState } from 'react'
 
@@ -32,7 +33,7 @@ export default function App() {
           <Sidebar activePage={activePage} onNavigate={setActivePage} />
           <main className='flex-1'>
             {activePage === 'dashboard' && <Dashboard />}
-            {activePage === 'tasks'     && <Stub name="Tasks" />}
+            {activePage === 'tasks'     && <Tasks/>}
             {activePage === 'notes'     && <Stub name="Notes" />}
             {activePage === 'timer'     && <Stub name="Pomodoro Timer" />}
             {activePage === 'calendar'  && <Stub name="Calendar" />}

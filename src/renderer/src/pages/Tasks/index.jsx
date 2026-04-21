@@ -1,7 +1,7 @@
 import TaskItem from "./TaskItem";
 import TaskModal from "./TaskModal";
 
-import { Box, Group, TextInput, Button, Stack, Text, Title, Progress,SegmentedControl, Select  } from "@mantine/core";
+import { Box, Group, MultiSelect  ,TextInput, Button, Stack, Text, Title, Progress,SegmentedControl, Select  } from "@mantine/core";
 import { Plus } from 'lucide-react';
 
 import { useDisclosure } from "@mantine/hooks";
@@ -24,9 +24,9 @@ export default function Tasks(){
     const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false)
     const [selectedTask, setSelectedTask] = useState(null)
     const [filter, setFilter] = useState({
-        priority : 'all',  // all, low, med,high, urgent 
+        priority : [],  // all, low, med,high, urgent 
         status: 'all', // all, active, completed
-        frequency: 'all' // daily, weekly, monthly, custom, null
+        frequency: [] // daily, weekly, monthly, custom, null
     })
 
     function parseQuickTask(input){
@@ -52,17 +52,17 @@ export default function Tasks(){
 
         //TODO: i want both cases regular text or dates and remember to add date as dd/MM/YYYY
         
-        // const today = new Date()
-        // if (/tomorrow/i.test(text)) {
-        //     deadline = new Date(today.setDate(today.getDate() + 1))
-        //     text = text.replace(/tomorrow/i, '').trim()
-        // } else if (/today/i.test(text)) {
-        //   deadline = new Date()
-        //   text = text.replace(/today/i, '').trim()
-        // } else if (/next week/i.test(text)) {
-        //   deadline = new Date(today.setDate(today.getDate() + 7))
-        //   text = text.replace(/next week/i, '').trim()
-        // }
+        const today = new Date()
+        if (/tomorrow/i.test(text)) {
+            deadline = new Date(today.setDate(today.getDate() + 1))
+            text = text.replace(/tomorrow/i, '').trim()
+        } else if (/today/i.test(text)) {
+          deadline = new Date()
+          text = text.replace(/today/i, '').trim()
+        } else if (/next week/i.test(text)) {
+          deadline = new Date(today.setDate(today.getDate() + 7))
+          text = text.replace(/next week/i, '').trim()
+        }
         // TODO: if there is an actual date then as a date 
         const parsed = chrono.parse(text)
         if (parsed.length > 0) {
@@ -97,13 +97,23 @@ export default function Tasks(){
 
 
 
+    // const filteredTasks = tasks.filter(task => {
+    //     if(filter.priority !== 'all' && task.priority !== filter.priority) return false 
+    //     if(filter.status === 'active' && task.completed) return false
+    //     if(filter.status === 'completed' && !task.completed) return false
+    //     if(filter.frequency !== 'all' && task.frequency !== filter.frequency) return false
+    //     return true
+    // })
+
     const filteredTasks = tasks.filter(task => {
-        if(filter.priority !== 'all' && task.priority !== filter.priority) return false 
-        if(filter.status === 'active' && task.completed) return false
-        if(filter.status === 'completed' && !task.completed) return false
-        if(filter.frequency !== 'all' && task.frequency !== filter.frequency) return false
-        return true
+      if (filter.priority.length > 0 && !filter.priority.includes(task.priority)) return false
+      if (filter.status === 'active' && task.completed) return false
+      if (filter.status === 'completed' && !task.completed) return false
+      if (filter.frequency.length > 0 && !filter.frequency.includes(task.frequency)) return false
+      return true
     })
+
+
 
     useEffect(()=>{
         if(Notification.permission === 'default'){
@@ -114,13 +124,13 @@ export default function Tasks(){
     useEffect(() => {
         const interval = setInterval(() => {
             tasks.forEach(task => {
-                if(!task.deadline || task.reminder || task.completed) return
+                if(!task.deadline || !task.reminder || task.completed) return
 
                 const deadline = new Date(task.deadline)
-                const noe = new Date()
+                const now = new Date()
                 const minutesUntilDeadline = (deadline - now) / 1000 / 60
                 const reminderMinutes = parseInt(task.reminder)
-                if(minutesUntilDeadline <= reminderMinutes && minutesUntilDeadline > reminderMinutes){
+                if(minutesUntilDeadline <= reminderMinutes && minutesUntilDeadline > reminderMinutes - 1){
                     new Notification(`Task reminder: ${task.text}`, {
                         body: `Due ${deadline.toLocaleString()}`
                     })
@@ -161,10 +171,9 @@ export default function Tasks(){
                     className="flex-1"/>
                     <Button onClick={handleAdd} color="pink"><Plus size={16}/></Button>
                 </div>
-                <Group gap="sm" mb='md'>
-                    {/* TODO: check for multiple select for freq and priority */}
+                <Group gap="sm" mb='md' wrap="nowrap" align="center">
                     {/* TODO: style so that all the filters stay in the same line - maybe look at pill buttons instead for filters */}
-                    <Text>Filters: </Text>
+                    <Text size="sm" c="dimmed" style={{ whiteSpace: 'nowrap' }}>Filters: </Text>
                     <SegmentedControl 
                         value={filter.status}
                         onChange={(val) => setFilter(f => ({...f, status: val}))}
@@ -174,7 +183,7 @@ export default function Tasks(){
                             { label: 'Completed', value: 'completed' }
                         ]}
                         color="pink"/>
-                    <SegmentedControl
+                    {/* <SegmentedControl
                         value={filter.priority}
                         onChange={(val) => setFilter(f => ({...f, priority: val}))}
                         data={[
@@ -196,6 +205,22 @@ export default function Tasks(){
                             { label: 'Custom', value: 'custom' }
                         ]}
                         color="pink"/>
+                 */}
+                    <MultiSelect
+                          placeholder="Priority"
+                          value={filter.priority}
+                          onChange={(val) => setFilter(f => ({ ...f, priority: val }))}
+                          data={['low', 'medium', 'high', 'urgent']}
+                          clearable
+                    />
+
+                    <MultiSelect
+                      placeholder="Frequency"
+                      value={filter.frequency}
+                      onChange={(val) => setFilter(f => ({ ...f, frequency: val }))}
+                      data={['daily', 'weekly', 'monthly', 'custom']}
+                      clearable
+                    />
                 </Group>
                 <Stack gap="sm">
                     {filteredTasks.length === 0 ? (

@@ -1,5 +1,5 @@
 import { Card, Checkbox, Text, ActionIcon, Badge,Group  } from '@mantine/core'
-import { Clock, Pencil, Repeat, Trash } from 'lucide-react';
+import { Bell, Clock, Pencil, Repeat, Trash } from 'lucide-react';
 
 function priorityColor(priority){
     const colors = {
@@ -8,7 +8,13 @@ function priorityColor(priority){
         high: '#e03131',
         urgent: '#6741d9'
     }
-    return colors[priority] ?? 'gray'
+    return colors[priority]
+}
+
+const reminderLabels = {
+  '15' : '15m before',
+  '60' : '1 hour before',
+  '1440' : '1 day before',
 }
 
 export default function TaskItem({task, onToggle, onDelete, onEdit}){
@@ -49,7 +55,12 @@ export default function TaskItem({task, onToggle, onDelete, onEdit}){
                 <Badge variant="light" color="gray" size="xs" leftSection={<Clock size={10} />}>
                   {new Date(task.deadline).toLocaleDateString()}
                 </Badge>
-            )}                
+            )}  
+            {task.reminder && (
+              <Badge variant='light' color='yellow' size='sm' leftSection={<Bell size={10}/>}>
+                {reminderLabels[task.reminder]}
+              </Badge>
+            )}              
           </Group>
         </Card>
         )

@@ -6,6 +6,7 @@
  * @property {'low'|'medium'|'high'|'urgent'} priority
  * @property {boolean} completed 
  * @property {boolean} recurring 
+ * @propporty {string} reminder
  * @property {'daily'|'weekly'|'monthly'|'custom' | null} frequency
  */ 
 

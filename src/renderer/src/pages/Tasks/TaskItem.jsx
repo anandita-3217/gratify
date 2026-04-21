@@ -10,7 +10,6 @@ function priorityColor(priority){
     }
     return colors[priority] ?? 'gray'
 }
-// TODO: add logic for custom frequency
 
 export default function TaskItem({task, onToggle, onDelete, onEdit}){
 

@@ -1,4 +1,4 @@
-import { Box ,Center, Checkbox, Stack, Title,TextInput, Modal, Group, Select, Button} from '@mantine/core'
+import { Box ,Center, Checkbox, Stack, Title,TextInput, Modal, Group, Select, Button, NumberInput} from '@mantine/core'
 import{ DateTimePicker } from '@mantine/dates';
 import '@mantine/dates/styles.css'
 import { useState, useEffect } from 'react';
@@ -7,11 +7,17 @@ import { X } from 'lucide-react';
 export default function TaskModal({opened, onSave, onClose, task}){
 
     const [text, setText] = useState('');
-    const [textError, setTextError] = useState('');
     const [priority, setPriority] = useState();
     const [date, setDate] = useState();
     const [recurring, setRecurring] = useState(false);
     const [frequency, setFrequency] = useState();
+    const [reminder, setReminder] = useState(null)
+
+    const [textError, setTextError] = useState('');
+    const [priorityError, setPriorityError] = useState('');
+    
+    const [customInterval, setCustomInterval] = useState(1);
+    const [customUnit, setCustomUnit] = useState('days');
     
     function PriorityOption({ option }){
     const colors = {
@@ -58,8 +64,16 @@ export default function TaskModal({opened, onSave, onClose, task}){
             setTextError('Task cannot be empty')    
             return
         }
+        if(!priority){
+            setPriorityError('Choose priority')
+            return
+        }
         setTextError('')
-        onSave({text,priority,deadline: date, recurring, frequency})
+        setPriorityError('')
+        onSave({text,priority,deadline: date, recurring, frequency, reminder,
+            customInterval: frequency === 'custom' ? customInterval : null,
+            customUnit: frequency === 'custom' ? customUnit : null
+        })
         onClose()
     }
         return (
@@ -79,11 +93,26 @@ export default function TaskModal({opened, onSave, onClose, task}){
                 <TextInput withAsterisk label="Task Name" value={text} error={textError} onChange={(e) => setText(e.target.value) } />  
                 <Group grow>
                     <DateTimePicker value={date} onChange={setDate} label="Deadline" placeholder="Deadline" minDate={new Date()}/>
-                    <Select label="Priority"
-                      value={priority}
-                      onChange={setPriority}
-                      data={['low', 'medium', 'high', 'urgent']}
-                      renderOption={PriorityOption}
+                    {date && (
+                        <Select
+                            label="Remind me"
+                            value={reminder}
+                            onChange={setReminder}
+                            placeholder='No reminder'
+                            data={[
+                                { label: '15 minutes before', value: '15' },
+                                { label: '1 hour before', value: '60' },
+                                { label: '1 day before', value: '1440' }
+                            ]}
+                            clearable/>
+                    )}
+                    <Select withAsterisk
+                        label="Priority"
+                        value={priority}
+                        onChange={setPriority}
+                        data={['low', 'medium', 'high', 'urgent']}
+                        renderOption={PriorityOption}
+                        error={priorityError}
 
                     />
                 </Group>
@@ -91,7 +120,13 @@ export default function TaskModal({opened, onSave, onClose, task}){
                 <Checkbox color='pink' checked={recurring} onChange={(e) => setRecurring(e.currentTarget.checked)} label="Recurring"/>
                  {recurring && (
                     <Select label="Frequency"  value={frequency}  onChange={setFrequency}  data={['daily', 'weekly', 'monthly', 'custom']}/>
-                 )}   
+                )}   
+                {frequency === 'custom' && (
+                    <Group grow>
+                        <NumberInput label="Every" value={customInterval} onChange={setCustomInterval} min={1}/>
+                        <Select label="Unit" value={customUnit} onChange={setCustomUnit} data={['days','weeks','months']}/>
+                    </Group>
+                )}
                     <Group justify='center'>
                         <Button color='pink'  onClick={handleSave}>{task? 'Save' : 'Add'}</Button>
                         <Button color='pink' onClick={onClose} >Cancel</Button>

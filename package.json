@@ -25,6 +25,7 @@
     "@mantine/hooks": "^8.3.18",
     "@mantine/notifications": "^8.3.18",
     "@tabler/icons-react": "^3.41.1",
+    "chrono-node": "^2.9.0",
     "electron-updater": "^6.3.9",
     "lucide-react": "^1.8.0",
     "react-router-dom": "^7.13.2"

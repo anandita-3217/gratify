@@ -4,8 +4,6 @@ import '@mantine/dates/styles.css'
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
-
-// TODO: priority colors as small circles next the values 
 export default function TaskModal({opened, onSave, onClose, task}){
 
     const [text, setText] = useState('');
@@ -23,19 +21,19 @@ export default function TaskModal({opened, onSave, onClose, task}){
         urgent: '#6741d9'
     }
     return (
-    <Group gap="sm">
-      <div style={{
-        width: 10,
-        height: 10,
-        borderRadius: '50%',
-        background: colors[option.value],
-        flexShrink: 0
-      }} />
-      <span>{option.label}</span>
-    </Group>
-  )
-
-}
+        <Group gap="sm">
+          <div style={{
+            width: 10,
+            height: 10,
+            borderRadius: '50%',
+            background: colors[option.value],
+            flexShrink: 0
+          }} />
+          <span>{option.label}</span>
+        </Group>
+      )
+  
+    }
 
     useEffect(()=>{
         if(task){
@@ -64,8 +62,7 @@ export default function TaskModal({opened, onSave, onClose, task}){
         onSave({text,priority,deadline: date, recurring, frequency})
         onClose()
     }
-// TODO: input fields when active should be pink not blue
-    return (
+        return (
         <Modal 
             opened={opened} onClose={onClose} 
             title={task?'Edit Task':'Add Task'}

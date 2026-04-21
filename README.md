@@ -2,8 +2,35 @@
 
 An Electron application with React
 
+## Features
 
+### 1. Tasks
+A task management system with priority levels, deadlines, and recurring tasks.
 
+### Features
+- Create tasks with a name, priority, deadline, and recurrence
+- Quick-add from the input bar with natural language parsing
+  - `"Buy groceries tomorrow urgent"` → creates a task with deadline tomorrow and urgent priority
+- Edit existing tasks via the edit button
+- Mark tasks as complete with a checkbox
+- Delete tasks
+- Progress bar showing completion percentage
+
+### Data structure
+```js
+{
+  id: number,          // timestamp
+  text: string,        // task name
+  priority: 'low' | 'medium' | 'high' | 'urgent',
+  deadline: Date | null,
+  completed: boolean,
+  recurring: boolean,
+  frequency: 'daily' | 'weekly' | 'monthly' | 'custom' | null
+}
+```
+
+### Storage
+All tasks are saved to `localStorage` under the key `tasks` and persist across app restarts.
 ## Project Setup
 ### Full file structure for Gratify
 ```

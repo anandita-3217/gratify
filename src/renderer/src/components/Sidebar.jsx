@@ -32,7 +32,7 @@ export default function Sidebar({activePage, onNavigate}){
     <div className='flex flex-col gap-2  h-full w-56 '>
       <div className='flex items-center gap-2 p-4'>
         <div className='w-8 h-8 rounded-lg bg-[#cc225c]'/>
-        <span className='text-gray-500 font-semibold'>Gratify</span>
+        <span className='text-gray-600 font-semibold'>Gratify</span>
       </div>
       <div className='flex flex-col'>
       {navItems.map(

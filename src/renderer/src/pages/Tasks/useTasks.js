@@ -14,35 +14,7 @@ import { useLocalStorage } from '../../hooks/useLocalStorage'
 
 export function useTasks() {
   // const [tasks, setTasks] = useLocalStorage('tasks', [])
-const [tasks, setTasks] = useLocalStorage('tasks', [
-  {
-    id: 1,
-    text: 'Buy groceries',
-    priority: 'medium',
-    deadline: null,
-    completed: false,
-    recurring: false,
-    frequency: null
-  },
-  {
-    id: 2,
-    text: 'Finish project report',
-    priority: 'urgent',
-    deadline: null,
-    completed: false,
-    recurring: false,
-    frequency: null
-  },
-  {
-    id: 3,
-    text: 'Call the doctor',
-    priority: 'high',
-    deadline: null,
-    completed: true,
-    recurring: false,
-    frequency: null
-  }
-])
+const [tasks, setTasks] = useLocalStorage('tasks', [])
   function addTask(task) {
     setTasks([...tasks, {...task,id: Date.now(), completed: false}])
 

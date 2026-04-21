@@ -6,24 +6,10 @@ import { StrictMode, useState  } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
 
-// function Test() {
-//   const [opened, setOpened] = useState(false)
-//   return (
-//     <div>
-//       <Button onClick={() => setOpened(true)}>Open</Button>
-//       <Modal opened={opened} onClose={() => setOpened(false)} title="Test">
-//         <p>IT WORKS</p>
-//       </Modal>
-//     </div>
-//   )
-// }
-
-
-
 createRoot(document.getElementById('root')).render(
   
   <StrictMode>
-    <MantineProvider defaultColorScheme="dark">
+    <MantineProvider defaultColorScheme="dark" theme={{ primaryColor: 'pink'}}>
     <App />
 </MantineProvider>
   </StrictMode>

@@ -55,10 +55,7 @@ export default function Tasks(){
                 <Stack>
                     <Progress value={percentage} color="pink" />
                     <Button onClick={open} color="pink" ><Plus size={16}/> New Task </Button>
-                    <TaskModal opened={opened} onClose={close} onSave={(taskData) => {
-                        addTask(taskData)
-                        close()
-                    }} task={null} />
+                    
                 </Stack>
             </Stack>
             <Stack p="md">
@@ -81,6 +78,10 @@ export default function Tasks(){
                     ))}
                 </Stack>
             </Stack>
+            <TaskModal opened={opened} onClose={close} onSave={(taskData) => {
+                        addTask(taskData)
+                        close()
+                    }} task={null} />
         </Box>
     );
 }

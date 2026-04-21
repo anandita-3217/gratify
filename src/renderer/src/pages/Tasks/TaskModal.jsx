@@ -1,5 +1,6 @@
 import {Box ,Center, Checkbox, Stack, Title,TextInput, Modal, Group, Select, Button} from '@mantine/core'
 import{DateInput} from '@mantine/dates';
+import '@mantine/dates/styles.css'
 import { useState } from 'react';
 import { X } from 'lucide-react';
 
@@ -20,11 +21,9 @@ export default function TaskModal({opened, onSave, onClose, task}){
         <Modal opened={opened} onClose={onClose} title={task?'Edit Task':'Add Task'}>
         <Box>
             <Stack>
-                    {/* <Title order={2} fw={600} >Add Task</Title>
-                    <Button><X size={16}/></Button> */}
                 <Group>
                     <Group>
-                        <TextInput label="Task Name" />
+                        <TextInput label="Task Name" value={text} onChange={(e) => setText(e.target.value)} />
                     </Group>
                     <Group>
                         <DateInput value={date} onChange={setDate} label="Deadline" placeholder="Date Input"/>

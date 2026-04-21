@@ -26,7 +26,7 @@ export default function App() {
   const [activePage, setActivePage] = useState('dashboard');
 
   return (
-    <div className='flex h-screen w-screen overflow-hidden'>
+    <div className='flex h-screen w-screen'>
       <Notifications position="top-right" />
       <HashRouter>
         <div className='flex h-full w-full'>

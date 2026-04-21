@@ -18,9 +18,11 @@ function getGreeting(){
 export default function Tasks(){
     const {tasks, addTask, deleteTask, toggleTask} = useTasks();
     const [input, setInput] = useState('');
-    const [opened,{open,close}] = useDisclosure(false)
+    const [opened, { open, close }] = useDisclosure(false)
 
+    console.log('opened:', opened)
 
+    
     function handleAdd(){
         if (!input.trim()) return
         addTask({

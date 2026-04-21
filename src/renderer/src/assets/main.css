@@ -2,10 +2,10 @@
 @import './base.css';
 
 body {
-  display: flex;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  /* overflow: hidden; */
   background-image: url('./wavy-lines.svg');
   background-size: cover;
   user-select: none;

@@ -1,7 +1,7 @@
 import TaskItem from "./TaskItem";
 import TaskModal from "./TaskModal";
 
-import { Box, Group, MultiSelect  ,TextInput, Button, Stack, Text, Title, Progress,SegmentedControl, Select  } from "@mantine/core";
+import { Box, Chip ,Group, MultiSelect  ,TextInput, Button, Stack, Text, Title, Progress,SegmentedControl, Select  } from "@mantine/core";
 import { Plus } from 'lucide-react';
 
 import { useDisclosure } from "@mantine/hooks";
@@ -23,11 +23,14 @@ export default function Tasks(){
     const [opened, { open, close }] = useDisclosure(false)
     const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false)
     const [selectedTask, setSelectedTask] = useState(null)
+    const [sort, setSort] = useState('created') // 'created' | 'deadline' | 'priority'
     const [filter, setFilter] = useState({
         priority : [],  // all, low, med,high, urgent 
         status: 'all', // all, active, completed
         frequency: [] // daily, weekly, monthly, custom, null
     })
+
+    const priorityOrder = {urgent: 0, high: 1, medium: 2, low: 3 }
 
     function parseQuickTask(input){
         let text = input
@@ -43,37 +46,44 @@ export default function Tasks(){
             }
         })
         
-        if(/remind me/i.test(text)){
-            if(/1 hour/i.test(text)) reminder = '60'
-            else if(/1 day/i.test(text)) reminder = '1440'
-            else reminder = '15'
-            text = text.replace(/remind me.*/i,'').trim()
+        const customReminderMatch = text.match(/remind me in\s+(\d+)\s*(min(?:ute)?s?|hour?s?)/i)
+        if(customReminderMatch){
+            const amount = parseInt(customReminderMatch[1])
+            const unit = customReminderMatch[2].toLowerCase()
+            reminder = unit.startsWith('min') ? String(amount) : String(amount * 60)
+            text = text.replace(customReminderMatch[0],'').trim()
         }
-
-        //TODO: i want both cases regular text or dates and remember to add date as dd/MM/YYYY
-        
-        const today = new Date()
-        if (/tomorrow/i.test(text)) {
-            deadline = new Date(today.setDate(today.getDate() + 1))
-            text = text.replace(/tomorrow/i, '').trim()
-        } else if (/today/i.test(text)) {
-          deadline = new Date()
-          text = text.replace(/today/i, '').trim()
-        } else if (/next week/i.test(text)) {
-          deadline = new Date(today.setDate(today.getDate() + 7))
-          text = text.replace(/next week/i, '').trim()
+        const reminderMatch = text.match(
+            /remind me\s+(\d+)\s*(min(?:ute)?s?|hour?s?|day?s?)\s*before/i
+        )
+        if (reminderMatch){
+            const amount = parseInt(reminderMatch[1])
+            const unit = reminderMatch[2].toLowerCase()
+            if (unit.startsWith('min')){
+                reminder = String(amount)
+            }else if(unit.startsWith('hour')){
+                reminder = String(amount*60)
+            }
+            }else if(unit.startsWith('day')){
+                reminder = String(amount*1440)
+            }
+            text = text.replace(reminderMatch[0],'').trim()
+            const ddmmyyyy = text.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/)
+            if (ddmmyyyy){
+                const [full, day, month, year] = ddmmyyyy
+                deadline = new Date(year,month-1,day)
+                text = text.replace(full,'').trim()
+            } 
+            if (!deadline){
+                const parsed = chrono.parse(text, new Date(), {forwardDate: true})
+                if(parsed.length > 0){
+                    deadline = parsed[0].start.date()
+                    text = text.replace(parsed[0].text,'').trim()
+                }
+            }
+            
+        return {text, priority, deadline,reminder}
         }
-        // TODO: if there is an actual date then as a date 
-        const parsed = chrono.parse(text)
-        if (parsed.length > 0) {
-          deadline = parsed[0].start.date()
-          // remove the date text from the task name
-          text = text.replace(parsed[0].text, '').trim()
-        }
-
-        return { text, priority, deadline, reminder }
-
-    }
 
     function handleAdd(){
         if (!input.trim()) return
@@ -84,6 +94,7 @@ export default function Tasks(){
             frequency: null
         })
         setInput('')
+        
     }
 
     function handleEdit(task){
@@ -95,16 +106,6 @@ export default function Tasks(){
     const total = tasks.length
     const percentage = total === 0 ? 0 : Math.round((completed / total) * 100)
 
-
-
-    // const filteredTasks = tasks.filter(task => {
-    //     if(filter.priority !== 'all' && task.priority !== filter.priority) return false 
-    //     if(filter.status === 'active' && task.completed) return false
-    //     if(filter.status === 'completed' && !task.completed) return false
-    //     if(filter.frequency !== 'all' && task.frequency !== filter.frequency) return false
-    //     return true
-    // })
-
     const filteredTasks = tasks.filter(task => {
       if (filter.priority.length > 0 && !filter.priority.includes(task.priority)) return false
       if (filter.status === 'active' && task.completed) return false
@@ -113,7 +114,17 @@ export default function Tasks(){
       return true
     })
 
-
+    const sortedTasks = [...filteredTasks].sort((a,b) => {
+        if (sort === 'priority'){
+            return priorityOrder[a.priority] - priorityOrder[b.priority]
+        }
+        if (sort === 'deadline'){
+            if(!a.deadline) return 1
+            if(!b.deadline) return -1
+            return new Date(a.deadline) - new Date(b.deadline)
+        }
+        return b.id - a.id
+    })
 
     useEffect(()=>{
         if(Notification.permission === 'default'){
@@ -171,59 +182,53 @@ export default function Tasks(){
                     className="flex-1"/>
                     <Button onClick={handleAdd} color="pink"><Plus size={16}/></Button>
                 </div>
-                <Group gap="sm" mb='md' wrap="nowrap" align="center">
                     {/* TODO: style so that all the filters stay in the same line - maybe look at pill buttons instead for filters */}
-                    <Text size="sm" c="dimmed" style={{ whiteSpace: 'nowrap' }}>Filters: </Text>
-                    <SegmentedControl 
-                        value={filter.status}
-                        onChange={(val) => setFilter(f => ({...f, status: val}))}
-                        data={[
-                            { label: 'All', value: 'all' },
-                            { label: 'Active', value: 'active' },
-                            { label: 'Completed', value: 'completed' }
-                        ]}
-                        color="pink"/>
-                    {/* <SegmentedControl
-                        value={filter.priority}
-                        onChange={(val) => setFilter(f => ({...f, priority: val}))}
-                        data={[
-                            { label: 'All', value: 'all' },
-                            { label: 'Low', value: 'low' },
-                            { label: 'Medium', value: 'medium' },
-                            { label: 'High', value: 'high' },
-                            { label: 'Urgent', value: 'urgent' }
-                        ]}
-                        color="pink"/>
-                    <SegmentedControl
-                        value={filter.frequency}
-                        onChange={(val) => setFilter(f => ({...f, frequency: val}))}
-                        data={[
-                            { label: 'All', value: 'all' },
-                            { label: 'Daily', value: 'daily' },
-                            { label: 'Weekly', value: 'weekly' },
-                            { label: 'Monthly', value: 'monthly' },
-                            { label: 'Custom', value: 'custom' }
-                        ]}
-                        color="pink"/>
-                 */}
-                    <MultiSelect
-                          placeholder="Priority"
-                          value={filter.priority}
-                          onChange={(val) => setFilter(f => ({ ...f, priority: val }))}
-                          data={['low', 'medium', 'high', 'urgent']}
-                          clearable
-                    />
-
-                    <MultiSelect
-                      placeholder="Frequency"
-                      value={filter.frequency}
-                      onChange={(val) => setFilter(f => ({ ...f, frequency: val }))}
-                      data={['daily', 'weekly', 'monthly', 'custom']}
-                      clearable
-                    />
-                </Group>
+                <Stack gap="xs" mb="md"> 
+                    <Group gap="xs" align="center">
+                        <Text size="xs" c="dimmed" w={60}>Status</Text>
+                        <Chip.Group value={filter.status} onChange={(val) => setFilter(f=>({...f, status: val}))}>
+                            <Group gap={"xs"}>
+                                <Chip value="all" color="pink" size="sm">All</Chip>
+                                <Chip value="active" color="pink" size="sm">Active</Chip>
+                                <Chip value="complete" color="pink" size="sm">Complete</Chip>
+                            </Group>
+                        </Chip.Group>
+                    </Group>
+                    <Group gap="xs" align="center">
+                        <Text size="xs" c="dimmed" w={60}>Priority</Text>
+                        <Chip.Group multiple value={filter.priority} onChange={(val) => setFilter(f=>({...f, priority: val}))}>
+                            <Group gap={"xs"}>
+                                <Chip value="low" color="#0c8599" size="sm">Low</Chip>
+                                <Chip value="medium" color="#099268" size="sm">Medium</Chip>
+                                <Chip value="high" color="#e03131" size="sm">High</Chip>
+                                <Chip value="urgent" color="#6741d9" size="sm">Urgent</Chip>
+                            </Group>
+                        </Chip.Group>
+                    </Group>
+                    <Group gap="xs" align="center">
+                        <Text size="xs" c="dimmed" w={60}>Repeat</Text>
+                        <Chip.Group multiple value={filter.frequency} onChange={(val) => setFilter(f=>({...f, frequency: val}))}>
+                            <Group gap={"xs"}>
+                                <Chip value="daily" color="pink" size="sm">Daily</Chip>
+                                <Chip value="weekly" color="pink" size="sm">Weekly</Chip>
+                                <Chip value="monthly" color="pink" size="sm">Monthly</Chip>
+                                <Chip value="custom" color="pink" size="sm">Custom</Chip>
+                            </Group>
+                        </Chip.Group>
+                    </Group>
+                    <Group gap="xs" align="center">
+                        <Text size="xs" c="dimmed" w={60}>Sorted</Text>
+                        <Chip.Group multiple value={sort} onChange={setSort}>
+                            <Group gap={"xs"}>
+                                <Chip value="created" color="pink" size="sm">Created</Chip>
+                                <Chip value="deadline" color="pink" size="sm">Deadline</Chip>
+                                <Chip value="priority" color="pink" size="sm">Priority</Chip>                               
+                            </Group>
+                        </Chip.Group>
+                    </Group>
+                </Stack>
                 <Stack gap="sm">
-                    {filteredTasks.length === 0 ? (
+                    {sortedTasks.length === 0 ? (
                         <Box p='xl' 
                             style={{
                                 textAlign: 'center',
@@ -237,7 +242,7 @@ export default function Tasks(){
                             </Text>
                         </Box>
                     ):(
-                        filteredTasks.map(task =>(
+                        sortedTasks.map(task =>(
                             <TaskItem
                                 key={task.id}
                                 task={task}

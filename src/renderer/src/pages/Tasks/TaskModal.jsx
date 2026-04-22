@@ -1,24 +1,9 @@
-import { Box ,Center, Checkbox, Stack, Title,TextInput, Modal, Group, Select, Button, NumberInput} from '@mantine/core'
+import { Box ,Center, Checkbox, Stack, Title,Text,TextInput, Modal, Group, Select, Button, NumberInput, SegmentedControl} from '@mantine/core'
 import{ DateTimePicker } from '@mantine/dates';
 import '@mantine/dates/styles.css'
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
-export default function TaskModal({opened, onSave, onClose, task}){
-
-    const [text, setText] = useState('');
-    const [priority, setPriority] = useState();
-    const [date, setDate] = useState();
-    const [recurring, setRecurring] = useState(false);
-    const [frequency, setFrequency] = useState();
-    const [reminder, setReminder] = useState(null)
-
-    const [textError, setTextError] = useState('');
-    const [priorityError, setPriorityError] = useState('');
-    
-    const [customInterval, setCustomInterval] = useState(1);
-    const [customUnit, setCustomUnit] = useState('days');
-    
     function PriorityOption({ option }){
     const colors = {
         low: '#0c8599',
@@ -41,6 +26,29 @@ export default function TaskModal({opened, onSave, onClose, task}){
   
     }
 
+
+
+export default function TaskModal({opened, onSave, onClose, task}){
+
+    const [text, setText] = useState('');
+    const [priority, setPriority] = useState();
+    const [date, setDate] = useState();
+    const [recurring, setRecurring] = useState(false);
+    const [frequency, setFrequency] = useState();
+    const [reminder, setReminder] = useState(null)
+    const [reminderType, setReminderType] = useState('preset') // preset or custom
+    const [customReminderAmount,setCustomReminderAmount ] = useState(15)
+    const [customReminderUnit,setCustomReminderUnit ] = useState('minutes')
+
+
+
+    const [textError, setTextError] = useState('');
+    const [priorityError, setPriorityError] = useState('');
+    
+    const [customInterval, setCustomInterval] = useState(1);
+    const [customUnit, setCustomUnit] = useState('days');
+    
+
     useEffect(()=>{
         if(task){
             setText(task.text)
@@ -48,6 +56,9 @@ export default function TaskModal({opened, onSave, onClose, task}){
             setDate(task.deadline ? new Date(task.deadline): null)
             setRecurring(task.recurring)
             setFrequency(task.frequency)
+            setReminder(task.reminder ?? null)
+            setCustomInterval(task.customInterval ?? 1)
+            setCustomUnit(task.customUnit ?? 'days')
         }
         else{
             setText('')
@@ -55,7 +66,12 @@ export default function TaskModal({opened, onSave, onClose, task}){
             setDate(null)
             setRecurring(false)
             setFrequency(null)
-
+            setReminder(null)
+            setReminderType('preset')
+            setCustomReminderAmount(15)
+            setCustomReminderUnit('minutes')
+            setCustomInterval(1)
+            setCustomUnit('days')
         }
     },[task,opened])
 
@@ -68,9 +84,20 @@ export default function TaskModal({opened, onSave, onClose, task}){
             setPriorityError('Choose priority')
             return
         }
+
+        let finalReminder = null
+        if (date && reminder) {
+            if (reminderType === 'preset'){
+                finalReminder = reminder
+            } else {
+                const multipliers = {minutes: 1, hours: 60, days: 1440}
+                finalReminder = String(customReminderAmount * multipliers[customReminderUnit])
+            }
+        }
         setTextError('')
         setPriorityError('')
-        onSave({text,priority,deadline: date, recurring, frequency, reminder,
+        onSave({text,priority,deadline: date, recurring, frequency, 
+            reminder: finalReminder,
             customInterval: frequency === 'custom' ? customInterval : null,
             customUnit: frequency === 'custom' ? customUnit : null
         })
@@ -78,6 +105,7 @@ export default function TaskModal({opened, onSave, onClose, task}){
     }
         return (
         <Modal 
+            size={"100%"}
             opened={opened} onClose={onClose} 
             title={task?'Edit Task':'Add Task'}
             centered
@@ -94,17 +122,38 @@ export default function TaskModal({opened, onSave, onClose, task}){
                 <Group grow>
                     <DateTimePicker value={date} onChange={setDate} label="Deadline" placeholder="Deadline" minDate={new Date()}/>
                     {date && (
-                        <Select
-                            label="Remind me"
-                            value={reminder}
-                            onChange={setReminder}
-                            placeholder='No reminder'
-                            data={[
-                                { label: '15 minutes before', value: '15' },
-                                { label: '1 hour before', value: '60' },
-                                { label: '1 day before', value: '1440' }
-                            ]}
-                            clearable/>
+                        <Stack gap={"xs"}>
+                            <Text size="sm" fw={500}>Reminder</Text>
+                            <SegmentedControl value={reminderType} onChange={setReminderType}
+                                data={[
+                                    { label: 'Preset', value: 'preset' },
+                                    { label: 'Custom', value: 'custom' }
+                                ]} color='pink' size='xs'/>
+                                {reminderType === 'preset' ? (
+                                    <Select
+                                        label="Remind me"
+                                        value={reminder}
+                                        onChange={setReminder}
+                                        placeholder='No reminder'
+                                        data={[
+                                            { label: '15 minutes before', value: '15' },
+                                            { label: '30 minutes before', value: '30' },
+                                            { label: '1 hour before', value: '60' },
+                                            { label: '3 hours before', value: '180' },
+                                            { label: '1 day before', value: '1440' }
+                                        ]}
+                                        clearable/>
+
+                                ):(
+                                    <Group grow>
+                                        <NumberInput label="Amount" value={customReminderAmount} onChange={setCustomReminderAmount} min={1}/>
+                                        <Select label="Unit" value={customReminderUnit} onChange={setCustomReminderUnit} 
+                                            data={['minutes','hours','days']}/>
+                                    </Group>
+                                )
+
+                                }
+                        </Stack>
                     )}
                     <Select withAsterisk
                         label="Priority"

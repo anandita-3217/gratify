@@ -11,6 +11,14 @@ function priorityColor(priority){
     return colors[priority]
 }
 
+function formatReminder(minutes){
+  if(!minutes) return null
+  const m = parseInt(minutes)
+  if(m<60) return `${m}m before`
+  if(m<1440) return `${m/60}hr before`
+  return `${m/1440}d before`
+}
+
 const reminderLabels = {
   '15' : '15m before',
   '60' : '1 hour before',
@@ -58,7 +66,7 @@ export default function TaskItem({task, onToggle, onDelete, onEdit}){
             )}  
             {task.reminder && (
               <Badge variant='light' color='yellow' size='sm' leftSection={<Bell size={10}/>}>
-                {reminderLabels[task.reminder]}
+                {formatReminder(task.reminder)}
               </Badge>
             )}              
           </Group>

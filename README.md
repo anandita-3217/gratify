@@ -5,32 +5,65 @@ An Electron application with React
 ## Features
 
 ### 1. Tasks
-A task management system with priority levels, deadlines, and recurring tasks.
+A task management system with priority levels, deadlines, recurring tasks, smart filtering and natural language quick-add.
 
-### Features
-- Create tasks with a name, priority, deadline, and recurrence
-- Quick-add from the input bar with natural language parsing
-  - `"Buy groceries tomorrow urgent"` → creates a task with deadline tomorrow and urgent priority
-- Edit existing tasks via the edit button
-- Mark tasks as complete with a checkbox
+
+#### Features
+
+**Core**
+- Create tasks with name, priority, deadline, recurrence and reminder
+- Edit all task fields via the edit button on each task card
+- Mark tasks complete with a checkbox — completed tasks show strikethrough
 - Delete tasks
 - Progress bar showing completion percentage
 
-### Data structure
+**Quick-add with natural language parsing**
+- Type in plain English and the app fills in the fields automatically
+- `"Call doctor tomorrow urgent"` → deadline: tomorrow, priority: urgent
+- `"Submit report 25/12/2024 high"` → deadline: 25 Dec 2024, priority: high
+- `"Meeting next Friday at 3pm remind me 1 hour before"` → deadline: next Friday 3pm, reminder: 60 mins
+- `"Buy groceries remind me in 30 mins"` → reminder: 30 minutes from now
+- Supports: today, tomorrow, next week, next [weekday], dd/MM/YYYY, and natural dates
+
+**Recurring tasks**
+- One-time, daily, weekly, monthly
+- Custom frequency — every N days/weeks/months
+
+**Reminders**
+- Set via modal (preset or custom amount + unit)
+- Set via quick-add (`"remind me 2 hours before"`, `"remind me in 45 mins"`)
+- Checks every minute and fires a desktop notification when reminder time is reached
+- Reminder shown as a badge on the task card
+
+**Filters & Sort**
+- Filter by status (all / active / completed)
+- Filter by priority — multi-select (low, medium, high, urgent)
+- Filter by frequency — multi-select (daily, weekly, monthly, custom)
+- Sort by: newest, oldest, deadline (earliest/latest), priority (asc/desc)
+- Active filter count badge — shows how many filters are on
+- One-click clear all filters
+
+
+
+#### Data structure
 ```js
 {
-  id: number,          // timestamp
-  text: string,        // task name
+  id: number,                   // timestamp used as unique id
+  text: string,                 // task name
   priority: 'low' | 'medium' | 'high' | 'urgent',
   deadline: Date | null,
   completed: boolean,
   recurring: boolean,
-  frequency: 'daily' | 'weekly' | 'monthly' | 'custom' | null
+  frequency: 'daily' | 'weekly' | 'monthly' | 'custom' | null,
+  customInterval: number | null, // e.g. every 3 (days/weeks/months)
+  customUnit: 'days' | 'weeks' | 'months' | null,
+  reminder: string | null        // minutes before deadline as a string
 }
 ```
 
 ### Storage
 All tasks are saved to `localStorage` under the key `tasks` and persist across app restarts.
+
 ## Project Setup
 ### Full file structure for Gratify
 ```

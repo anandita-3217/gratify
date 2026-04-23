@@ -1,8 +1,8 @@
 import TaskItem from "./TaskItem";
 import TaskModal from "./TaskModal";
 
-import { Box, Chip ,Group, MultiSelect  ,TextInput, Button, Stack, Text, Title, Progress,SegmentedControl, Select  } from "@mantine/core";
-import { Plus } from 'lucide-react';
+import { Box, Badge, Chip ,Group, MultiSelect  ,TextInput, Button, Stack, Text, Title, Progress, Select  } from "@mantine/core";
+import {  Plus,SlidersHorizontal   } from 'lucide-react';
 
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
@@ -23,68 +23,127 @@ export default function Tasks(){
     const [opened, { open, close }] = useDisclosure(false)
     const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false)
     const [selectedTask, setSelectedTask] = useState(null)
-    const [sort, setSort] = useState('created') // 'created' | 'deadline' | 'priority'
+    const [sort, setSort] = useState('created-desc') // 'created' | 'deadline' | 'priority'
     const [filter, setFilter] = useState({
         priority : [],  // all, low, med,high, urgent 
         status: 'all', // all, active, completed
         frequency: [] // daily, weekly, monthly, custom, null
     })
+    const [filtersOpen, setFiltersOpen] = useState(false)
 
     const priorityOrder = {urgent: 0, high: 1, medium: 2, low: 3 }
 
-    function parseQuickTask(input){
+    // function parseQuickTask(input){
+    //     let text = input
+    //     let priority = 'medium'
+    //     let deadline = null
+    //     let reminder = null
+
+    //     const priorities  = ['low' ,'medium','high','urgent']
+    //     priorities.forEach(p => {
+    //         if(text.toLowerCase().includes(p)) {
+    //             priority = p
+    //             text = text.replace(new RegExp(p,'i'),'').trim()
+    //         }
+    //     })
+        
+    //     const customReminderMatch = text.match(/remind me in\s+(\d+)\s*(min(?:ute)?s?|hour?s?)/i)
+    //     if(customReminderMatch){
+    //         const amount = parseInt(customReminderMatch[1])
+    //         const unit = customReminderMatch[2].toLowerCase()
+    //         reminder = unit.startsWith('min') ? String(amount) : String(amount * 60)
+    //         text = text.replace(customReminderMatch[0],'').trim()
+    //     }
+    //     const reminderMatch = text.match(
+    //         /remind me\s+(\d+)\s*(min(?:ute)?s?|hour?s?|day?s?)\s*before/i
+    //     )
+    //     if (reminderMatch){
+    //         const amount = parseInt(reminderMatch[1])
+    //         const unit = reminderMatch[2].toLowerCase()
+    //         if (unit.startsWith('min')){
+    //             reminder = String(amount)
+    //         }else if(unit.startsWith('hour')){
+    //             reminder = String(amount*60)
+    //         }
+    //         }else if(unit.startsWith('day')){
+    //             reminder = String(amount*1440)
+    //         }
+    //         text = text.replace(reminderMatch[0],'').trim()
+        
+    //         const ddmmyyyy = text.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/)
+    //         if (ddmmyyyy){
+    //             const [full, day, month, year] = ddmmyyyy
+    //             deadline = new Date(year,month-1,day)
+    //             text = text.replace(full,'').trim()
+    //         } 
+    //         if (!deadline){
+    //             const parsed = chrono.parse(text, new Date(), {forwardDate: true})
+    //             if(parsed.length > 0){
+    //                 deadline = parsed[0].start.date()
+    //                 text = text.replace(parsed[0].text,'').trim()
+    //             }
+    //         }
+            
+    //     return {text, priority, deadline,reminder}
+    //     }
+
+    function parseQuickTask(input) {
         let text = input
-        let priority = 'medium'
+        let priority = 'low'
         let deadline = null
         let reminder = null
 
-        const priorities  = ['low' ,'medium','high','urgent']
+        // Priorities
+        const priorities = [ 'low', 'medium', 'high', 'urgent' ]
         priorities.forEach(p => {
-            if(text.toLowerCase().includes(p)) {
+            if (text.toLocaleString().includes(p)) {
                 priority = p
-                text = text.replace(new RegExp(p,'i'),'').trim()
+                text = text.replace(new RegExp(p,'i'), '').trim()
             }
         })
-        
-        const customReminderMatch = text.match(/remind me in\s+(\d+)\s*(min(?:ute)?s?|hour?s?)/i)
-        if(customReminderMatch){
+        // Date format
+        const ddmmyyyy = text.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/)
+        if (ddmmyyyy) {
+            const [full, day, month, year] = ddmmyyyy
+            deadline = new Date(year, month - 1, day)
+            text = text.replace(full, '').trim()
+        }
+        // Deadline
+        if(!deadline) {
+            const parsed = chrono.parse(text, new Date(), { forwardDate: true })
+            if(parsed.length > 0) {
+                deadline = parsed[0].start.date()
+                text = text.replace(parsed[0].text, '').trim()
+            }
+        }
+        // Reminder
+        // custom:
+        const customReminderMatch = text.match(/remind me in \s+(\d+)\s*(min(?:ute)?s?|hour?s?)/i)
+        if (customReminderMatch) {
             const amount = parseInt(customReminderMatch[1])
             const unit = customReminderMatch[2].toLowerCase()
             reminder = unit.startsWith('min') ? String(amount) : String(amount * 60)
-            text = text.replace(customReminderMatch[0],'').trim()
+            text = text.replace(customReminderMatch[0], '').trim()
         }
-        const reminderMatch = text.match(
-            /remind me\s+(\d+)\s*(min(?:ute)?s?|hour?s?|day?s?)\s*before/i
-        )
-        if (reminderMatch){
+        // preset:
+        const reminderMatch = text.match(/remind me\s+(\d+)\s*(min(?:ute)?s?|hour?s|day?s)\s*before/i)
+        if(reminderMatch){
             const amount = parseInt(reminderMatch[1])
             const unit = reminderMatch[2].toLowerCase()
             if (unit.startsWith('min')){
                 reminder = String(amount)
-            }else if(unit.startsWith('hour')){
-                reminder = String(amount*60)
             }
-            }else if(unit.startsWith('day')){
-                reminder = String(amount*1440)
+            else if (unit.startsWith('hour')){
+                reminder = String(amount * 60)
             }
-            text = text.replace(reminderMatch[0],'').trim()
-            const ddmmyyyy = text.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/)
-            if (ddmmyyyy){
-                const [full, day, month, year] = ddmmyyyy
-                deadline = new Date(year,month-1,day)
-                text = text.replace(full,'').trim()
-            } 
-            if (!deadline){
-                const parsed = chrono.parse(text, new Date(), {forwardDate: true})
-                if(parsed.length > 0){
-                    deadline = parsed[0].start.date()
-                    text = text.replace(parsed[0].text,'').trim()
-                }
+            else if (unit.startsWith('day')) {
+                reminder = String(amount * 1440)
             }
-            
-        return {text, priority, deadline,reminder}
+            text = text.replace(reminderMatch[0], '').trim()
         }
-
+        return { text, priority, deadline, reminder }
+    }
+    
     function handleAdd(){
         if (!input.trim()) return
         const parsed = parseQuickTask(input)
@@ -115,15 +174,26 @@ export default function Tasks(){
     })
 
     const sortedTasks = [...filteredTasks].sort((a,b) => {
-        if (sort === 'priority'){
-            return priorityOrder[a.priority] - priorityOrder[b.priority]
+        switch(sort){
+            case 'priority-desc':
+                return priorityOrder[a.priority] - priorityOrder[b.priority]
+            case 'priority-asc':
+                return priorityOrder[b.priority] - priorityOrder[a.priority]
+            case 'deadline-asc':
+                if (!a.deadline) return 1
+                if (!b.deadline) return -1
+                return new Date(a.deadline) - new Date(b.deadline)
+            case 'deadline-desc':
+                if (!a.deadline) return 1
+                if (!b.deadline) return -1
+                return new Date(b.deadline) - new Date(a.deadline)
+                case 'created-asc':
+                    return a.id - b.id
+                    
+            case 'created-desc':
+            default:
+                return b.id - a.id
         }
-        if (sort === 'deadline'){
-            if(!a.deadline) return 1
-            if(!b.deadline) return -1
-            return new Date(a.deadline) - new Date(b.deadline)
-        }
-        return b.id - a.id
     })
 
     useEffect(()=>{
@@ -182,51 +252,77 @@ export default function Tasks(){
                     className="flex-1"/>
                     <Button onClick={handleAdd} color="pink"><Plus size={16}/></Button>
                 </div>
-                    {/* TODO: style so that all the filters stay in the same line - maybe look at pill buttons instead for filters */}
-                <Stack gap="xs" mb="md"> 
-                    <Group gap="xs" align="center">
-                        <Text size="xs" c="dimmed" w={60}>Status</Text>
-                        <Chip.Group value={filter.status} onChange={(val) => setFilter(f=>({...f, status: val}))}>
-                            <Group gap={"xs"}>
-                                <Chip value="all" color="pink" size="sm">All</Chip>
-                                <Chip value="active" color="pink" size="sm">Active</Chip>
-                                <Chip value="complete" color="pink" size="sm">Complete</Chip>
-                            </Group>
-                        </Chip.Group>
-                    </Group>
-                    <Group gap="xs" align="center">
-                        <Text size="xs" c="dimmed" w={60}>Priority</Text>
-                        <Chip.Group multiple value={filter.priority} onChange={(val) => setFilter(f=>({...f, priority: val}))}>
-                            <Group gap={"xs"}>
-                                <Chip value="low" color="#0c8599" size="sm">Low</Chip>
-                                <Chip value="medium" color="#099268" size="sm">Medium</Chip>
-                                <Chip value="high" color="#e03131" size="sm">High</Chip>
-                                <Chip value="urgent" color="#6741d9" size="sm">Urgent</Chip>
-                            </Group>
-                        </Chip.Group>
-                    </Group>
-                    <Group gap="xs" align="center">
-                        <Text size="xs" c="dimmed" w={60}>Repeat</Text>
-                        <Chip.Group multiple value={filter.frequency} onChange={(val) => setFilter(f=>({...f, frequency: val}))}>
-                            <Group gap={"xs"}>
-                                <Chip value="daily" color="pink" size="sm">Daily</Chip>
-                                <Chip value="weekly" color="pink" size="sm">Weekly</Chip>
-                                <Chip value="monthly" color="pink" size="sm">Monthly</Chip>
-                                <Chip value="custom" color="pink" size="sm">Custom</Chip>
-                            </Group>
-                        </Chip.Group>
-                    </Group>
-                    <Group gap="xs" align="center">
-                        <Text size="xs" c="dimmed" w={60}>Sorted</Text>
-                        <Chip.Group multiple value={sort} onChange={setSort}>
-                            <Group gap={"xs"}>
-                                <Chip value="created" color="pink" size="sm">Created</Chip>
-                                <Chip value="deadline" color="pink" size="sm">Deadline</Chip>
-                                <Chip value="priority" color="pink" size="sm">Priority</Chip>                               
-                            </Group>
-                        </Chip.Group>
-                    </Group>
-                </Stack>
+                
+                 <Group justify="space-between" mb={"xs"}>
+                        <Group gap={"xs"}>
+                            <Button 
+                                variant="light" 
+                                color="pink" 
+                                size="xs" 
+                                leftSection={<SlidersHorizontal size={14}/>} 
+                                onClick={() => setFiltersOpen(f => !f)} >Filters & Sort</Button>
+                            {(filter.priority.length > 0 || filter.frequency.length > 0 || filter.status !== 'all' ) && (
+                                <Badge color="pink" size={"sm"} variant="light">
+                                    {filter.priority.length + filter.frequency.length * (filter.status !== 'all' ? 1 : 0)} active 
+                                </Badge>
+                            )}
+                        </Group>
+                    {(filter.priority.length > 0 || filter.frequency.length > 0 || filter.status !== 'all') && (
+                        <Button variant="subtle" color="gray" size="xs" onClick={() => setFilter({ priority: [], status: 'all', frequency:[]} )} >Clear</Button>
+                    )}
+                </Group>
+                {filtersOpen &&(
+                    <Stack gap={"xs"} mb={"md"} p={"sm"} style={{ border: '1px solid var(--mantine-color-default-border)', borderRadius: 8 }}>
+                        <Group gap={"xs"} align="center">
+                            <Text size="xs" c={"dimmed"} w={60}>Status</Text>
+                            <Chip.Group value={filter.status} onChange={(val) => setFilter(f => ({...f, status: val}))}>
+                                <Group gap={"xs"}>
+                                    <Chip  fz="xs"  value="all" color="pink" size="sm">All</Chip>
+                                    <Chip  fz="xs"  value="active" color="pink" size="sm">Active</Chip>
+                                    <Chip  fz="xs"  value="completed" color="pink" size="sm">Completed</Chip>
+                                </Group>
+                            </Chip.Group>
+                        </Group>
+
+                        <Group gap={"xs"} align="center">
+                            <Text size="xs" c={"dimmed"} w={60}>Priority</Text>
+                            <Chip.Group multiple value={filter.priority} onChange={(val) => setFilter(f => ({...f, priority: val}))}>
+                                <Group gap={"xs"}>
+                                    <Chip fz="xs" value="low" color="#0c8599" size="sm">Low</Chip>
+                                    <Chip fz="xs" value="medium" color="#099268" size="sm">Medium</Chip>
+                                    <Chip fz="xs" value="high" color="#e03131" size="sm">High</Chip>
+                                    <Chip fz="xs" value="urgent" color="#6741d9" size="sm">Urgent</Chip>
+                                </Group>
+                            </Chip.Group>
+                        </Group>
+                        
+                        <Group gap={"xs"} align="center">
+                            <Text size="xs" c={"dimmed"} w={60}>Repeat</Text>
+                            <Chip.Group multiple value={filter.frequency} onChange={(val) => setFilter(f => ({...f, frequency: val}))}>
+                                <Group gap={"xs"}>
+                                    <Chip fz="xs" value="daily" color="pink" size="sm">Daily</Chip>
+                                    <Chip fz="xs" value="weekly" color="pink" size="sm">Weekly</Chip>
+                                    <Chip fz="xs" value="monthly" color="pink" size="sm">Monthly</Chip>
+                                    <Chip fz="xs" value="custom" color="pink" size="sm">Custom</Chip>
+                                </Group>
+                            </Chip.Group>
+                        </Group>
+                       
+                        <Group gap={"xs"} align="center">
+                            <Text size="xs" c={"dimmed"} w={60}>Sort</Text>
+                            <Select size="xs" value={sort} onChange={setSort} style={{ width: 180 }}
+                                data={[
+                                    { value: 'created-desc', label: '↓ Newest first' },
+                                    { value: 'created-asc', label: '↑  Oldest first' },
+                                    { value: 'deadline-asc', label: '↑  Deadline (earlest)' },
+                                    { value: 'deadline-desc', label: '↓ Deadline (latest)' },
+                                    { value: 'priority-asc', label: '↑  Priority (low→urgent)' },
+                                    { value: 'priority-desc', label: '↓ Priority (urgent→low)' },
+                                ]}
+                            />
+                        </Group>
+                    </Stack>
+                )} 
                 <Stack gap="sm">
                     {sortedTasks.length === 0 ? (
                         <Box p='xl' 
@@ -253,7 +349,8 @@ export default function Tasks(){
                         ))
 
                     )}
-                </Stack>
+                </Stack> 
+          
             </Stack>
             <TaskModal opened={opened} onClose={close} onSave={(taskData) => {
                         addTask(taskData)

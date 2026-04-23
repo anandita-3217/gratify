@@ -7,6 +7,7 @@ import {  Plus,SlidersHorizontal   } from 'lucide-react';
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { useTasks } from "./useTasks";
+import useNotifications from '../../hooks/useNotifications'
 
 import * as chrono from 'chrono-node';
 
@@ -32,60 +33,6 @@ export default function Tasks(){
     const [filtersOpen, setFiltersOpen] = useState(false)
 
     const priorityOrder = {urgent: 0, high: 1, medium: 2, low: 3 }
-
-    // function parseQuickTask(input){
-    //     let text = input
-    //     let priority = 'medium'
-    //     let deadline = null
-    //     let reminder = null
-
-    //     const priorities  = ['low' ,'medium','high','urgent']
-    //     priorities.forEach(p => {
-    //         if(text.toLowerCase().includes(p)) {
-    //             priority = p
-    //             text = text.replace(new RegExp(p,'i'),'').trim()
-    //         }
-    //     })
-        
-    //     const customReminderMatch = text.match(/remind me in\s+(\d+)\s*(min(?:ute)?s?|hour?s?)/i)
-    //     if(customReminderMatch){
-    //         const amount = parseInt(customReminderMatch[1])
-    //         const unit = customReminderMatch[2].toLowerCase()
-    //         reminder = unit.startsWith('min') ? String(amount) : String(amount * 60)
-    //         text = text.replace(customReminderMatch[0],'').trim()
-    //     }
-    //     const reminderMatch = text.match(
-    //         /remind me\s+(\d+)\s*(min(?:ute)?s?|hour?s?|day?s?)\s*before/i
-    //     )
-    //     if (reminderMatch){
-    //         const amount = parseInt(reminderMatch[1])
-    //         const unit = reminderMatch[2].toLowerCase()
-    //         if (unit.startsWith('min')){
-    //             reminder = String(amount)
-    //         }else if(unit.startsWith('hour')){
-    //             reminder = String(amount*60)
-    //         }
-    //         }else if(unit.startsWith('day')){
-    //             reminder = String(amount*1440)
-    //         }
-    //         text = text.replace(reminderMatch[0],'').trim()
-        
-    //         const ddmmyyyy = text.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/)
-    //         if (ddmmyyyy){
-    //             const [full, day, month, year] = ddmmyyyy
-    //             deadline = new Date(year,month-1,day)
-    //             text = text.replace(full,'').trim()
-    //         } 
-    //         if (!deadline){
-    //             const parsed = chrono.parse(text, new Date(), {forwardDate: true})
-    //             if(parsed.length > 0){
-    //                 deadline = parsed[0].start.date()
-    //                 text = text.replace(parsed[0].text,'').trim()
-    //             }
-    //         }
-            
-    //     return {text, priority, deadline,reminder}
-    //     }
 
     function parseQuickTask(input) {
         let text = input
@@ -196,11 +143,7 @@ export default function Tasks(){
         }
     })
 
-    useEffect(()=>{
-        if(Notification.permission === 'default'){
-            Notification.requestPermission()
-        }
-    },[])
+    const { notify } = useNotifications()
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -212,8 +155,10 @@ export default function Tasks(){
                 const minutesUntilDeadline = (deadline - now) / 1000 / 60
                 const reminderMinutes = parseInt(task.reminder)
                 if(minutesUntilDeadline <= reminderMinutes && minutesUntilDeadline > reminderMinutes - 1){
-                    new Notification(`Task reminder: ${task.text}`, {
-                        body: `Due ${deadline.toLocaleString()}`
+                    notify({
+                        title: `Reminder: ${task.text}`,
+                        message: `Due in ${deadline.toLocaleString()}`,
+                        color: 'pink'
                     })
                 }
             })

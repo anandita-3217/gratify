@@ -119,6 +119,15 @@ export default function TaskModal({opened, onSave, onClose, task}){
         <Box>
             <Stack gap={'md'}>
                 <TextInput withAsterisk label="Task Name" value={text} error={textError} onChange={(e) => setText(e.target.value) } />  
+                <Select withAsterisk
+                        label="Priority"
+                        value={priority}
+                        onChange={setPriority}
+                        data={['low', 'medium', 'high', 'urgent']}
+                        renderOption={PriorityOption}
+                        error={priorityError}
+
+                    />
                 <Group grow>
                     <DateTimePicker value={date} onChange={setDate} label="Deadline" placeholder="Deadline" minDate={new Date()}/>
                     {date && (
@@ -155,15 +164,7 @@ export default function TaskModal({opened, onSave, onClose, task}){
                                 }
                         </Stack>
                     )}
-                    <Select withAsterisk
-                        label="Priority"
-                        value={priority}
-                        onChange={setPriority}
-                        data={['low', 'medium', 'high', 'urgent']}
-                        renderOption={PriorityOption}
-                        error={priorityError}
-
-                    />
+                    
                 </Group>
                     
                 <Checkbox color='pink' checked={recurring} onChange={(e) => setRecurring(e.currentTarget.checked)} label="Recurring"/>

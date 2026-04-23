@@ -43,6 +43,36 @@ A task management system with priority levels, deadlines, recurring tasks, smart
 - Active filter count badge — shows how many filters are on
 - One-click clear all filters
 
+## 🔔 Notifications (`useNotifications`)
+
+A reusable hook that provides in-app toasts, desktop notifications and a sound alert. Used across Tasks, Calendar and any other feature that needs reminders.
+
+### Usage
+```js
+const { notify } = useNotifications()
+
+notify({
+  title: 'Reminder: Buy groceries',
+  message: 'Due in 30 minutes',
+  color: 'pink',   // optional, defaults to pink
+  sound: true      // optional, defaults to true
+})
+```
+
+### What it does
+- Requests desktop notification permission on mount
+- Shows a Mantine toast (in-app) with `autoClose: 8000`
+- Fires a native desktop notification via the Web Notifications API — works when the app is minimized
+- Plays a short synthesized tone via the Web Audio API — no audio file needed
+
+### How reminders work in Tasks
+- A `setInterval` runs every 60 seconds
+- For each incomplete task with a deadline and reminder set, it calculates minutes until the deadline
+- When `minutesUntilDeadline` falls within the reminder window it calls `notify()`
+- Reminder time is stored in minutes as a string on the task object
+
+### Storage
+Notification permission state is managed by the browser — no localStorage needed.
 
 
 #### Data structure

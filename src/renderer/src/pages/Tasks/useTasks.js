@@ -2,8 +2,8 @@
  * @typedef {Object} Task
  * @property {number} id
  * @property {string} text
- * @property {string | null} deadline
  * @property {'low'|'medium'|'high'|'urgent'} priority
+ * @property {string | null} deadline
  * @property {boolean} completed 
  * @property {boolean} recurring 
  * @propporty {string} reminder

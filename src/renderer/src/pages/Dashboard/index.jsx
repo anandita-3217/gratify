@@ -363,11 +363,11 @@ export default function Dashboard() {
       <Stack gap={4} mb="xl">
         <Title order={2} fw={600} >
           {greeting()}
-          <img 
+          {/* <img 
   src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f44b/lottie.json" 
   width={24} 
   height={24} 
-/>
+/> */}
         </Title>
         <Group gap={8}>
           <Text c="dimmed" size="sm">

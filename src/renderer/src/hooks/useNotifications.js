@@ -33,11 +33,9 @@ export default function useNotifications() {
     
     function notify({ title, message, color = "pink", sound = true }){
         // 1. show a Mantine toast with notifications.show()
-        notifications.show({title, message, color, autoClose: 8000})
+        notifications.show({ title, message, color, autoClose: 8000 })
         // 2. if Notification.permission === 'granted', fire a desktop notification
-        if (window.Notification && window.Notification.permission === 'granted') {
-            new window.Notification(title, { body: message })
-        }
+        window.api.notify(title, message)
         // 3. if sound is true, call playSound()
         if (sound)playSound()
     }

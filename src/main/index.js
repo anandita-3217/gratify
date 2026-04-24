@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, Notification } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -20,6 +20,17 @@ function createWindow() {
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
   })
+
+  mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+  callback({
+    responseHeaders: {
+      ...details.responseHeaders,
+      'Content-Security-Policy': [
+        "default-src 'self'; img-src 'self' data: https://fonts.gstatic.com; script-src 'self'"
+      ]
+    }
+  })
+})
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
@@ -51,6 +62,10 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
+
+  ipcMain.handle('notify',(event, { title, body }) => {
+    new Notification({ title, body }).show()
+  })
 
   createWindow()
 

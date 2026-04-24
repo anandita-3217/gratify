@@ -19,6 +19,11 @@ function formatReminder(minutes){
   return `${m/1440}d before`
 }
 
+function isOverdue(task){
+  if (!task.deadline || task.completed) return false  
+  return new Date(task.deadline) < new Date()
+}
+
 const reminderLabels = {
   '15' : '15m before',
   '60' : '1 hour before',
@@ -27,9 +32,9 @@ const reminderLabels = {
 
 export default function TaskItem({task, onToggle, onDelete, onEdit}){
 
-
+  const overdue = isOverdue(task)
     return (
-        <Card withBorder padding="sm" radius="md">
+        <Card withBorder padding="sm" radius="md" style={overdue ? { borderColor: '#e03131' } : undefined}>
           <Group justify='space-between' wrap='nowrap'>
             <Group gap={'sm'} wrap='nowrap'>
               <Checkbox 
@@ -37,9 +42,23 @@ export default function TaskItem({task, onToggle, onDelete, onEdit}){
                 checked={task.completed} 
                 onChange={() => onToggle(task.id)} 
               />
-              <Text td={task.completed? 'line-through' : undefined} c={task.completed ? 'dimmed' : undefined}>
+              {/* <Text td={task.completed? 'line-through' : undefined} c={task.completed ? 'dimmed' : undefined}>
                   {task.text}
-              </Text>
+              </Text> */}
+              <div>
+        <Group gap="xs">
+          <Text td={task.completed ? 'line-through' : undefined} c={task.completed ? 'dimmed' : undefined}>
+            {task.text}
+          </Text>
+          {/* angry overdue indicator */}
+          {overdue && (
+            <Text size="sm">😤</Text>
+          )}
+        </Group>
+        {overdue && (
+          <Text size="xs" c="red">Overdue</Text>
+        )}
+      </div>
             </Group>
             <Group gap={'xs'}>
               <ActionIcon variant='subtle' color='green' onClick={onEdit}>

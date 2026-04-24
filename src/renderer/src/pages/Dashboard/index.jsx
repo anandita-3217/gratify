@@ -361,7 +361,7 @@ export default function Dashboard() {
     <Box p="xl" style={{ height: '100%', overflowY: 'auto' }}>
       {/* Header */}
       <Stack gap={4} mb="xl">
-        <Title order={2} fw={600}>
+        <Title order={2} fw={600} >
           {greeting()}
           <img 
   src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f44b/lottie.json" 

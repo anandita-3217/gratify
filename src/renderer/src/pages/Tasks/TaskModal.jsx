@@ -86,10 +86,10 @@ export default function TaskModal({opened, onSave, onClose, task}){
         }
 
         let finalReminder = null
-        if (date && reminder) {
-            if (reminderType === 'preset'){
+        if (date) {
+            if (reminderType === 'preset' && reminder){
                 finalReminder = reminder
-            } else {
+            } else if (reminderType === 'custom'){
                 const multipliers = {minutes: 1, hours: 60, days: 1440}
                 finalReminder = String(customReminderAmount * multipliers[customReminderUnit])
             }

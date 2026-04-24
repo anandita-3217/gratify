@@ -21,16 +21,16 @@ function createWindow() {
     mainWindow.show()
   })
 
-  mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
-  callback({
-    responseHeaders: {
-      ...details.responseHeaders,
-      'Content-Security-Policy': [
-        "default-src 'self'; img-src 'self' data: https://fonts.gstatic.com; script-src 'self'"
-      ]
-    }
-  })
-})
+//   mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+//   callback({
+//     responseHeaders: {
+//       ...details.responseHeaders,
+//       'Content-Security-Policy': [
+//         "default-src 'self'; img-src 'self' data: https://fonts.gstatic.com; script-src 'self'"
+//       ]
+//     }
+//   })
+// })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)

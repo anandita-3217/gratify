@@ -94,6 +94,38 @@ Notification permission state is managed by the browser — no localStorage need
 ### Storage
 All tasks are saved to `localStorage` under the key `tasks` and persist across app restarts.
 
+
+
+## 📝 Notes
+
+A note-taking system with rich text, tags, and search.
+
+### Features
+- Create notes with a title and body
+- Edit and delete notes
+- Search notes by title or content
+- Tag notes for organisation
+- Pin important notes to the top
+- Notes grid layout
+
+### Data structure
+```js
+{
+  id: number,           // timestamp
+  title: string,
+  body: string,
+  tags: string[],       // e.g. ['work', 'ideas']
+  pinned: boolean,
+  createdAt: number,    // timestamp
+  updatedAt: number     // timestamp
+}
+```
+
+### Storage
+All notes saved to `localStorage` under the key `notes` and persist across app restarts.
+
+
+
 ## Project Setup
 ### Full file structure for Gratify
 ```

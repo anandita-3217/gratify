@@ -5,7 +5,7 @@ import { Box, Badge, Chip ,Group, MultiSelect  ,TextInput, Button, Stack, Text, 
 import {  Plus,SlidersHorizontal   } from 'lucide-react';
 
 import { useDisclosure } from "@mantine/hooks";
-import { useEffect, useState } from "react";
+import { useEffect,useRef,  useState } from "react";
 import { useTasks } from "./useTasks";
 import useNotifications from '../../hooks/useNotifications'
 
@@ -145,26 +145,41 @@ export default function Tasks(){
 
     const { notify } = useNotifications()
 
+    const taskRef = useRef(tasks)
+
+    const firedReminders = useRef(new Set())
+
     useEffect(() => {
-        const interval = setInterval(() => {
-            tasks.forEach(task => {
+        taskRef.current = tasks
+    },[tasks])
+
+    useEffect(() => {
+        const interval = setInterval(() =>{
+            taskRef.current.forEach(task =>{
                 if(!task.deadline || !task.reminder || task.completed) return
 
                 const deadline = new Date(task.deadline)
                 const now = new Date()
-                const minutesUntilDeadline = (deadline - now) / 1000 / 60
+                const minutesUntilReminder = (deadline - now) / 1000 / 60
                 const reminderMinutes = parseInt(task.reminder)
-                if(minutesUntilDeadline <= reminderMinutes && minutesUntilDeadline > reminderMinutes - 1){
+
+                const reminderKey = `${task.id} -${task.reminder}`
+
+                if(minutesUntilReminder <= reminderMinutes && minutesUntilReminder > reminderMinutes - 1 && !firedReminders.current.has(reminderKey)){
+                    firedReminders.current.add(reminderKey)
                     notify({
                         title: `Reminder: ${task.text}`,
-                        message: `Due in ${deadline.toLocaleString()}`,
+                        message: `Due: ${deadline.toLocaleString()}`,
                         color: 'pink'
                     })
                 }
             })
-        }, 60000);
+        }, 60000)
         return () => clearInterval(interval)
-    },[tasks])
+    },[])
+
+
+
 
     return (
         <Box p = "xl" style={{ height: '100%', overflow: 'auto'}}>

@@ -120,7 +120,14 @@ A note-taking system with rich text, tags, and search.
   updatedAt: number     // timestamp
 }
 ```
-
+<!-- // useNotes.js       ← CRUD logic
+//     ↓
+// NoteCard.jsx      ← single note card
+//     ↓
+// NoteModal.jsx     ← create/edit modal
+//     ↓
+// Notes/index.jsx   ← puts it all together
+ -->
 ### Storage
 All notes saved to `localStorage` under the key `notes` and persist across app restarts.
 

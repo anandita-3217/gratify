@@ -42,9 +42,6 @@ export default function TaskItem({task, onToggle, onDelete, onEdit}){
                 checked={task.completed} 
                 onChange={() => onToggle(task.id)} 
               />
-              {/* <Text td={task.completed? 'line-through' : undefined} c={task.completed ? 'dimmed' : undefined}>
-                  {task.text}
-              </Text> */}
               <div>
         <Group gap="xs">
           <Text td={task.completed ? 'line-through' : undefined} c={task.completed ? 'dimmed' : undefined}>

@@ -1,11 +1,3 @@
-// useNotes.js       ← CRUD logic
-//     ↓
-// NoteCard.jsx      ← single note card
-//     ↓
-// NoteModal.jsx     ← create/edit modal
-//     ↓
-// Notes/index.jsx   ← puts it all together
-
 /*
  * @typedef {Object} Note
  * @property {number} id
@@ -20,7 +12,44 @@
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 export default function useNotes(){
-    const [notes, setNotes] = useLocalStorage('notes', [])
+    const [notes, setNotes] = useLocalStorage('notes', [
+        {
+          id: 1,
+          title: 'Shopping List',
+          body: 'Milk, eggs, bread, butter, coffee, bananas, chicken, pasta',
+          tags: ['personal', 'errands'],
+          pinned: true,
+          createdAt: Date.now(),
+          updatedAt: Date.now()
+        },
+        {
+          id: 2,
+          title: 'Project Ideas',
+          body: 'Build a habit tracker, create a recipe app, learn Three.js, experiment with WebGL animations',
+          tags: ['work', 'ideas'],
+          pinned: false,
+          createdAt: Date.now(),
+          updatedAt: Date.now()
+        },
+        {
+          id: 3,
+          title: 'Meeting Notes',
+          body: 'Discussed Q2 roadmap, assigned tasks to team members, next meeting Friday at 10am',
+          tags: ['work', 'meetings'],
+          pinned: false,
+          createdAt: Date.now(),
+          updatedAt: Date.now()
+        },
+        {
+          id: 4,
+          title: 'Book Recommendations',
+          body: 'Atomic Habits, Deep Work, The Pragmatic Programmer, Clean Code, Thinking Fast and Slow',
+          tags: ['reading', 'personal'],
+          pinned: false,
+          createdAt: Date.now(),
+          updatedAt: Date.now()
+        }
+    ])
 
     function addNote(){
         setNotes([...notes,{...note,id: Date.now(), pinned: false, createdAt: Date.now(), updatedAt: Date.now()}])

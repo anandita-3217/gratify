@@ -1,8 +1,7 @@
-import { CheckSquare, TextAlignJustify, Calendar,Timer ,ChartLine , Settings      } from 'lucide-react'
+import { ListChecks , NotepadText , Calendar,Timer ,ChartLine , Settings, Sun, Moon      } from 'lucide-react'
 import NavItem from './NavItem'
 import { useState } from 'react';
 import { useMantineColorScheme, useComputedColorScheme } from '@mantine/core'
-import { Sun, Moon } from 'lucide-react'
 
 function ThemeToggle(){
   const { setColorScheme } = useMantineColorScheme();
@@ -20,8 +19,8 @@ function ThemeToggle(){
 export default function Sidebar({activePage, onNavigate}){
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: <ChartLine size={20} /> },
-    { id: 'tasks', label: 'Tasks', icon: <CheckSquare size={20} /> },
-    { id: 'notes', label: 'Notes', icon: <TextAlignJustify size={20} /> },
+    { id: 'tasks', label: 'Tasks', icon: <ListChecks  size={20} /> },
+    { id: 'notes', label: 'Notes', icon: <NotepadText  size={20} /> },
     { id: 'timer', label: 'Timer', icon: <Timer size={20} /> },
     { id: 'calendar', label: 'Calendar', icon: <Calendar size={20} /> },
     { id: 'settings', label: 'Settings', icon: <Settings  size={20} /> },

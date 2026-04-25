@@ -44,14 +44,14 @@ export default function useNotes(){
           id: 4,
           title: 'Book Recommendations',
           body: 'Atomic Habits, Deep Work, The Pragmatic Programmer, Clean Code, Thinking Fast and Slow',
-          tags: ['reading', 'personal'],
+          tags: ['reading', 'personal' ,'passion'],
           pinned: false,
           createdAt: Date.now(),
           updatedAt: Date.now()
         }
     ])
 
-    function addNote(){
+    function addNote(note){
         setNotes([...notes,{...note,id: Date.now(), pinned: false, createdAt: Date.now(), updatedAt: Date.now()}])
     }
     function deleteNote(id){

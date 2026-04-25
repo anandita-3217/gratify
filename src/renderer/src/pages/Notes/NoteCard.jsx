@@ -1,25 +1,35 @@
-import { ActionIcon, Badge, Button, Card, Group, Text,  } from '@mantine/core'
-import { Pencil, Trash, Pin } from 'lucide-react'
+import { ActionIcon, Badge, Button, Card, Checkbox, Group, Text  } from '@mantine/core'
+import { Pencil, Pin, PinOff, Trash  } from 'lucide-react'
+
 
 export default function NoteCard({ note, onEdit, onDelete, onPin }) {
   return (
     <Card withBorder padding="md" radius="md">
 
       {/* top row: title + pin button */}
-      <Group justify='space-between' wrap='nowrap'>
-        <Group gap={'sm'} wrap='nowrap'>
-          <Button leftSection={<Pin size={14}/>}></Button>
-        </Group>
-      </Group>
+      <div className='group flex items-center justify-between mb-2'>
+          <Text fw={note.pinned ? 600 : undefined} truncate>{note.title}</Text>
+          <ActionIcon variant='subtle' color={note.pinned ? 'pink' : 'gray'} onClick={onPin}>
+            {note.pinned ? <PinOff size={16}/> : <Pin size={16}/>} 
+          </ActionIcon>
 
-      {/* body preview — just the first 100 characters */}
-      <Group gap={'xs'}>
-        <Text lineClamp={1}>{note.text}</Text>
-      </Group>
+      </div>
+      {/* body preview — just the first 100 characters */}    
+      <Text size='xs' lineClamp={2} c="dimmed">{note.body}</Text>
       {/* bottom row: tags + edit + delete */}
-      <Group gap={'xs'}>
-        <ActionIcon variant='subtle' color='green' onClick={onEdit}><Pencil size={16}/></ActionIcon>
-        <ActionIcon variant='subtle' color='red' onClick={onDelete}><Trash size={16}/></ActionIcon>
+      <Group justify='space-between'>
+        <Group gap='xs'>
+          {note.tags.map(tag => (
+            <Badge key={tag} variant='light' color='pink' size='sm'>
+              {tag}
+            </Badge>
+
+          ))}
+        </Group>
+        <Group gap={'xs'}>
+          <ActionIcon variant='subtle' color='green' onClick={onEdit}><Pencil size={16}/></ActionIcon>
+          <ActionIcon variant='subtle' color='red' onClick={onDelete}><Trash size={16}/></ActionIcon>
+        </Group>
       </Group>
     </Card>
   )

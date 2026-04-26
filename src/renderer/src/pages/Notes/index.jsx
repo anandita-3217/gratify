@@ -1,6 +1,6 @@
 
 import { useState } from 'react'
-import { Box, Button, Group, Stack, Text, TextInput, Title  } from '@mantine/core'
+import { Box, Button, Chip, Group, Stack, Text, TextInput, Title  } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Plus, Search } from 'lucide-react'
 import useNotes from './useNotes'
@@ -20,7 +20,10 @@ export default function Notes() {
 
   // search state
   const [search, setSearch] = useState('')
-
+  // filter and sort
+  const [filterColor, setFilterColor] = useState([])
+  const [filterPinned, setFilterPinned] = useState(false)
+  const [sort, setSort] = useState('createdAt-desc')
   // modal state — same pattern as Tasks
   const [opened, { open, close }] = useDisclosure(false)
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false)
@@ -52,22 +55,30 @@ export default function Notes() {
 
   // filter notes by search — check title and body
   const filteredNotes = notes.filter(note => {
-    // return true if search is empty
-    if(!search) return true
+    if(!search && filterColor.length === 0  && !filterPinned) return true
     const s = search.toLowerCase()
-    // or if title includes search
-    if(note.title.toLowerCase().includes(s)) return true
-    // or if body includes search
-    if(note.body.toLowerCase().includes(s)) return true 
-    return false
+    if(search && !note.title.toLowerCase().includes(s) && !note.body.toLowerCase(s)) return false
+    if(filterColor.length > 0 && !filterColor.includes(note.color)) return false 
+    if(filterPinned && !note.pinned) return false
+    return true
   })
 
   // pinned notes always appear first
-  const sortedNotes = [
-    ...filteredNotes.filter(n => n.pinned),
-    ...filteredNotes.filter(n => !n.pinned)
-  ]
+  const sortedNotes = [...filteredNotes].sort((a,b) => {
+    switch(sort) {
+      case 'createdAt-asc': return  a.createdAt - b.createdAt
+      case 'createdAt-desc': return b.createdAt - a.createdAt
+      case 'updatedAt-asc': return a.updatedAt - b.updatedAt
+      case 'updatedAt-desc': return b.updatedAt - a.updatedAt
+      case 'title-asc': return a.title.localeCompare(b.title)
+      case 'title-desc': return b.title.localeCompare(a.title)
+      default: return b.createdAt - a.createdAt
+    }
+  })
 
+const noteColors = ['gray', 'red', 'pink', 'grape', 
+      'violet', 'indigo', 'blue', 'cyan', 
+      'teal', 'green', 'lime', 'yellow', 'orange']
 
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>
@@ -90,6 +101,21 @@ export default function Notes() {
           <TextInput value={search} onChange={(e) => setSearch(e.target.value)} leftSection={<Search size={16} />}/>
         </Stack>
       </Stack>
+      <Group align='center' gap="xs" mb='md'>
+        <Text size='xs' c="dimmed">Color</Text>
+        <Chip.Group value={filterColor} onChange={setFilterColor} multiple>
+          <Group gap="xs">
+            {noteColors.map(c => (
+                        <ColorSwatch
+                          key={c}
+                          color={`var(--mantine-color-${c}-8)`}
+                          size={24}
+                          style={{ cursor: 'pointer', outline: color == c ? '2px solid white' : 'none' }}
+                          onClick={() => setColor(c)}/>
+                      ))}
+          </Group>
+        </Chip.Group>
+      </Group> 
       {/* Empty state */}
       {sortedNotes.length === 0 && (
         // show a message when no notes or no search results 

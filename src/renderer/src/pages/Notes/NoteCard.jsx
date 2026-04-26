@@ -4,7 +4,7 @@ import { Pencil, Pin, PinOff, Trash  } from 'lucide-react'
 
 export default function NoteCard({ note, onEdit, onDelete, onPin }) {
   return (
-    <Card withBorder padding="md" radius="md">
+    <Card padding="md" radius="md" style={{ border: `2px solid var(--mantine-color-${note.color}-8)`}} >
 
       {/* top row: title + pin button */}
       <div className='group flex items-center justify-between mb-2'>

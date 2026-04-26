@@ -4,6 +4,7 @@
  * @property {string} title
  * @property {string} body
  * @property {string[]} tags
+ * @property {string} color
  * @property {boolean} pinned
  * @property {number} createdAt
  * @property {number} updatedAt
@@ -18,6 +19,7 @@ export default function useNotes(){
           title: 'Shopping List',
           body: 'Milk, eggs, bread, butter, coffee, bananas, chicken, pasta',
           tags: ['personal', 'errands'],
+          color: 'teal',
           pinned: true,
           createdAt: Date.now(),
           updatedAt: Date.now()
@@ -27,6 +29,7 @@ export default function useNotes(){
           title: 'Project Ideas',
           body: 'Build a habit tracker, create a recipe app, learn Three.js, experiment with WebGL animations',
           tags: ['work', 'ideas'],
+          color: 'grape',
           pinned: false,
           createdAt: Date.now(),
           updatedAt: Date.now()
@@ -36,6 +39,7 @@ export default function useNotes(){
           title: 'Meeting Notes',
           body: 'Discussed Q2 roadmap, assigned tasks to team members, next meeting Friday at 10am',
           tags: ['work', 'meetings'],
+          color: 'red',
           pinned: false,
           createdAt: Date.now(),
           updatedAt: Date.now()
@@ -44,7 +48,8 @@ export default function useNotes(){
           id: 4,
           title: 'Book Recommendations',
           body: 'Atomic Habits, Deep Work, The Pragmatic Programmer, Clean Code, Thinking Fast and Slow',
-          tags: ['reading', 'personal' ,'passion'],
+          tags: ['reading', 'personal'],
+          color: 'violet',
           pinned: false,
           createdAt: Date.now(),
           updatedAt: Date.now()
@@ -52,7 +57,12 @@ export default function useNotes(){
     ])
 
     function addNote(note){
-        setNotes([...notes,{...note,id: Date.now(), pinned: false, createdAt: Date.now(), updatedAt: Date.now()}])
+        setNotes([...notes,{...note,
+            id: Date.now(), 
+            pinned: false, 
+            color: note.color ?? 'pink',
+            createdAt: Date.now(), 
+            updatedAt: Date.now()}])
     }
     function deleteNote(id){
         setNotes(notes.filter(note => note.id !== id))

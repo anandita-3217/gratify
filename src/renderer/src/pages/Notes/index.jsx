@@ -1,8 +1,8 @@
 
 import { useState } from 'react'
-import { Box, Button, Chip, Group, Stack, Text, TextInput, Title  } from '@mantine/core'
+import { ActionIcon, Box, Button, Chip, ColorSwatch,  Group, Select, Stack, Text, TextInput, Title  } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { Plus, Search } from 'lucide-react'
+import { Plus, Search, X } from 'lucide-react'
 import useNotes from './useNotes'
 import NoteCard from './NoteCard'
 import NoteModal from './NoteModal'
@@ -21,9 +21,13 @@ export default function Notes() {
   // search state
   const [search, setSearch] = useState('')
   // filter and sort
-  const [filterColor, setFilterColor] = useState([])
-  const [filterPinned, setFilterPinned] = useState(false)
+  const [filterColors, setFilterColors] = useState([])
+  const [filterTags, setFilterTags] = useState([])
+  const [showAllTags, setShowAllTags] = useState(false)
   const [sort, setSort] = useState('createdAt-desc')
+
+  const allTags = [...new Set(notes.flatMap(n => n.tags))]
+  const visibleTags = showAllTags ? allTags : allTags.slice(0, 5)
   // modal state — same pattern as Tasks
   const [opened, { open, close }] = useDisclosure(false)
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false)
@@ -55,16 +59,20 @@ export default function Notes() {
 
   // filter notes by search — check title and body
   const filteredNotes = notes.filter(note => {
-    if(!search && filterColor.length === 0  && !filterPinned) return true
-    const s = search.toLowerCase()
-    if(search && !note.title.toLowerCase().includes(s) && !note.body.toLowerCase(s)) return false
-    if(filterColor.length > 0 && !filterColor.includes(note.color)) return false 
-    if(filterPinned && !note.pinned) return false
+    if (search){
+      const s = search.toLowerCase()
+      if (!note.title.toLowerCase().includes(s) && !note.body.toLowerCase.includes(s)) return false
+    }
+    if(filterColors.length > 0 && !filterColors.includes(note.color)) return false 
+    if(filterTags.length > 0 && !filterTags.some(t => note.tags.includes(t))) return false
     return true
   })
 
   // pinned notes always appear first
-  const sortedNotes = [...filteredNotes].sort((a,b) => {
+  const sortedNotes = [
+    ...filteredNotes.filter(n => n.pinned),
+    ...filteredNotes.filter(n => !n.pinned),
+  ].sort((a,b) => {
     switch(sort) {
       case 'createdAt-asc': return  a.createdAt - b.createdAt
       case 'createdAt-desc': return b.createdAt - a.createdAt
@@ -103,19 +111,51 @@ const noteColors = ['gray', 'red', 'pink', 'grape',
       </Stack>
       <Group align='center' gap="xs" mb='md'>
         <Text size='xs' c="dimmed">Color</Text>
-        <Chip.Group value={filterColor} onChange={setFilterColor} multiple>
           <Group gap="xs">
-            {noteColors.map(c => (
-                        <ColorSwatch
-                          key={c}
-                          color={`var(--mantine-color-${c}-8)`}
-                          size={24}
-                          style={{ cursor: 'pointer', outline: color == c ? '2px solid white' : 'none' }}
-                          onClick={() => setColor(c)}/>
-                      ))}
+              {noteColors.map(c => (
+                <ColorSwatch
+                  key={c}
+                  color={`var(--mantine-color-${c}-8)`}
+                  size={20}
+                  style={{ cursor: 'pointer', outline: filterColors.includes(c) ? '2px solid white' : 'none', outlineOffset: '2px' }}
+                  onClick={() => setFilterColors(prev => prev.includes(c) ? prev.filter(x => x != c) : [...prev, c])}/>
+              ))}
+              {filterColors.length > 0 && (
+                <ActionIcon variant='subtle' color='gray' size='xs' onClick={() => setFilterColors([])} >
+                  <X size={12}/>
+                </ActionIcon>
+              )}
           </Group>
-        </Chip.Group>
       </Group> 
+      {/* Tags Filter */}
+      {allTags.length > 0 && (
+        <Group gap='xs' align='center' mb="md">
+          <Text size='xs' c="dimmed" w={40}>Tags</Text>
+          <Chip.Group multiple value={filterTags} onChange={setFilterTags}>
+            <Group gap="xs">
+              {visibleTags.map(tag => (
+                <Chip key={tag} value={tag} size='xs' color='pink'>{tag}</Chip>
+              ))}
+            </Group>
+          </Chip.Group>
+          {allTags.length > 5 && (
+            <Button color='gray' variant='subtle' size='xs' onClick={() => setShowAllTags(s => !s)}>{showAllTags ? 'Show less' : `+${allTags.length - 5} more`}</Button>
+          )}
+        </Group>
+      )}
+      {/* Sort */}
+      <Group gap='xs' align='center' mb="md">
+        <Text size='xs' c="dimmed" w={40}>Sort</Text>
+        <Select size='xs' value={sort} onChange={setSort} style={{ width: 180 }}
+          data={[
+            { value: 'createdAt-desc', label: '↓ Newest first' },
+            { value: 'createdAt-asc', label: '↑ Oldest first' },
+            { value: 'updatedAt-desc', label: '↓ Recently edited' },
+            { value: 'updatedAt-asc', label: '↑ Least recently edited' },
+            { value: 'title-asc', label: '↑ Title A→Z' },
+            { value: 'title-desc', label: '↓ Title Z→A' },
+          ]}/>
+      </Group>
       {/* Empty state */}
       {sortedNotes.length === 0 && (
         // show a message when no notes or no search results 

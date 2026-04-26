@@ -98,15 +98,32 @@ All tasks are saved to `localStorage` under the key `tasks` and persist across a
 
 ## 📝 Notes
 
-A note-taking system with rich text, tags, and search.
+A note-taking system with rich text, color coding, tags, search, filtering and pinning.
 
 ### Features
-- Create notes with a title and body
+
+**Core**
+- Create notes with a title, body, and tags
 - Edit and delete notes
-- Search notes by title or content
-- Tag notes for organisation
-- Pin important notes to the top
-- Notes grid layout
+- Pin important notes — pinned notes always appear first
+- Color code notes with 13 Mantine color options
+- Delete individual tags directly from the note card
+
+**Search & Filter**
+- Search notes by title or body (case insensitive)
+- Filter by color — multi-select via color swatches
+- Filter by tags — derived from all existing tags, shows 5 at a time with expand toggle
+- Sort by: newest, oldest, recently edited, least recently edited, title A→Z, title Z→A
+
+**Note card**
+- Shows title, body preview (2 lines), tags and color border
+- Pin/unpin button visible on hover, always visible when pinned
+- Edit and delete actions
+
+### Planned
+- Full note view via a side drawer on card click
+- Rich text editor (TipTap) with: bold, italic, headings, bullet lists, numbered lists, inline code, code blocks, checkboxes, links
+- Markdown compatibility
 
 ### Data structure
 ```js
@@ -115,11 +132,16 @@ A note-taking system with rich text, tags, and search.
   title: string,
   body: string,
   tags: string[],       // e.g. ['work', 'ideas']
+  color: string,        // mantine color string e.g. 'pink', 'teal', 'violet'
   pinned: boolean,
   createdAt: number,    // timestamp
   updatedAt: number     // timestamp
 }
 ```
+
+### Storage
+All notes saved to `localStorage` under the key `notes`.
+
 <!-- // useNotes.js       ← CRUD logic
 //     ↓
 // NoteCard.jsx      ← single note card

@@ -1,8 +1,8 @@
 import { ActionIcon, Badge, Button, Card, Checkbox, Group, Text  } from '@mantine/core'
-import { Pencil, Pin, PinOff, Trash  } from 'lucide-react'
+import { Pencil, Pin, PinOff, Trash, X  } from 'lucide-react'
 
 
-export default function NoteCard({ note, onEdit, onDelete, onPin }) {
+export default function NoteCard({ note, onEdit, onDelete, onPin, onTagDelete }) {
   return (
     <Card padding="md" radius="md" style={{ border: `2px solid var(--mantine-color-${note.color}-8)`}} >
 
@@ -20,7 +20,10 @@ export default function NoteCard({ note, onEdit, onDelete, onPin }) {
       <Group justify='space-between'>
         <Group gap='xs'>
           {note.tags.map(tag => (
-            <Badge key={tag} variant='light' color='pink' size='sm'>
+            <Badge key={tag} variant='light' color={`var(--mantine-color-${note.color}-6)`} size='sm'
+            rightSection={
+              <ActionIcon size='xs' variant='transparent' color={`var(--mantine-color-${note.color}-6)`} onClick={() => onTagDelete(tag)} ><X size={10}/></ActionIcon>
+            }>
               {tag}
             </Badge>
 

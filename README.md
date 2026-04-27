@@ -96,7 +96,7 @@ All tasks are saved to `localStorage` under the key `tasks` and persist across a
 
 
 
-## 📝 Notes
+## 2. Notes
 
 A note-taking system with rich text, color coding, tags, search, filtering and pinning.
 

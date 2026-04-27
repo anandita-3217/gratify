@@ -46,22 +46,20 @@ export default function Notes() {
       closeEdit()
     }
     else{
+      // else → addNote
+      // then close and clear selectedNote
       addNote(noteData)
       close()
     }
     setSelectedNote(null)
   
-    // else → addNote
-    // then close and clear selectedNote
-    close()
-    setSelectedNote(null)
   }
 
   // filter notes by search — check title and body
   const filteredNotes = notes.filter(note => {
     if (search){
       const s = search.toLowerCase()
-      if (!note.title.toLowerCase().includes(s) && !note.body.toLowerCase.includes(s)) return false
+      if (!note.title.toLowerCase().includes(s) && !note.body.toLowerCase().includes(s)) return false
     }
     if(filterColors.length > 0 && !filterColors.includes(note.color)) return false 
     if(filterTags.length > 0 && !filterTags.some(t => note.tags.includes(t))) return false
@@ -175,6 +173,7 @@ const noteColors = ['gray', 'red', 'pink', 'grape',
             onEdit={() => handleEdit(note)}
             onDelete={() => deleteNote(note.id)}
             onPin={() => pinNote(note.id)}
+            onTagDelete={(tag) => updateNote(note.id,{ tags: note.tags.filter(t => t !=tag) })}
           />
         ))}
       </Stack>

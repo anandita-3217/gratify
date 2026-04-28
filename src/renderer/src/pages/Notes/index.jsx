@@ -6,6 +6,7 @@ import { Plus, Search, X } from 'lucide-react'
 import useNotes from './useNotes'
 import NoteCard from './NoteCard'
 import NoteModal from './NoteModal'
+import NoteDrawer from './NoteDrawer'
 
 
 function getGreeting(){
@@ -177,7 +178,7 @@ const noteColors = ['gray', 'red', 'pink', 'grape',
           />
         ))}
       </Stack>
-
+<NoteDrawer/>
       {/* Modal — same pattern as Tasks, one modal for both create and edit */}
       <NoteModal
         opened={opened}

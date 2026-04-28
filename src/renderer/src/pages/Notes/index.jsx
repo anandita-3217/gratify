@@ -32,7 +32,15 @@ export default function Notes() {
   // modal state — same pattern as Tasks
   const [opened, { open, close }] = useDisclosure(false)
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false)
+  const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
+  
   const [selectedNote, setSelectedNote] = useState(null)
+  const [drawerNote, setDrawerNote] = useState(null)
+
+  function handleCardClick(note){
+    setDrawerNote(note)
+    openDrawer()
+  }
 
   function handleEdit(note) {
     // set selectedNote and open modal
@@ -171,6 +179,7 @@ const noteColors = ['gray', 'red', 'pink', 'grape',
           <NoteCard
             key={note.id}
             note={note}
+            onClick={() => handleCardClick(note)}
             onEdit={() => handleEdit(note)}
             onDelete={() => deleteNote(note.id)}
             onPin={() => pinNote(note.id)}
@@ -178,7 +187,7 @@ const noteColors = ['gray', 'red', 'pink', 'grape',
           />
         ))}
       </Stack>
-<NoteDrawer/>
+
       {/* Modal — same pattern as Tasks, one modal for both create and edit */}
       <NoteModal
         opened={opened}
@@ -192,7 +201,15 @@ const noteColors = ['gray', 'red', 'pink', 'grape',
         onSave={handleSave}
         note={selectedNote}
       />
-
+    <NoteDrawer
+    opened={drawerOpened}
+    onClose={closeDrawer}
+    note={drawerNote}
+    onEdit={() => {closeDrawer(); handleEdit(drawerNote)}}
+    onPin={() =>  pinNote(drawerNote.id) }
+    onTagDelete={(tag) => updateNote(drawerNote.id,{
+      tags: drawerNote.tags.filter(t => t !== tag)
+    })}/>
     </Box>
   )
 }

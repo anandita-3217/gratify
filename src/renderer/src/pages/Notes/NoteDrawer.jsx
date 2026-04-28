@@ -17,7 +17,7 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
         title: { fontWeight: 600, fontSize: 20 }
       }}
     >
-      <Stack gap="md" bg={'red'}>
+      <Stack gap="md">
         {/* pin button + edit button at the top */}
         <Group gap="xs">
           <ActionIcon variant='subtle' size='xs' color='pink' onClick={onPin}>

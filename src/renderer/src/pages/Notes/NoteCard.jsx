@@ -2,14 +2,14 @@ import { ActionIcon, Badge, Button, Card, Checkbox, Group, Text  } from '@mantin
 import { Pencil, Pin, PinOff, Trash, X  } from 'lucide-react'
 
 
-export default function NoteCard({ note, onEdit, onDelete, onPin, onTagDelete }) {
+export default function NoteCard({ note, onClick, onEdit, onDelete, onPin, onTagDelete }) {
   return (
-    <Card padding="md" radius="md" style={{ border: `2px solid var(--mantine-color-${note.color}-8)`}} >
+    <Card onClick={onClick} padding="md" radius="md" style={{ border: `2px solid var(--mantine-color-${note.color}-8)`}} >
 
       {/* top row: title + pin button */}
       <div className='group flex items-center justify-between mb-2'>
           <Text fw={note.pinned ? 600 : undefined} truncate>{note.title}</Text>
-          <ActionIcon variant='subtle' color={note.pinned ? 'pink' : 'gray'} onClick={onPin}>
+          <ActionIcon variant='subtle' color={note.pinned ? 'pink' : 'gray'} onClick={(e) => { e.stopPropagation(); onPin()}}>
             {note.pinned ? <PinOff size={16}/> : <Pin size={16}/>} 
           </ActionIcon>
 
@@ -30,8 +30,8 @@ export default function NoteCard({ note, onEdit, onDelete, onPin, onTagDelete })
           ))}
         </Group>
         <Group gap={'xs'}>
-          <ActionIcon variant='subtle' color='green' onClick={onEdit}><Pencil size={16}/></ActionIcon>
-          <ActionIcon variant='subtle' color='red' onClick={onDelete}><Trash size={16}/></ActionIcon>
+          <ActionIcon variant='subtle' color='green' onClick={(e) => { e.stopPropagation();  onEdit()}}><Pencil size={16}/></ActionIcon>
+          <ActionIcon variant='subtle' color='red' onClick={(e) => { e.stopPropagation();  onDelete()}}><Trash size={16}/></ActionIcon>
         </Group>
       </Group>
     </Card>

@@ -1,10 +1,29 @@
-import { Box, Drawer, Stack, Text, Title, Badge, Group, ActionIcon } from '@mantine/core'
+import { Box, Drawer, Stack, Text, Title, Badge, Group, ActionIcon, TextInput, Button, Textarea } from '@mantine/core'
 import { Pencil, Pin, PinOff,X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTagDelete }) {
 
+  const [isEditing,setIsEditing] = useState(false)
+  const [editTitle, setEditTitle] = useState('')
+  const [editBody, setEditBody] = useState('')
+  const [editTags, setEditTags] = useState([])
   // if no note is selected return null — nothing to show
   if (!note) return null
+
+  function handleSave(){
+    onEdit({ title: editTitle, body: editBody, tags: editTags })
+    setIsEditing(false)
+  }
+
+  useEffect(() => {
+    if(note){
+      setEditTitle(note.title)
+      setEditBody(note.body)
+      setEditTags(note.tags)
+      setIsEditing(false)
+    }
+  },[note])
 
   return (
     <Drawer
@@ -13,26 +32,31 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
       position="right"
       size="lg"
       title={note.title}
+
       styles={{
         title: { display: 'none' },
         body: { padding: 0, height: '100%' }
       }}
     >
       <Stack gap="md">
-        {/* pin button + edit button at the top */}
         <Box style={{
           borderTop: `4px solid var(--mantine-color-${note.color}-6)`,
           background: `var(--mantine-color-${note.color}-light)`,
           padding: '20px 24px 16px'
         }}>
           <Group justify='space-between' align='flex-start'>
-            <Text fw={700} size='xl' style={{ flex: 1 }}>{note.title}</Text>
+          {/* TITLE*/}
+            {isEditing ? (
+                <TextInput value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
+            ) : (
+              <div className='group cursor-text' onClick={() => setIsEditing(true)}>
+                <Text fw={700} size='xl'>{note.title}</Text>
+                <Text c="dimmed" size='xs' className='opacity-0 group-hover:opacity-100 transition-opacity' >Click to Edit</Text>
+              </div>  
+            )}
             <Group gap="xs">
               <ActionIcon variant='subtle' size='xs' color='pink' onClick={onPin}>
                 {note.pinned ?<PinOff size={16}/> : <Pin size={16} />}
-                </ActionIcon>
-              <ActionIcon variant='subtle' size='xs' color='green' onClick={onEdit}>
-                <Pencil size={16} />
                 </ActionIcon>
             </Group>
           </Group> 
@@ -48,7 +72,15 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
           background: `var(--mantine-color-${note.color}-light-hover)`,
           overflowY: 'auto' 
         }} >
-          <Text style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }} >{note.body}</Text>
+          {/* BODY */}
+          {isEditing ? (
+            <Textarea value={editBody} onChange={(e) => setEditBody(e.target.value)} autosize minRows={6} />
+          ) : (
+            <div onClick={() => setIsEditing(true)} className='cursor-text rounded-lg p-2 hover:outline hover:outline-1 hover:outline-gray-500 transition-all' >
+              <Text style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }} >{note.body}</Text>
+
+            </div>
+          )}
         </Box>
         {/* tags */}
         {note.tags.length > 0 && (
@@ -70,6 +102,12 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
                  >{tag}</Badge>
               ))}
             </Group>
+            {isEditing && (
+              <Group justify='flex-end' >
+                <Button variant='subtle' size='sm' onClick={() => setIsEditing(false)} color='gray'>Cancel</Button>
+                <Button variant='subtle' size='sm' onClick={handleSave} color={note.color} >Save</Button>
+              </Group>
+            )}
           </Box>
         )}
         

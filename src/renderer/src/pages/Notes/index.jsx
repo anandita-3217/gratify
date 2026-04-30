@@ -1,8 +1,8 @@
 
 import { useState } from 'react'
-import { ActionIcon, Box, Button, Chip, ColorSwatch,  Group, Select, Stack, Text, TextInput, Title  } from '@mantine/core'
+import { ActionIcon, Badge, Box, Button, Chip, ColorSwatch,  Group, Select, Stack, Text, TextInput, Title  } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { Plus, Search, X } from 'lucide-react'
+import { Plus, Search, SlidersHorizontal, X } from 'lucide-react'
 import useNotes from './useNotes'
 import NoteCard from './NoteCard'
 import NoteModal from './NoteModal'
@@ -26,6 +26,7 @@ export default function Notes() {
   const [filterTags, setFilterTags] = useState([])
   const [showAllTags, setShowAllTags] = useState(false)
   const [sort, setSort] = useState('createdAt-desc')
+  const [filtersOpen, setFiltersOpen] = useState(false)
 
   const allTags = [...new Set(notes.flatMap(n => n.tags))]
   const visibleTags = showAllTags ? allTags : allTags.slice(0, 5)
@@ -112,57 +113,72 @@ const noteColors = ['gray', 'red', 'pink', 'grape',
         </Group>
         {/* search input + new note button */}
         <Stack mt={'xl'}>
-          <Button onClick={open} color='pink' ><Plus size={16}/> New Note</Button>
-          <TextInput value={search} onChange={(e) => setSearch(e.target.value)} leftSection={<Search size={16} />}/>
+          <Button onClick={open} color='pink' leftSection={<Plus size={16}/>} > New Note</Button>
+          <Button variant='light' leftSection={<SlidersHorizontal size={14}/>} onClick={() => setFiltersOpen(f => !f)}>Search & Filters</Button>
+          {(filterColors.length > 0 || filterTags.length > 0) && (
+            <Badge color='pink' variant='light' size='sm' >{filterColors.length + filterTags.length} active</Badge>
+          )}
+          {(filterColors.length > 0 || filterTags.length > 0) && (
+            <Button color='gray' variant='light' size='sm' onClick={() => {setFilterColors([]); setFilterTags([])}}>Clear</Button>
+          )}
         </Stack>
       </Stack>
-      <Group align='center' gap="xs" mb='md'>
-        <Text size='xs' c="dimmed">Color</Text>
-          <Group gap="xs">
-              {noteColors.map(c => (
-                <ColorSwatch
-                  key={c}
-                  color={`var(--mantine-color-${c}-8)`}
-                  size={20}
-                  style={{ cursor: 'pointer', outline: filterColors.includes(c) ? '2px solid white' : 'none', outlineOffset: '2px' }}
-                  onClick={() => setFilterColors(prev => prev.includes(c) ? prev.filter(x => x != c) : [...prev, c])}/>
-              ))}
-              {filterColors.length > 0 && (
-                <ActionIcon variant='subtle' color='gray' size='xs' onClick={() => setFilterColors([])} >
-                  <X size={12}/>
-                </ActionIcon>
-              )}
-          </Group>
-      </Group> 
-      {/* Tags Filter */}
-      {allTags.length > 0 && (
-        <Group gap='xs' align='center' mb="md">
-          <Text size='xs' c="dimmed" w={40}>Tags</Text>
-          <Chip.Group multiple value={filterTags} onChange={setFilterTags}>
+      {filtersOpen && (
+        <Stack size='xs' mb='sm' p='sm' style={{ border: '1px solid var(--mantine-color-default-border)', borderRadius: 8 }}>
+          <TextInput placeholder='Search Notes...' value={search} onChange={(e) => setSearch(e.target.value)} leftSection={<Search size={16} />}/>
+        <Group align='center' gap="xs" mb='md'>
+          <Text size='xs' c="dimmed">Color</Text>
             <Group gap="xs">
-              {visibleTags.map(tag => (
-                <Chip key={tag} value={tag} size='xs' color='pink'>{tag}</Chip>
-              ))}
+                {noteColors.map(c => (
+                  <ColorSwatch
+                    key={c}
+                    color={`var(--mantine-color-${c}-8)`}
+                    size={20}
+                    style={{ cursor: 'pointer', outline: filterColors.includes(c) ? '2px solid white' : 'none', outlineOffset: '2px' }}
+                    onClick={() => setFilterColors(prev => prev.includes(c) ? prev.filter(x => x != c) : [...prev, c])}/>
+                ))}
+                {filterColors.length > 0 && (
+                  <ActionIcon variant='subtle' color='gray' size='xs' onClick={() => setFilterColors([])} >
+                    <X size={12}/>
+                  </ActionIcon>
+                )}
             </Group>
-          </Chip.Group>
-          {allTags.length > 5 && (
-            <Button color='gray' variant='subtle' size='xs' onClick={() => setShowAllTags(s => !s)}>{showAllTags ? 'Show less' : `+${allTags.length - 5} more`}</Button>
-          )}
+        </Group> 
+        {/* Tags Filter */}
+        {allTags.length > 0 && (
+          <Group gap='xs' align='center' mb="md">
+            <Text size='xs' c="dimmed" w={40}>Tags</Text>
+            <Chip.Group multiple value={filterTags} onChange={setFilterTags}>
+              <Group gap="xs">
+                {visibleTags.map(tag => (
+                  <Chip key={tag} value={tag} size='xs' color='pink'>{tag}</Chip>
+                ))}
+              </Group>
+            </Chip.Group>
+            {allTags.length > 5 && (
+              <Button color='gray' variant='subtle' size='xs' onClick={() => setShowAllTags(s => !s)}>{showAllTags ? 'Show less' : `+${allTags.length - 5} more`}</Button>
+            )}
+          </Group>
+        )}
+        {/* Sort */}
+        <Group gap='xs' align='center' mb="md">
+          <Text size='xs' c="dimmed" w={40}>Sort</Text>
+          <Select size='xs' value={sort} onChange={setSort} style={{ width: 180 }}
+            data={[
+              { value: 'createdAt-desc', label: '↓ Newest first' },
+              { value: 'createdAt-asc', label: '↑ Oldest first' },
+              { value: 'updatedAt-desc', label: '↓ Recently edited' },
+              { value: 'updatedAt-asc', label: '↑ Least recently edited' },
+              { value: 'title-asc', label: '↑ Title A→Z' },
+              { value: 'title-desc', label: '↓ Title Z→A' },
+            ]}/>
         </Group>
+
+        </Stack>
+
       )}
-      {/* Sort */}
-      <Group gap='xs' align='center' mb="md">
-        <Text size='xs' c="dimmed" w={40}>Sort</Text>
-        <Select size='xs' value={sort} onChange={setSort} style={{ width: 180 }}
-          data={[
-            { value: 'createdAt-desc', label: '↓ Newest first' },
-            { value: 'createdAt-asc', label: '↑ Oldest first' },
-            { value: 'updatedAt-desc', label: '↓ Recently edited' },
-            { value: 'updatedAt-asc', label: '↑ Least recently edited' },
-            { value: 'title-asc', label: '↑ Title A→Z' },
-            { value: 'title-desc', label: '↓ Title Z→A' },
-          ]}/>
-      </Group>
+        
+      
       {/* Empty state */}
       {sortedNotes.length === 0 && (
         // show a message when no notes or no search results 

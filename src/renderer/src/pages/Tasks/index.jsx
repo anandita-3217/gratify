@@ -199,7 +199,7 @@ export default function Tasks(){
                 </Group>
                 <Stack mt={'xl'}>
                     <Progress value={percentage} color="pink" />
-                    <Button onClick={open} color="pink" ><Plus size={16}/> New Task </Button>
+                    <Button onClick={open} color="pink" leftSection={<Plus size={16}/>} >New Task</Button>
                     
                 </Stack>
             </Stack>

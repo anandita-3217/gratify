@@ -8,13 +8,9 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
   const [editTitle, setEditTitle] = useState('')
   const [editBody, setEditBody] = useState('')
   const [editTags, setEditTags] = useState([])
-  // if no note is selected return null — nothing to show
-  if (!note) return null
 
-  function handleSave(){
-    onEdit({ title: editTitle, body: editBody, tags: editTags })
-    setIsEditing(false)
-  }
+
+
 
   useEffect(() => {
     if(note){
@@ -24,7 +20,12 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
       setIsEditing(false)
     }
   },[note])
-
+  // if no note is selected return null — nothing to show
+  if (!note) return null
+  function handleSave(){
+    onEdit({ title: editTitle, body: editBody, tags: editTags })
+    setIsEditing(false)
+  }
   return (
     <Drawer
       opened={opened}
@@ -49,9 +50,9 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
             {isEditing ? (
                 <TextInput value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
             ) : (
-              <div className='group cursor-text' onClick={() => setIsEditing(true)}>
+              <div onClick={() => setIsEditing(true)} className='cursor-text rounded-lg p-2 hover:outline hover:outline-1 hover:outline-gray-500 transition-all' >
                 <Text fw={700} size='xl'>{note.title}</Text>
-                <Text c="dimmed" size='xs' className='opacity-0 group-hover:opacity-100 transition-opacity' >Click to Edit</Text>
+                
               </div>  
             )}
             <Group gap="xs">

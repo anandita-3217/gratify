@@ -114,16 +114,32 @@ A note-taking system with rich text, color coding, tags, search, filtering and p
 - Filter by color — multi-select via color swatches
 - Filter by tags — derived from all existing tags, shows 5 at a time with expand toggle
 - Sort by: newest, oldest, recently edited, least recently edited, title A→Z, title Z→A
+- Full note view via a side drawer on card click
+- Markdown compatibility
 
 **Note card**
-- Shows title, body preview (2 lines), tags and color border
+- Shows title, body preview (2 lines), tags and color accent border
 - Pin/unpin button visible on hover, always visible when pinned
 - Edit and delete actions
+- Click card to open full note in drawer
+
+**Note drawer**
+- Slides in from the right on card click
+- Color accent bar at top matching note color
+- Subtle tinted background matching note color
+- Click title or body to edit inline — no modal needed
+- Save/cancel buttons appear when editing
+- Shows created and last edited timestamps
+- Tag management with delete per tag
+
+**Rich text (via react-markdown)**
+- User writes in markdown syntax in the body
+- Preview renders formatted output
+- Supports: bold, italic, headings, bullet lists, numbered lists, inline code, code blocks, blockquotes, links, strikethrough
+
 
 ### Planned
-- Full note view via a side drawer on card click
 - Rich text editor (TipTap) with: bold, italic, headings, bullet lists, numbered lists, inline code, code blocks, checkboxes, links
-- Markdown compatibility
 
 ### Data structure
 ```js

@@ -1,7 +1,7 @@
 import { Box, Drawer, Stack, Text, Title, Badge, Group, ActionIcon, TextInput, Button, Textarea } from '@mantine/core'
 import { Pencil, Pin, PinOff,X } from 'lucide-react'
 import { useEffect, useState } from 'react'
-
+import ReactMarkdown from 'react-markdown'
 export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTagDelete }) {
 
   const [isEditing,setIsEditing] = useState(false)
@@ -78,7 +78,7 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
             <Textarea value={editBody} onChange={(e) => setEditBody(e.target.value)} autosize minRows={6} />
           ) : (
             <div onClick={() => setIsEditing(true)} className='cursor-text rounded-lg p-2 hover:outline hover:outline-1 hover:outline-gray-500 transition-all' >
-              <Text style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }} >{note.body}</Text>
+              <ReactMarkdown>{note.body}</ReactMarkdown>
 
             </div>
           )}

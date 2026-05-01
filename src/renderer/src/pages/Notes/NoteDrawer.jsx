@@ -78,7 +78,7 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
             <Textarea value={editBody} onChange={(e) => setEditBody(e.target.value)} autosize minRows={6} />
           ) : (
             <div onClick={() => setIsEditing(true)} className='cursor-text rounded-lg p-2 hover:outline hover:outline-1 hover:outline-gray-500 transition-all' >
-              <ReactMarkdown>{note.body}</ReactMarkdown>
+              <Text style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }} >{note.body}</Text>
 
             </div>
           )}

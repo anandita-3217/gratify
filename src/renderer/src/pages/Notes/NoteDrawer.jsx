@@ -2,6 +2,8 @@ import { Box, Drawer, Stack, Text, Title, Badge, Group, ActionIcon, TextInput, B
 import { Pencil, Pin, PinOff,X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
+import NoteEditor from './NoteEditor'
+
 export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTagDelete }) {
 
   const [isEditing,setIsEditing] = useState(false)
@@ -67,22 +69,32 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
           </Group>
         </Box>
         {/* full note body */}
-        <Box style={{
-          flex: 1,
-          padding: '24px',
-          background: `var(--mantine-color-${note.color}-light-hover)`,
-          overflowY: 'auto' 
-        }} >
+
           {/* BODY */}
-          {isEditing ? (
+          {/* {isEditing ? (
             <Textarea value={editBody} onChange={(e) => setEditBody(e.target.value)} autosize minRows={6} />
           ) : (
             <div onClick={() => setIsEditing(true)} className='cursor-text rounded-lg p-2 hover:outline hover:outline-1 hover:outline-gray-500 transition-all' >
               <Text style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }} >{note.body}</Text>
 
             </div>
-          )}
-        </Box>
+          )} */}
+          <Box
+  style={{
+    flex: 1,
+    padding: '24px',
+    background: `var(--mantine-color-${note.color}-light-hover)`,
+    overflowY: 'auto'
+  }}
+  onClick={() => !isEditing && setIsEditing(true)}
+>
+  <NoteEditor
+    content={isEditing ? editBody : note.body}
+    onChange={setEditBody}
+    editable={isEditing}
+  />
+</Box>
+        
         {/* tags */}
         {note.tags.length > 0 && (
           <Box

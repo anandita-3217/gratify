@@ -8,7 +8,9 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
 
   const [isEditing,setIsEditing] = useState(false)
   const [editTitle, setEditTitle] = useState('')
+  const [editingTitle, setEditingTitle] = useState(false)
   const [editBody, setEditBody] = useState('')
+  const [editingBody, setEditingBody] = useState(false)
   const [editTags, setEditTags] = useState([])
 
 
@@ -24,9 +26,12 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
   },[note])
   // if no note is selected return null — nothing to show
   if (!note) return null
+
   function handleSave(){
     onEdit({ title: editTitle, body: editBody, tags: editTags })
-    setIsEditing(false)
+    setEditingTitle(false)
+    setEditingBody(false)
+
   }
   return (
     <Drawer
@@ -49,10 +54,17 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
         }}>
           <Group justify='space-between' align='flex-start'>
           {/* TITLE*/}
-            {isEditing ? (
-                <TextInput value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
+            {editingTitle  ? (
+                <TextInput 
+                autoFocus
+                value={editTitle} 
+                onChange={(e) => setEditTitle(e.target.value)} 
+                onBlur={() => {
+                  setEditingTitle(false)
+                  onEdit({ title: editTitle, body: editBody, tags: editTags })
+                }}/>
             ) : (
-              <div onClick={() => setIsEditing(true)} className='cursor-text rounded-lg p-2 hover:outline hover:outline-1 hover:outline-gray-500 transition-all' >
+              <div onClick={() => setEditTitle(true)} className='cursor-text rounded-lg p-2 hover:outline hover:outline-1 hover:outline-gray-500 transition-all' >
                 <Text fw={700} size='xl'>{note.title}</Text>
                 
               </div>  
@@ -84,14 +96,16 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
     flex: 1,
     padding: '24px',
     background: `var(--mantine-color-${note.color}-light-hover)`,
-    overflowY: 'auto'
+    overflowY: 'auto',
+    cursor: editingBody ? 'text' : 'pointer'
   }}
-  onClick={() => !isEditing && setIsEditing(true)}
+  onClick={() => !isEditing && setEditingBody(true)}
+  
 >
   <NoteEditor
-    content={isEditing ? editBody : note.body}
+    content={editingBody  ? editBody : note.body}
     onChange={setEditBody}
-    editable={isEditing}
+    editable={editingBody}
   />
 </Box>
         
@@ -115,9 +129,10 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
                  >{tag}</Badge>
               ))}
             </Group>
-            {isEditing && (
+            {(editingTitle || editingBody) && (
               <Group justify='flex-end' >
-                <Button variant='subtle' size='sm' onClick={() => setIsEditing(false)} color='gray'>Cancel</Button>
+                <Button variant='subtle' size='sm' 
+                onClick={() => {setEditingTitle(false); setEditingBody(false)} } color='gray'>Cancel</Button>
                 <Button variant='subtle' size='sm' onClick={handleSave} color={note.color} >Save</Button>
               </Group>
             )}

@@ -221,7 +221,7 @@ const noteColors = ['gray', 'red', 'pink', 'grape',
     opened={drawerOpened}
     onClose={closeDrawer}
     note={drawerNote}
-    onEdit={() => {closeDrawer(); handleEdit(drawerNote)}}
+    onEdit={(noteData) => {updateNote(drawerNote.id, noteData)}}
     onPin={() =>  pinNote(drawerNote.id) }
     onTagDelete={(tag) => updateNote(drawerNote.id,{
       tags: drawerNote.tags.filter(t => t !== tag)

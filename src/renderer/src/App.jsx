@@ -11,6 +11,7 @@ import Sidebar from './components/Sidebar'
 import Dashboard from './pages/Dashboard'
 import Tasks from './pages/Tasks'
 import Notes from './pages/Notes'
+import Timer from './pages/Timer'
 import Settings  from './pages/Settings'
 import { useState } from 'react'
 
@@ -36,7 +37,7 @@ export default function App() {
             {activePage === 'dashboard' && <Dashboard />}
             {activePage === 'tasks'     && <Tasks/>}
             {activePage === 'notes'     && <Notes/>}
-            {activePage === 'timer'     && <Stub name="Pomodoro Timer" />}
+            {activePage === 'timer'     && <Timer/>}
             {activePage === 'calendar'  && <Stub name="Calendar" />}
             {activePage === 'settings'  && <Stub name="Settings" />}
           </main>

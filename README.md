@@ -188,11 +188,12 @@ src/renderer/src/
 │       └── ToastProvider.jsx ← Mantine notifications setup
 │
 ├── pages/
-│   ├── Pomodoro/
+│   ├── Timer/
 │   │   ├── index.jsx         ← Main timer UI
 │   │   ├── TimerRing.jsx     ← Animated SVG progress ring
-│   │   ├── SessionControls.jsx
-│   │   └── usePomodoro.js    ← All timer logic as a hook
+│   │   ├── TimerControls.jsx
+│   │   ├── TimerSettings.jsx
+│   │   └── useTimer.js    ← All timer logic as a hook
 │   │
 │   ├── Tasks/
 │   │   ├── index.jsx         ← Task list + stats bar

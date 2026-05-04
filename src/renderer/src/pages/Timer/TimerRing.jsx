@@ -1,3 +1,6 @@
+import useTimer from "./useTimer"
+import { Box, Group, Stack, Text, Title } from '@mantine/core'
+
 // circular SVG progress ring + time display in the center
 // props: seconds, totalSeconds, sessionType, isRunning
 // ring color changes per sessionType:
@@ -11,6 +14,8 @@ export default function TimerRing({ seconds, totalSeconds, sessionType, isRunnin
 
   // SVG ring here
   return (
-    <></>
+    <Box>
+        <Title>I am Timer Ring and i work</Title>
+    </Box>
   )
 }

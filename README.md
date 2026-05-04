@@ -132,10 +132,13 @@ A note-taking system with rich text, color coding, tags, search, filtering and p
 - Shows created and last edited timestamps
 - Tag management with delete per tag
 
-**Rich text (via react-markdown)**
-- User writes in markdown syntax in the body
-- Preview renders formatted output
-- Supports: bold, italic, headings, bullet lists, numbered lists, inline code, code blocks, blockquotes, links, strikethrough
+**Rich text (TipTap v3)**
+- Fixed toolbar appears when editing
+- Bold, italic, strikethrough, inline code
+- Heading levels H1, H2, H3
+- Bullet lists, numbered lists, blockquotes
+- Markdown shortcuts work out of the box — `**bold**`, `# heading`, `- list` etc.
+- Content stored as HTML in localStorage
 
 
 ### Planned
@@ -146,7 +149,7 @@ A note-taking system with rich text, color coding, tags, search, filtering and p
 {
   id: number,           // timestamp
   title: string,
-  body: string,
+  body: string,         // stored as HTML from TipTap
   tags: string[],       // e.g. ['work', 'ideas']
   color: string,        // mantine color string e.g. 'pink', 'teal', 'violet'
   pinned: boolean,

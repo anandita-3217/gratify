@@ -81,10 +81,10 @@ export default function NoteEditor({ content, onChange, editable }) {
   }, [editor, editable])
 
   useEffect(() => {
-    if (editor && content !== editor.getHTML()) {
-      editor.commands.setContent(content)
+    if (editor) {
+      editor.commands.setContent(content || '')
     }
-  }, [content])
+  }, [editor, content])
 
   return (
     <div>

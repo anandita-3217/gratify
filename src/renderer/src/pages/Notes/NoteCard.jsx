@@ -1,6 +1,9 @@
 import { ActionIcon, Badge, Button, Card, Checkbox, Group, Text  } from '@mantine/core'
 import { Pencil, Pin, PinOff, Trash, X  } from 'lucide-react'
 
+function stripHtml(html) {
+  return html.replace(/<[^>]*>/g, '')
+}
 
 export default function NoteCard({ note, onClick, onEdit, onDelete, onPin, onTagDelete }) {
   return (
@@ -15,7 +18,7 @@ export default function NoteCard({ note, onClick, onEdit, onDelete, onPin, onTag
 
       </div>
       {/* body preview — just the first 100 characters */}    
-      <Text size='xs' lineClamp={2} c="dimmed">{note.body}</Text>
+      <Text size='xs' lineClamp={2} c="dimmed">{stripHtml(note.body)}</Text>
       {/* bottom row: tags + edit + delete */}
       <Group justify='space-between'>
         <Group gap='xs'>

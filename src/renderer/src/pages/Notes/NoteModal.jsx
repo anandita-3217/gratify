@@ -1,6 +1,6 @@
 import { Box, Button, ColorSwatch, Group, Modal, Stack, Text, TextInput, Textarea, TagsInput,  } from '@mantine/core'
 import { useState, useEffect } from 'react'
-// Add color as input so border can be that color use ColorInput - later
+import NoteEditor from './NoteEditor'
 export default function NoteModal({ opened, onClose, onSave, note }) {
 
   const [title, setTitle] = useState('')
@@ -37,7 +37,7 @@ export default function NoteModal({ opened, onClose, onSave, note }) {
       setTitleError('Title cannot be empty!')
       return
     }
-    if(!body.trim()){
+    if (!body || body === '<p></p>') {
       setBodyError('Body cannot be empty!')
       return
     }
@@ -69,10 +69,33 @@ export default function NoteModal({ opened, onClose, onSave, note }) {
           onChange={(e) => setTitle(e.target.value)} 
           error={titleError}  />
         {/* body textarea */}
-        <Textarea withAsterisk autosize label="Body"
+        {/* <Textarea withAsterisk autosize label="Body"
           value={body}
           onChange={(e) => setBody(e.target.value)}
-          error={bodyError}/>
+          error={bodyError}/> */}
+         <Stack gap={4}>
+  <Group gap={4}>
+    <Text size="sm" fw={500}>Body</Text>
+    <Text size="sm" c="red">*</Text>
+  </Group>
+  <Box
+    style={{
+      border: `1px solid ${bodyError ? 'var(--mantine-color-red-6)' : 'var(--mantine-color-default-border)'}`,
+      borderRadius: 8,
+      padding: '8px',
+      minHeight: 120
+    }}
+  >
+    <NoteEditor
+      content={body}
+      onChange={(val) => { setBody(val); if (val && val !== '<p></p>') setBodyError('') }}
+      editable={true}
+    />
+  </Box>
+  {bodyError && (
+    <Text size="xs" c="red">{bodyError}</Text>
+  )}
+</Stack>
         {/* tags input */}      
         <TagsInput  label="Tags" 
           placeholder='Press Enter to submit a tag'

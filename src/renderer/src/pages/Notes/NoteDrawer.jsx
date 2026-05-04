@@ -21,7 +21,8 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
       setEditTitle(note.title)
       setEditBody(note.body)
       setEditTags(note.tags)
-      setIsEditing(false)
+      setEditingTitle(false)
+      setEditingBody(false)
     }
   },[note])
   // if no note is selected return null — nothing to show
@@ -64,7 +65,7 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
                   onEdit({ title: editTitle, body: editBody, tags: editTags })
                 }}/>
             ) : (
-              <div onClick={() => setEditTitle(true)} className='cursor-text rounded-lg p-2 hover:outline hover:outline-1 hover:outline-gray-500 transition-all' >
+              <div onClick={() => setEditingTitle(true)} className='cursor-text rounded-lg p-2 hover:outline hover:outline-1 hover:outline-gray-500 transition-all' >
                 <Text fw={700} size='xl'>{note.title}</Text>
                 
               </div>  
@@ -92,22 +93,21 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
             </div>
           )} */}
           <Box
-  style={{
-    flex: 1,
-    padding: '24px',
-    background: `var(--mantine-color-${note.color}-light-hover)`,
-    overflowY: 'auto',
-    cursor: editingBody ? 'text' : 'pointer'
-  }}
-  onClick={() => !isEditing && setEditingBody(true)}
-  
->
-  <NoteEditor
-    content={editingBody  ? editBody : note.body}
-    onChange={setEditBody}
-    editable={editingBody}
-  />
-</Box>
+            style={{
+              flex: 1,
+              padding: '24px',
+              background: `var(--mantine-color-${note.color}-light-hover)`,
+              overflowY: 'auto',
+              cursor: editingBody ? 'text' : 'pointer'
+            }}
+            onClick={() => !isEditing && setEditingBody(true)}
+            >
+              <NoteEditor
+                content={editingBody  ? editBody : note.body}
+                onChange={setEditBody}
+                editable={editingBody}
+              />
+            </Box>
         
         {/* tags */}
         {note.tags.length > 0 && (

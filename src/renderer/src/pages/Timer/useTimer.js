@@ -6,19 +6,29 @@
  */
 
 /*
-* @typedef {Object} Timer
-* @property {basic | technique} mode
-* @property {'Pomodoro' | '52/17' | 'Custom'} technique          : 'Pomodoro' | '52/17' | 'Custom'
-* @property {string} phase  : 'work' | 'shortBreak' | 'longBreak'
-* @property {} secondsRemaining
-* @property {boolean} isRunning
-* @property {number} cyclesCompleted
-* @property {Object} Settings
-*/
-
-// cycle — one full round of work + breaks
-// phase — the current part (work / shortBreak / longBreak)
-
+ * @typedef {Object} TimerSession
+ * @property {number} id                          // timestamp
+ * @property {'basic' | 'technique'} mode
+ * @property {'pomodoro' | '52/17' | 'custom'} technique  // null if basic
+ * @property {'work' | 'shortBreak' | 'longBreak'} phase  // null if basic
+ * @property {number} duration                    // seconds
+ * @property {number} completedAt                 // timestamp
+ *
+ * @typedef {Object} TimerSettings
+ * @property {number} work                        // minutes
+ * @property {number} shortBreak                  // minutes
+ * @property {number} longBreak                   // minutes
+ * @property {number | null} sessionsBeforeLongBreak
+ *
+ * @typedef {Object} TimerState
+ * @property {'basic' | 'technique'} mode
+ * @property {'pomodoro' | '52/17' | 'custom'} technique
+ * @property {'work' | 'shortBreak' | 'longBreak'} phase
+ * @property {number} secondsRemaining
+ * @property {boolean} isRunning
+ * @property {number} cyclesCompleted
+ * @property {TimerSettings} settings
+ */
 
 
 import { useState, useEffect, useRef, use } from 'react'
@@ -46,6 +56,9 @@ export default function useTimer() {
     // ── Shared ───────────────────────────────────────────────
     const [secondsRemaining, setSecondsRemaining] = useState(TECHNIQUES['pomodoro'].work * 60)
     const [isRunning, setIsRunning] = useState(false)
+
+    const cyclesBeforeLongBreak = settings[technique].sessionsBeforeLongBreak
+
     const secondsRef = useRef(secondsRemaining)
 
     useEffect(() => {
@@ -56,8 +69,8 @@ export default function useTimer() {
         if(!isRunning) return
         const interval = setInterval(() => {
             if (secondsRef.current <= 0){
-                if(mode === 'basic') handlePhaseComplete()
-                else handleBasicComplete()
+                if(mode === 'basic') handleBasicComplete()
+                else handlePhaseComplete()
                 // play sound
                 // notify
                 clearInterval(interval)
@@ -69,27 +82,27 @@ export default function useTimer() {
     },[isRunning])
 
     function handleBasicComplete(){
-
+        setIsRunning(false)
+        setSecondsRemaining(0)
+         // play sound + notify will go here
     }
 
     function handlePhaseComplete(){
-        // if phase was 'work':
-        //   increment cyclesCompleted
-        //   if cyclesCompleted % cyclesBeforeLongBreak === 0 → go to longBreak
-        //   else → go to shortBreak
-        // if phase was 'shortBreak' or 'longBreak':
-        //   go back to work
-        // set secondsRemaining to the new phase duration
-        // setIsRunning(false) — user manually starts next phase
+        setIsRunning(false)
         if(phase === 'work'){
-            cyclesCompleted += 1
-            if (cyclesCompleted % cyclesBeforeLongBreak === 0){
+            const newCycles = cyclesCompleted + 1
+            setCyclesCompleted(newCycles)
+            if (newCycles % cyclesBeforeLongBreak === 0){
                 setPhase('longBreak')
+                setSecondsRemaining(settings[technique].longBreak * 60)
+            } else{
+                setPhase('shortBreak')
+                setSecondsRemaining(settings[technique].shortBreak * 60)
             }
 
-        }
-        if (phase === 'shortBreak' || phase === 'longBreak') {
+        }else {
             setPhase('work')
+            setSecondsRemaining(settings[technique].work * 60)
         }
 
     }
@@ -117,17 +130,29 @@ export default function useTimer() {
         // if basic mode: reset to basicSeconds
         // if technique mode: reset to current phase duration
         setIsRunning(false)
-        if(mode === 'basic') setBasicSeconds(25*60)
-        if(mode === "technique") setPhase('work')
-
+        if(mode === 'basic') {
+            setSecondsRemaining(basicSeconds)
+        }
+        else {
+            setPhase('work')
+            setSecondsRemaining(settings[technique].work * 60)
+        }
     }
 
     function updateSettings(newSettings){
         // merge newSettings into settings
+        setSettings(prev => ({ ...prev, ...newSettings}))
+        if(technique === 'custom'){
+            setSecondsRemaining(newSettings.custom?.work * 60 ?? secondsRemaining)
+        }
         // if current technique is custom, update secondsRemaining too
     }
 
     function getTotalSeconds(){
+        if (mode === 'basic') return basicSeconds
+        if(phase === 'work') return settings[technique].work * 60
+        if(phase === 'shortBreak') return settings[technique].shortBreak * 60
+        if(phase === 'longBreak') return settings[technique].longBreak * 60
         // returns total seconds for current phase or basicSeconds
         // used by TimerRing to calculate progress percentage
     }

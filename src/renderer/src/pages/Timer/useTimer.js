@@ -33,6 +33,8 @@
 
 import { useState, useEffect, useRef, use } from 'react'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
+import useTimerTechniques from './useTimerTechniques'
+
 
 const TECHNIQUES = {
   pomodoro: { name: 'Pomodoro', work: 25, shortBreak: 5, longBreak: 15, sessionsBeforeLongBreak: 4 },
@@ -48,11 +50,16 @@ export default function useTimer() {
     // ── Basic timer ─────────────────────────────────────────
     const [basicSeconds, setBasicSeconds] = useState(25*60)
     // ── Technique timer ──────────────────────────────────────
-    const [technique, setTechnique] = useState('pomodoro')
+    const { 
+      technique, setTechnique,
+      settings, updateSettings,
+      getPhaseSeconds,
+      cyclesBeforeLongBreak,
+      TECHNIQUES
+    } = useTimerTechniques()
     const [phase, setPhase] = useState('work')
     
     const [cyclesCompleted, setCyclesCompleted] = useLocalStorage('cyclesCompleted', 0)
-    const [settings, setSettings] = useLocalStorage('timerSettings', TECHNIQUES)
     // ── Shared ───────────────────────────────────────────────
     const [secondsRemaining, setSecondsRemaining] = useState(TECHNIQUES['pomodoro'].work * 60)
     const [isRunning, setIsRunning] = useState(false)
@@ -126,9 +133,6 @@ export default function useTimer() {
     }
     
     function reset(){
-        // setIsRunning(false)
-        // if basic mode: reset to basicSeconds
-        // if technique mode: reset to current phase duration
         setIsRunning(false)
         if(mode === 'basic') {
             setSecondsRemaining(basicSeconds)
@@ -138,16 +142,6 @@ export default function useTimer() {
             setSecondsRemaining(settings[technique].work * 60)
         }
     }
-
-    function updateSettings(newSettings){
-        // merge newSettings into settings
-        setSettings(prev => ({ ...prev, ...newSettings}))
-        if(technique === 'custom'){
-            setSecondsRemaining(newSettings.custom?.work * 60 ?? secondsRemaining)
-        }
-        // if current technique is custom, update secondsRemaining too
-    }
-
     function getTotalSeconds(){
         if (mode === 'basic') return basicSeconds
         if(phase === 'work') return settings[technique].work * 60

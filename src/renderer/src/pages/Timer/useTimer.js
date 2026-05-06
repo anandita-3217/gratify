@@ -31,16 +31,10 @@
  */
 
 
-import { useState, useEffect, useRef, use } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import useTimerTechniques from './useTimerTechniques'
 
-
-const TECHNIQUES = {
-  pomodoro: { name: 'Pomodoro', work: 25, shortBreak: 5, longBreak: 15, sessionsBeforeLongBreak: 4 },
-  '52/17': { name: '52/17', work: 52, shortBreak: 17, longBreak: null, sessionsBeforeLongBreak: null },
-  custom: { name: 'Custom', work: 25, shortBreak: 5, longBreak: 15, sessionsBeforeLongBreak: 4 }
-}
 
 export default function useTimer() {
     // ── Mode ────────────────────────────────────────────────
@@ -63,8 +57,6 @@ export default function useTimer() {
     // ── Shared ───────────────────────────────────────────────
     const [secondsRemaining, setSecondsRemaining] = useState(TECHNIQUES['pomodoro'].work * 60)
     const [isRunning, setIsRunning] = useState(false)
-
-    const cyclesBeforeLongBreak = settings[technique].sessionsBeforeLongBreak
 
     const secondsRef = useRef(secondsRemaining)
 

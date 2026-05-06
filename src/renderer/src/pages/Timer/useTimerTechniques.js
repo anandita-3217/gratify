@@ -18,20 +18,15 @@ export default function useTimerTechniques() {
   function updateSettings(newSettings) {
     // merge newSettings into settings
     setSettings(prev => ({ ...prev, ...newSettings}))
-        if(technique === 'custom'){
-          setSecondsRemaining(newSettings.custom?.work * 60 ?? secondsRemaining)
-    }
   }
 
   function getPhaseSeconds(phase) {
     // returns seconds for given phase under current technique
     // hint: settings[technique][phase] * 60
-    const seconds = settings[technique][phase] * 60
+    const duration = settings[technique][phase]
     // handle null longBreak for 52/17
-    if (technique == '52/17'){
-      const seconds = 0
-    }    
-    return seconds
+    if (!duration) return 0
+    return duration * 60
   }
 
   const cyclesBeforeLongBreak = settings[technique].sessionsBeforeLongBreak

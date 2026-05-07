@@ -1,9 +1,9 @@
-import { Box, Button, Group, Stack, Text, Title } from '@mantine/core'
+import { Box, Button, Group, Stack, Text, Title, NumberInput } from '@mantine/core'
 
 import useTimer from './useTimer'
 import TimerControls from './TimerControls'
 import TimerRing from './TimerRing'
-import TimerSettings from './TimerSettings'
+// import TimerSettings from './TimerSettings'
 import { useDisclosure } from '@mantine/hooks'
 
 function getGreeting(){
@@ -21,7 +21,7 @@ function getGreeting(){
 export default function Timer() {
   // const { ...everything } = usePomodoro()
   const {seconds, totalSeconds, isRunning, start, stop, pause, reset, setDuration}  = useTimer()
-  
+  const minutes = Math.floor(seconds / 60)
   // const [settingsOpened, { open, close }] = useDisclosure(false)
   const [settingsOpened, { open, close }] = useDisclosure(false)
   // layout here
@@ -40,8 +40,10 @@ export default function Timer() {
                 </Text>
             </Group>
             <Stack>
-                <TimerRing seconds={seconds} totalSeconds={totalSeconds} isRunning={true}/>
-                {/* <TimerControls/> */}
+                <Box h={1} bg='pink'/>
+                
+                <TimerRing seconds={seconds} totalSeconds={totalSeconds} isRunning={isRunning}/>
+                <TimerControls isRunning={isRunning} onStart={start} onPause={pause} onStop={stop} onReset={reset} minutes={minutes} onDurationChange={(val) => setDuration(val)}/>
                 {/* <Button onClick={open}>Open Drawer</Button> */}
                 {/* <TimerSettings/> */}
             </Stack>

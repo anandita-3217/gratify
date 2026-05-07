@@ -4,7 +4,7 @@
 //   seconds      — current seconds remaining
 //   totalSeconds — full duration (for progress calculation)
 //   isRunning    — drives breathing animation
-import useTimer from "./useTimer"
+// import useTimer from "./useTimer"
 
 import {Box, RingProgress, Stack, Text } from '@mantine/core'
 

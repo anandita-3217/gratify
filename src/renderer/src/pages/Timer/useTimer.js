@@ -58,5 +58,8 @@ export default function useTimer(){
         setSeconds(seconds)
         setTotalSeconds(seconds)
     }
-    return {seconds, setSeconds, isRunning, start, stop, pause, reset, setDuration}
+    function handleTimeUp(){
+        // TODO: should handle clean up and notif and play sound after the timer is up 
+    }
+    return {seconds, totalSeconds, isRunning, start, stop, pause, reset, setDuration}
 }

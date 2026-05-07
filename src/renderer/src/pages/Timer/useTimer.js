@@ -1,159 +1,62 @@
 /*
- * Techniques:
- * pomodoro: work 25, shortBreak 5, longBreak 15, sessionsBeforeLongBreak 4
- * 52/17: work 52, shortBreak 17, no longBreak, sessionsBeforeLongBreak: null
- * custom: user defined
- */
-
-/*
- * @typedef {Object} TimerSession
- * @property {number} id                          // timestamp
- * @property {'basic' | 'technique'} mode
- * @property {'pomodoro' | '52/17' | 'custom'} technique  // null if basic
- * @property {'work' | 'shortBreak' | 'longBreak'} phase  // null if basic
- * @property {number} duration                    // seconds
- * @property {number} completedAt                 // timestamp
- *
- * @typedef {Object} TimerSettings
- * @property {number} work                        // minutes
- * @property {number} shortBreak                  // minutes
- * @property {number} longBreak                   // minutes
- * @property {number | null} sessionsBeforeLongBreak
- *
  * @typedef {Object} TimerState
- * @property {'basic' | 'technique'} mode
- * @property {'pomodoro' | '52/17' | 'custom'} technique
- * @property {'work' | 'shortBreak' | 'longBreak'} phase
- * @property {number} secondsRemaining
+ * @property {number} seconds          // current seconds remaining
+ * @property {number} totalSeconds     // total seconds for current duration
  * @property {boolean} isRunning
- * @property {number} cyclesCompleted
- * @property {TimerSettings} settings
+ *
+ * @typedef {Object} TimerControls
+ * @property {function} start
+ * @property {function} pause
+ * @property {function} reset
+ * @property {function} setDuration    // takes minutes, sets total and resets timer
  */
 
+import { useEffect, useState, useRef } from "react";
 
-import { useState, useEffect, useRef } from 'react'
-import { useLocalStorage } from '../../hooks/useLocalStorage'
-import useTimerTechniques from './useTimerTechniques'
-
-
-export default function useTimer() {
-    // ── Mode ────────────────────────────────────────────────
-    // 'basic' = plain countdown timer
-    // 'technique' = pomodoro/52-17/custom with phases
-    const [mode, setMode] = useState('basic')
-    // ── Basic timer ─────────────────────────────────────────
-    const [basicSeconds, setBasicSeconds] = useState(25*60)
-    // ── Technique timer ──────────────────────────────────────
-    const { 
-      technique, setTechnique,
-      settings, updateSettings,
-      getPhaseSeconds,
-      cyclesBeforeLongBreak,
-      TECHNIQUES
-    } = useTimerTechniques()
-    const [phase, setPhase] = useState('work')
-    
-    const [cyclesCompleted, setCyclesCompleted] = useLocalStorage('cyclesCompleted', 0)
-    // ── Shared ───────────────────────────────────────────────
-    const [secondsRemaining, setSecondsRemaining] = useState(TECHNIQUES['pomodoro'].work * 60)
+export default function useTimer(){
     const [isRunning, setIsRunning] = useState(false)
-
-    const secondsRef = useRef(secondsRemaining)
-
+    const [seconds, setSeconds] = useState(25*60)
+    const [totalSeconds, setTotalSeconds] = useState(25*60)
+    const secondsRef = useRef(seconds)
+   
     useEffect(() => {
-        secondsRef.current = secondsRemaining
-    },[secondsRemaining])
+        secondsRef.current = seconds
+    },[seconds])
 
     useEffect(() => {
         if(!isRunning) return
         const interval = setInterval(() => {
-            if (secondsRef.current <= 0){
-                if(mode === 'basic') handleBasicComplete()
-                else handlePhaseComplete()
-                // play sound
-                // notify
+            if(secondsRef.current <= 0){
+                setIsRunning(false)
                 clearInterval(interval)
                 return
             }
-            setSecondsRemaining(s => s - 1)
+            setSeconds(s => s - 1) 
         }, 1000);
         return () => clearInterval(interval)
     },[isRunning])
 
-    function handleBasicComplete(){
-        setIsRunning(false)
-        setSecondsRemaining(0)
-         // play sound + notify will go here
-    }
-
-    function handlePhaseComplete(){
-        setIsRunning(false)
-        if(phase === 'work'){
-            const newCycles = cyclesCompleted + 1
-            setCyclesCompleted(newCycles)
-            if (newCycles % cyclesBeforeLongBreak === 0){
-                setPhase('longBreak')
-                setSecondsRemaining(settings[technique].longBreak * 60)
-            } else{
-                setPhase('shortBreak')
-                setSecondsRemaining(settings[technique].shortBreak * 60)
-            }
-
-        }else {
-            setPhase('work')
-            setSecondsRemaining(settings[technique].work * 60)
-        }
-
-    }
-    // ── Controls ─────────────────────────────────────────────
     function start(){
         setIsRunning(true)
     }
 
     function stop(){
         setIsRunning(false)
-        setSecondsRemaining(0)
+        setSeconds(totalSeconds)
     }
 
-    function skip(){
-        if(mode !== 'technique') return
-        setPhase('shortBreak')
-    }
-    
     function pause(){
         setIsRunning(false)
     }
-    
+
     function reset(){
         setIsRunning(false)
-        if(mode === 'basic') {
-            setSecondsRemaining(basicSeconds)
-        }
-        else {
-            setPhase('work')
-            setSecondsRemaining(settings[technique].work * 60)
-        }
+        setSeconds(totalSeconds)
     }
-    function getTotalSeconds(){
-        if (mode === 'basic') return basicSeconds
-        if(phase === 'work') return settings[technique].work * 60
-        if(phase === 'shortBreak') return settings[technique].shortBreak * 60
-        if(phase === 'longBreak') return settings[technique].longBreak * 60
-        // returns total seconds for current phase or basicSeconds
-        // used by TimerRing to calculate progress percentage
+    function setDuration(minutes){
+        const seconds = minutes * 60
+        setSeconds(seconds)
+        setTotalSeconds(seconds)
     }
-
-    return {
-        mode, setMode,
-        basicSeconds, setBasicSeconds,
-        technique, setTechnique,
-        phase,
-        cyclesCompleted,
-        secondsRemaining,
-        isRunning,
-        settings, updateSettings,
-        start, stop, pause, skip, reset,
-        getTotalSeconds,
-        TECHNIQUES
-    }
+    return {seconds, setSeconds, isRunning, start, stop, pause, reset, setDuration}
 }

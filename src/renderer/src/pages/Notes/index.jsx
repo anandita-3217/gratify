@@ -111,6 +111,7 @@ const noteColors = ['gray', 'red', 'pink', 'grape',
               }) }
             </Text>
         </Group>
+        <Box bg='pink' h={1}/>
         {/* search input + new note button */}
         <Stack mt={'xl'}>
           <Button onClick={open} color='pink' leftSection={<Plus size={16}/>} > New Note</Button>

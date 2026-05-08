@@ -23,7 +23,7 @@ export default function Calendar({ onNavigate }){
                     })}
                 </Text>
             </Group>
-            <Box bg='pink' h='10px'/>
+            <Box bg='pink' h='1px'/>
         </Stack>
     </Box>)
 }

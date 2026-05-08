@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 
 const PRESETS = [
+  {label: '1m', minutes: 1, seconds: 0},
   {label: '5m', minutes: 5, seconds: 0},
   {label: '10m', minutes: 10, seconds: 0},
   {label: '25m', minutes: 25, seconds: 0},
@@ -107,7 +108,7 @@ export default function TimerControls({ isRunning, onStart, onPause,  onStop,  o
       <Group justify='center' gap="xl">
       {isRunning ? (
         <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onPause}> <Pause size={16}/> </ActionIcon>
-        
+        // Both pause and stop should be displayed when isRunning === true
       ):(
         <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onStart}> <Play size={16}/> </ActionIcon>
         

@@ -17,11 +17,21 @@ export default function TimerRing({ seconds=1500, totalSeconds=1500, isRunning=f
   
   return (
     <Stack align="center" justify="center">
+            <style>{`
+        @keyframes breathe {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.03); } /* Subtle expansion */
+          100% { transform: scale(1); }
+        }
+      `}</style>
       <RingProgress 
       size={300} 
       thickness={14} 
       roundCaps
-      style={{ transition: 'all 1s linear' }}
+      transitionDuration={1000}
+      style={{
+        //  animation: isRunning ? 'breathe 1s ease-in-out infinite' : 'none',
+        transitionTimingFunction: 'linear' }}
       sections={[{value: progress, color: "pink"}]} 
       label={
         <Stack align="center" gap={0}>

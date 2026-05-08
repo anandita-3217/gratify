@@ -197,6 +197,7 @@ export default function Tasks({ onNavigate }){
                       })}
                     </Text>
                 </Group>
+                <Box bg='pink' h='1px' />
                 <Stack mt={'xl'}>
                     <Progress value={percentage} color="pink" />
                     <Button onClick={open} color="pink" leftSection={<Plus size={16}/>} >New Task</Button>

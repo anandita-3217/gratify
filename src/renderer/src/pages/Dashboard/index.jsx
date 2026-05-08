@@ -33,10 +33,10 @@ import { useLocalStorage } from '../../hooks/useLocalStorage'
 // ─── helpers ────────────────────────────────────────────────────────────────
 
 function greeting() {
-  const h = new Date().getHours()
-  if (h < 12) return 'Good morning'
-  if (h < 17) return 'Good afternoon'
-  return 'Good evening'
+  const hours = new Date().getHours()
+    if (hours < 12) return 'Good Morning!'
+    if (hours < 18) return 'Good Afternoon'
+    return 'Good Evening!'
 }
 
 function todayKey() {
@@ -377,6 +377,7 @@ export default function Dashboard({ onNavigate }) {
               day: 'numeric',
             })}
           </Text>
+          
           {overdue > 0 && (
             <>
               <Text c="dimmed" size="sm">·</Text>
@@ -386,9 +387,11 @@ export default function Dashboard({ onNavigate }) {
                   {overdue} overdue {overdue === 1 ? 'task' : 'tasks'}
                 </Text>
               </Group>
+              
             </>
           )}
         </Group>
+          <Box bg='pink' h='1px'/>
       </Stack>
 
       {/* Stat pills */}

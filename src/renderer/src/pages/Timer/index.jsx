@@ -3,7 +3,7 @@ import { Box, Button, Group, Stack, Text, Title, NumberInput } from '@mantine/co
 import useTimer from './useTimer'
 import TimerControls from './TimerControls'
 import TimerRing from './TimerRing'
-// import TimerSettings from './TimerSettings'
+import TimerSettings from './TimerSettings'
 import { useDisclosure } from '@mantine/hooks'
 
 function getGreeting(){
@@ -52,8 +52,8 @@ export default function Timer() {
                 resetKey={resetKey} 
                 totalSeconds={totalSeconds}
                 onDurationChange={(totalSecs) => setDuration(totalSecs)}/>
-                {/* <Button onClick={open}>Open Drawer</Button> */}
-                {/* <TimerSettings/> */}
+                <Button onClick={open}>Open Drawer</Button>
+                <TimerSettings opened={settingsOpened} onClose={close}/>
             </Stack>
 
         </Stack>

@@ -8,9 +8,9 @@
 
 import {Box, RingProgress, Stack, Text } from '@mantine/core'
 
-export default function TimerRing({ seconds=1500, totalSeconds=1500, isRunning=false }) {
+export default function TimerRing({ seconds=60, totalSeconds=60, isRunning=false }) {
   
-  const progress = totalSeconds === 0 ? 0 :Math.round((seconds/totalSeconds) * 100 )
+  const progress = totalSeconds === 0 ? 0 :(seconds/totalSeconds) * 100 
 
   const minutes = Math.floor(seconds / 60).toString().padStart(2, '0')
   const secs = (seconds % 60).toString().padStart(2,'0')

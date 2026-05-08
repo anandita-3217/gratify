@@ -13,9 +13,9 @@ const PRESETS = [
 ]
 
 export default function TimerControls({ isRunning, onStart, onPause,  onStop,  onReset,minutes, onDurationChange, totalSeconds}) {
-    const [inputMinutes, setInputMinutes] = useState(25)
+    const [inputMinutes, setInputMinutes] = useState(1)
     const [inputSeconds, setInputSeconds] = useState(0)
-    const [activePreset, setActivePreset] = useState('25m')
+    const [activePreset, setActivePreset] = useState('1m')
 
     useEffect(() => {
       if(!isRunning){
@@ -107,13 +107,14 @@ export default function TimerControls({ isRunning, onStart, onPause,  onStop,  o
       )}
       <Group justify='center' gap="xl">
       {isRunning ? (
+        <>
         <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onPause}> <Pause size={16}/> </ActionIcon>
-        // Both pause and stop should be displayed when isRunning === true
+        <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onStop}> <Square size={16}/> </ActionIcon>
+        </>
       ):(
         <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onStart}> <Play size={16}/> </ActionIcon>
         
       )}
-        <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onStop}> <Square size={16}/> </ActionIcon>
         <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onReset}> <RotateCcw size={16}/> </ActionIcon>
       </Group>
     </Stack>

@@ -20,7 +20,7 @@ function getGreeting(){
 
 export default function Timer() {
   // const { ...everything } = usePomodoro()
-  const {seconds, totalSeconds, isRunning, start, stop, pause, reset, setDuration}  = useTimer()
+  const {seconds, totalSeconds, isRunning, resetKey, start, stop, pause, reset, setDuration}  = useTimer()
   const minutes = Math.floor(seconds / 60)
   // const [settingsOpened, { open, close }] = useDisclosure(false)
   const [settingsOpened, { open, close }] = useDisclosure(false)
@@ -48,7 +48,8 @@ export default function Timer() {
                 onStart={start} 
                 onPause={pause} 
                 onStop={stop} 
-                onReset={reset} 
+                onReset={reset}
+                resetKey={resetKey} 
                 totalSeconds={totalSeconds}
                 onDurationChange={(totalSecs) => setDuration(totalSecs)}/>
                 {/* <Button onClick={open}>Open Drawer</Button> */}

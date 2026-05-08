@@ -15,8 +15,9 @@ import { useEffect, useState, useRef } from "react";
 
 export default function useTimer(){
     const [isRunning, setIsRunning] = useState(false)
-    const [seconds, setSeconds] = useState(25*60)
-    const [totalSeconds, setTotalSeconds] = useState(25*60)
+    const [seconds, setSeconds] = useState(60)
+    const [totalSeconds, setTotalSeconds] = useState(60)
+    const [resetKey, setResetKey] = useState(0)
     const secondsRef = useRef(seconds)
    
     useEffect(() => {
@@ -43,6 +44,8 @@ export default function useTimer(){
     function stop(){
         setIsRunning(false)
         setSeconds(totalSeconds)
+        secondsRef.current = totalSeconds
+        setResetKey(k => k + 1)
     }
 
     function pause(){
@@ -52,6 +55,8 @@ export default function useTimer(){
     function reset(){
         setIsRunning(false)
         setSeconds(totalSeconds)
+        secondsRef.current = totalSeconds
+        setResetKey(k => k + 1)
     }
     function setDuration(totalSecs){
         setSeconds(totalSecs)
@@ -61,5 +66,5 @@ export default function useTimer(){
     function handleTimeUp(){
         // TODO: should handle clean up and notif and play sound after the timer is up 
     }
-    return {seconds, totalSeconds, isRunning, start, stop, pause, reset, setDuration}
+    return {seconds, totalSeconds, isRunning, resetKey, start, stop, pause, reset, setDuration}
 }

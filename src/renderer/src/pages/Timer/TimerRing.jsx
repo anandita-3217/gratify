@@ -17,7 +17,13 @@ export default function TimerRing({ seconds=1500, totalSeconds=1500, isRunning=f
   
   return (
     <Stack align="center" justify="center">
-      <RingProgress size={300} thickness={14} sections={[{value: progress, color: "pink"}]} label={
+      <RingProgress 
+      size={300} 
+      thickness={14} 
+      roundCaps
+      style={{ transition: 'all 1s linear' }}
+      sections={[{value: progress, color: "pink"}]} 
+      label={
         <Stack align="center" gap={0}>
           <Text size="2.5rem" fw={700} ta="center">{minutes}:{secs}</Text>
         </Stack>

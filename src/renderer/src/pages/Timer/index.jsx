@@ -43,7 +43,14 @@ export default function Timer() {
                 <Box h={1} bg='pink'/>
                 
                 <TimerRing seconds={seconds} totalSeconds={totalSeconds} isRunning={isRunning}/>
-                <TimerControls isRunning={isRunning} onStart={start} onPause={pause} onStop={stop} onReset={reset} minutes={minutes} onDurationChange={(val) => setDuration(val)}/>
+                <TimerControls 
+                isRunning={isRunning} 
+                onStart={start} 
+                onPause={pause} 
+                onStop={stop} 
+                onReset={reset} 
+                totalSeconds={totalSeconds}
+                onDurationChange={(totalSecs) => setDuration(totalSecs)}/>
                 {/* <Button onClick={open}>Open Drawer</Button> */}
                 {/* <TimerSettings/> */}
             </Stack>

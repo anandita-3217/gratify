@@ -53,10 +53,10 @@ export default function useTimer(){
         setIsRunning(false)
         setSeconds(totalSeconds)
     }
-    function setDuration(minutes){
-        const seconds = minutes * 60
-        setSeconds(seconds)
-        setTotalSeconds(seconds)
+    function setDuration(totalSecs){
+        setSeconds(totalSecs)
+        setTotalSeconds(totalSecs)
+        secondsRef.current = totalSecs
     }
     function handleTimeUp(){
         // TODO: should handle clean up and notif and play sound after the timer is up 

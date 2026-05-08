@@ -18,7 +18,7 @@ function getGreeting(){
     return 'Good Evening!';
 }
 
-export default function Tasks(){
+export default function Tasks({ onNavigate }){
     const {tasks, addTask, deleteTask, toggleTask,updateTask} = useTasks();
     const [input, setInput] = useState('');
     const [opened, { open, close }] = useDisclosure(false)

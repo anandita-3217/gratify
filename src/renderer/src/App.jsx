@@ -12,16 +12,10 @@ import Dashboard from './pages/Dashboard'
 import Tasks from './pages/Tasks'
 import Notes from './pages/Notes'
 import Timer from './pages/Timer'
+import Calendar from './pages/Calendar'
 import Settings  from './pages/Settings'
 import { useState } from 'react'
 
-// Stubs — replace these with real pages as you build them
-const Stub = ({ name }) => (
-  <Box p="xl">
-    <h2>{name}</h2>
-    <p style={{ color: 'var(--mantine-color-dimmed)' }}>Coming soon.</p>
-  </Box>
-)
 
 export default function App() {
 
@@ -34,12 +28,12 @@ export default function App() {
         <div className='flex h-full w-full'>
           <Sidebar activePage={activePage} onNavigate={setActivePage} />
           <main className='flex-1'>
-            {activePage === 'dashboard' && <Dashboard />}
+            {activePage === 'dashboard' && <Dashboard onNavigate={setActivePage}/>}
             {activePage === 'tasks'     && <Tasks/>}
             {activePage === 'notes'     && <Notes/>}
             {activePage === 'timer'     && <Timer/>}
-            {activePage === 'calendar'  && <Stub name="Calendar" />}
-            {activePage === 'settings'  && <Stub name="Settings" />}
+            {activePage === 'calendar'  && <Calendar/>}
+            {activePage === 'settings'  && <Settings/>}
           </main>
         </div>
       </HashRouter>

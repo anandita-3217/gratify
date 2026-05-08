@@ -328,7 +328,7 @@ function QuickNotesWidget({ notes, onAddNote, onNavigate }) {
 
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
 
-export default function Dashboard() {
+export default function Dashboard({ onNavigate }) {
   const navigate = useNavigate()
   const [tasks, setTasks] = useLocalStorage('gratify-tasks', [])
   const [events] = useLocalStorage('gratify-events', [])
@@ -437,20 +437,20 @@ export default function Dashboard() {
           <TasksWidget
             tasks={tasks}
             onToggle={handleToggleTask}
-            onNavigate={() => navigate('/tasks')}
+            onNavigate={() => onNavigate('tasks')}
           />
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 4 }}>
           <CalendarWidget
             events={events}
-            onNavigate={() => navigate('/calendar')}
+            onNavigate={() => onNavigate('calendar')}
           />
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 3 }}>
           <QuickNotesWidget
             notes={notes}
             onAddNote={handleAddNote}
-            onNavigate={() => navigate('/notes')}
+            onNavigate={() => onNavigate('notes')}
           />
         </Grid.Col>
       </Grid>

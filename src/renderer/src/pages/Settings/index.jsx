@@ -28,6 +28,7 @@ import {
   IconUpload,
   IconInfoCircle,
 } from '@tabler/icons-react'
+import { Calendar, ListChecks, NotepadText, Timer } from 'lucide-react'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { notifications } from '@mantine/notifications'
 
@@ -167,8 +168,8 @@ export default function Settings() {
 
       <Stack gap="md">
 
-        {/* ── Pomodoro ── */}
-        <Section icon={IconClock} title="Pomodoro Timer" description="Adjust session lengths and auto-start behaviour.">
+        {/* ── Timer ── */}
+        <Section icon={Timer} title="Timer" description="Adjust session lengths and auto-start behaviour.">
           <Stack gap="sm">
             <SettingRow label="Work duration" description="Minutes per focus session">
               <NumberInput
@@ -215,6 +216,171 @@ export default function Settings() {
             </SettingRow>
             <Divider />
             <SettingRow label="Auto-start work sessions" description="Begin next focus session after a break">
+              <Switch
+                checked={settings.autoStartWork}
+                onChange={(e) => update('autoStartWork', e.currentTarget.checked)}
+                size="sm"
+              />
+            </SettingRow>
+          </Stack>
+        </Section>
+        <Section icon={NotepadText} title="Notes" description="Adjust session lengths and auto-start behaviour.">
+          <Stack gap="sm">
+            <SettingRow label="Work duration" description="Minutes per focus session">
+              <NumberInput
+                value={settings.workDuration}
+                onChange={(v) => update('workDuration', v)}
+                min={1} max={90} step={1}
+                size="xs" w={80}
+              />
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Short break" description="Minutes">
+              <NumberInput
+                value={settings.shortBreak}
+                onChange={(v) => update('shortBreak', v)}
+                min={1} max={30} step={1}
+                size="xs" w={80}
+              />
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Long break" description="Minutes">
+              <NumberInput
+                value={settings.longBreak}
+                onChange={(v) => update('longBreak', v)}
+                min={1} max={60} step={1}
+                size="xs" w={80}
+              />
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Sessions before long break">
+              <NumberInput
+                value={settings.sessionsBeforeLong}
+                onChange={(v) => update('sessionsBeforeLong', v)}
+                min={1} max={10} step={1}
+                size="xs" w={80}
+              />
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Auto-start breaks" description="Begin break immediately after a session ends">
+              <Switch
+                checked={settings.autoStartBreaks}
+                onChange={(e) => update('autoStartBreaks', e.currentTarget.checked)}
+                size="sm"
+              />
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Auto-start work sessions" description="Begin next focus session after a break">
+              <Switch
+                checked={settings.autoStartWork}
+                onChange={(e) => update('autoStartWork', e.currentTarget.checked)}
+                size="sm"
+              />
+            </SettingRow>
+          </Stack>
+        </Section>
+        <Section icon={ListChecks} title="Tasks" description="Adjust session lengths and auto-start behaviour.">
+          <Stack gap="sm">
+            <SettingRow label="Work duration" description="Minutes per focus session">
+              <NumberInput
+                value={settings.workDuration}
+                onChange={(v) => update('workDuration', v)}
+                min={1} max={90} step={1}
+                size="xs" w={80}
+              />
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Short break" description="Minutes">
+              <NumberInput
+                value={settings.shortBreak}
+                onChange={(v) => update('shortBreak', v)}
+                min={1} max={30} step={1}
+                size="xs" w={80}
+              />
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Long break" description="Minutes">
+              <NumberInput
+                value={settings.longBreak}
+                onChange={(v) => update('longBreak', v)}
+                min={1} max={60} step={1}
+                size="xs" w={80}
+              />
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Sessions before long break">
+              <NumberInput
+                value={settings.sessionsBeforeLong}
+                onChange={(v) => update('sessionsBeforeLong', v)}
+                min={1} max={10} step={1}
+                size="xs" w={80}
+              />
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Auto-start breaks" description="Begin break immediately after a session ends">
+              <Switch
+                checked={settings.autoStartBreaks}
+                onChange={(e) => update('autoStartBreaks', e.currentTarget.checked)}
+                size="sm"
+              />
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Auto-start work sessions" description="Begin next focus session after a break">
+              <Switch
+                checked={settings.autoStartWork}
+                onChange={(e) => update('autoStartWork', e.currentTarget.checked)}
+                size="sm"
+              />
+            </SettingRow>
+          </Stack>
+        </Section>
+        <Section icon={Calendar} title="Calendar" description="Adjust session lengths and auto-start behaviour.">
+          <Stack gap="sm">
+            <SettingRow label="Work duration" description="Minutes per focus session">
+              <NumberInput
+                value={settings.workDuration}
+                onChange={(v) => update('workDuration', v)}
+                min={1} max={90} step={1}
+                size="xs" w={80}
+              />
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Short break" description="Minutes">
+              <NumberInput
+                value={settings.shortBreak}
+                onChange={(v) => update('shortBreak', v)}
+                min={1} max={30} step={1}
+                size="xs" w={80}
+              />
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Long break" description="Minutes">
+              <NumberInput
+                value={settings.longBreak}
+                onChange={(v) => update('longBreak', v)}
+                min={1} max={60} step={1}
+                size="xs" w={80}
+              />
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Sessions before long break">
+              <NumberInput
+                value={settings.sessionsBeforeLong}
+                onChange={(v) => update('sessionsBeforeLong', v)}
+                min={1} max={10} step={1}
+                size="xs" w={80}
+              />
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Auto-start breaks" description="Begin break immediately after a session ends">
+              <Switch
+                checked={settings.autoStartBreaks}
+                onChange={(e) => update('autoStartBreaks', e.currentTarget.checked)}
+                size="sm"
+              />
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Sync Calendar with Tasks" description="Get updates from tasks in calendar">
               <Switch
                 checked={settings.autoStartWork}
                 onChange={(e) => update('autoStartWork', e.currentTarget.checked)}

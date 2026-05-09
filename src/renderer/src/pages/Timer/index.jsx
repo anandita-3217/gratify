@@ -1,4 +1,4 @@
-import { Box, Button, Group, Stack, Text, Title, NumberInput } from '@mantine/core'
+import { Box, Button, Group, Stack, Text, Title, NumberInput, SegmentedControl } from '@mantine/core'
 
 import useTimer from './useTimer'
 import TimerControls from './TimerControls'
@@ -41,6 +41,14 @@ export default function Timer() {
             </Group>
             <Stack>
                 <Box h={1} bg='pink'/>
+                <Group gap={8}>
+                    <SegmentedControl fullWidth withItemsBorders={false} radius='md' 
+                     data={[
+                        { label: 'Basic', value: 'basic' },
+                        { label: 'Focus', value: 'focus' },
+                     ]} />
+                     
+                </Group>
                 
                 <TimerRing seconds={seconds} totalSeconds={totalSeconds} isRunning={isRunning}/>
                 <TimerControls 

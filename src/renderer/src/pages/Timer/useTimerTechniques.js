@@ -1,41 +1,47 @@
-// useTimerTechniques.js
-// owns: TECHNIQUES constant, settings state, technique state
-// exposes: technique, setTechnique, settings, updateSettings,
-//          getPhaseSeconds(technique, phase), cyclesBeforeLongBreak
+/*
+ * @typedef {Object} Technique
+ * @property {string} label                        // 'pomodoro' | '52/17' | 'custom'
+ * @property {string} name                         // display name e.g. 'Pomodoro'
+ * @property {number} work                         // minutes
+ * @property {number} shortBreak                   // minutes
+ * @property {number | null} longBreak             // minutes, null for 52/17
+ * @property {number | null} cyclesBeforeLongBreak // null for 52/17
+ *
+ * @typedef {Object} TimerTechniquesState  
+ * @property {string} technique                    // current technique key
+ * @property {Object.<string, Technique>} settings // all technique settings
+ * @property {number | null} cyclesBeforeLongBreak // shortcut to current technique's value
+ * @property {function} getPhaseSeconds            // (phase) => seconds
+ * @property {function} setTechnique
+ * @property {function} updateSettings
+ */
 
-import { useLocalStorage } from '../../hooks/useLocalStorage'
+import { useLocalStorage } from "../../hooks/useLocalStorage"
+import { useState } from "react"
 
-export const TECHNIQUES = {
-  pomodoro: { name: 'Pomodoro', work: 25, shortBreak: 5, longBreak: 15, sessionsBeforeLongBreak: 4 },
-  '52/17': { name: '52/17', work: 52, shortBreak: 17, longBreak: null, sessionsBeforeLongBreak: null },
-  custom: { name: 'Custom', work: 25, shortBreak: 5, longBreak: 15, sessionsBeforeLongBreak: 4 }
+const TECHNIQUES = {
+  pomodoro: {name: 'Pomodoro', work: 25, shortBreak: 5, longBreak: 15, cyclesBeforeLongBreak: 4 },
+  '52/17': {name: 'Pomodoro', work: 52, shortBreak: 17, longBreak: null, cyclesBeforeLongBreak: null },
+  custom: {name: 'Custom', work: 25, shortBreak: 5, longBreak: 15, cyclesBeforeLongBreak: 4 },
 }
 
-export default function useTimerTechniques() {
-  const [technique, setTechnique] = useLocalStorage('technique', 'pomodoro')
+export default function useTimerTechniques(){
+
+  const [technique, setTechnique] = useState('pomodoro')
   const [settings, setSettings] = useLocalStorage('timerSettings', TECHNIQUES)
+  const cyclesBeforeLongBreak = settings[technique].cyclesBeforeLongBreak
 
-  function updateSettings(newSettings) {
-    // merge newSettings into settings
-    setSettings(prev => ({ ...prev, ...newSettings}))
-  }
-
-  function getPhaseSeconds(phase) {
-    // returns seconds for given phase under current technique
-    // hint: settings[technique][phase] * 60
+  function getPhaseSeconds(){
     const duration = settings[technique][phase]
-    // handle null longBreak for 52/17
-    if (!duration) return 0
+    if(!duration) return 0
     return duration * 60
   }
 
-  const cyclesBeforeLongBreak = settings[technique].sessionsBeforeLongBreak
-
-  return {
-    technique, setTechnique,
-    settings, updateSettings,
-    getPhaseSeconds,
-    cyclesBeforeLongBreak,
-    TECHNIQUES
+  function updateSettings(techniqueKey, newValues){
+    setSettings(prev => ({
+      ...prev, [techniqueKey]: {...prev[techniqueKey], ...newValues}
+    }))
   }
+
+  return {technique, setTechnique, settings, updateSettings, cyclesBeforeLongBreak, getPhaseSeconds, TECHNIQUES}
 }

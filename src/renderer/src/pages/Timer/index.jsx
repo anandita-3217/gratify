@@ -20,7 +20,7 @@ function getGreeting(){
 
 export default function Timer() {
   // const { ...everything } = usePomodoro()
-  const {seconds, totalSeconds, isRunning, resetKey, start, stop, pause, reset, setDuration}  = useTimer()
+  const {seconds, totalSeconds, isRunning, mode, setMode, resetKey, start, stop, pause, reset, setDuration}  = useTimer()
   const minutes = Math.floor(seconds / 60)
   // const [settingsOpened, { open, close }] = useDisclosure(false)
   const [settingsOpened, { open, close }] = useDisclosure(false)
@@ -42,7 +42,7 @@ export default function Timer() {
             <Stack>
                 <Box h={1} bg='pink'/>
                 <Group gap={8}>
-                    <SegmentedControl fullWidth withItemsBorders={false} radius='md' 
+                    <SegmentedControl value={mode} onChange={setMode} fullWidth withItemsBorders={false} radius='md' 
                      data={[
                         { label: 'Basic', value: 'basic' },
                         { label: 'Focus', value: 'focus' },

@@ -52,6 +52,17 @@ export default function useTimer(){
     useEffect(() => {
         cyclesRef.current = cyclesCompleted
     },[cyclesCompleted])
+
+    useEffect(() => {
+        if(mode === 'focus') {
+            setPhase('work')
+            const secs = getPhaseSeconds('work')
+            setSeconds(secs)
+            setTotalSeconds(secs)
+            secondsRef.current = secs
+            setIsRunning(false)
+        }
+    },[technique])
     
     useEffect(() => {
       if (mode === 'basic') {

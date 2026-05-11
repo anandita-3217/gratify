@@ -22,7 +22,6 @@ import { useState } from "react"
 const TECHNIQUES = {
   pomodoro: {name: 'Pomodoro', work: 25, shortBreak: 5, longBreak: 15, cyclesBeforeLongBreak: 4 },
   '52/17': {name: '52/17', work: 52, shortBreak: 17, longBreak: null, cyclesBeforeLongBreak: null },
-  custom: {name: 'Custom', work: 25, shortBreak: 5, longBreak: 15, cyclesBeforeLongBreak: 4 },
 }
 
 export default function useTimerTechniques(){
@@ -37,11 +36,20 @@ export default function useTimerTechniques(){
     return duration * 60
   }
 
+  function addCustomTechnique(name, work, shortBreak, longBreak, cyclesBeforeLongBreak) {
+    const key = name.toLowerCase().replace(/\s+/g, '-')
+    setSettings (prev => ({
+      ...prev,
+      [key] : { name, work, shortBreak, longBreak, cyclesBeforeLongBreak }
+    }))
+    setTechnique(key)
+  }
+
   function updateSettings(techniqueKey, newValues){
     setSettings(prev => ({
       ...prev, [techniqueKey]: {...prev[techniqueKey], ...newValues}
     }))
   }
 
-  return {technique, setTechnique, settings, updateSettings, cyclesBeforeLongBreak, getPhaseSeconds, TECHNIQUES}
+  return {technique, setTechnique, settings, updateSettings, cyclesBeforeLongBreak, getPhaseSeconds, addCustomTechnique, TECHNIQUES}
 }

@@ -30,7 +30,6 @@ export default function Notes() {
 
   const allTags = [...new Set(notes.flatMap(n => n.tags))]
   const visibleTags = showAllTags ? allTags : allTags.slice(0, 5)
-  // modal state — same pattern as Tasks
   const [opened, { open, close }] = useDisclosure(false)
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false)
   const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)

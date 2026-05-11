@@ -18,7 +18,7 @@ import { useLocalStorage } from "../../hooks/useLocalStorage";
 export default function useTimer(){
     const {technique, setTechnique,
         settings,updateSettings,
-        cyclesBeforeLongBreak, getPhaseSeconds,
+        cyclesBeforeLongBreak, getPhaseSeconds, addCustomTechnique,
         TECHNIQUES
     } = useTimerTechniques()
     

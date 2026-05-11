@@ -19,13 +19,6 @@ export default function TimerRing({ seconds, totalSeconds, isRunning, phase, mod
   
   return (
     <Stack align="center" justify="center">
-            <style>{`
-        @keyframes breathe {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.03); } /* Subtle expansion */
-          100% { transform: scale(1); }
-        }
-      `}</style>
       <RingProgress 
       size={300} 
       thickness={14} 

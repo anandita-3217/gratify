@@ -4,6 +4,7 @@ import useTimer from './useTimer'
 import TimerControls from './TimerControls'
 import TimerRing from './TimerRing'
 import TimerSettings from './TimerSettings'
+import CustomTechniqueModal from './CustomTechniqueModal'
 import { useDisclosure } from '@mantine/hooks'
 
 function getGreeting(){
@@ -16,11 +17,12 @@ export default function Timer() {
 
   const {seconds, totalSeconds, cyclesCompleted,
     isRunning, setDuration, phase, 
-    mode, setMode, resetKey, settings, updateSettings,
+    mode, setMode, resetKey, settings, updateSettings, techniqueName, addCustomTechnique,
     start, stop, pause, skip, reset, technique, setTechnique, TECHNIQUES}  = useTimer()
   const minutes = Math.floor(seconds / 60)
   const [settingsOpened, { open, close }] = useDisclosure(false)
-  
+  const [customOpened, { openCustom, closeCustom }] = useDisclosure(false)
+
 
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>
@@ -49,11 +51,12 @@ export default function Timer() {
                         withItemsBorders={false}
                         radius='md'
                         value={technique}
-                        onChange={setTechnique}
+                        onChange={(val) => {
+                            if(val === 'custom') openCustom()
+                            else setTechnique(val)}}
                         data={[
-                            { label: 'Pomodoro', value: 'pomodoro' },
-                            { label: '52/17', value: '52/17' },
-                            { label: 'Custom', value: 'custom' },
+                          ...Object.entries(TECHNIQUES).map(([key, val]) => ({ label: val.name, value: key })),
+                          { label: '+ Custom', value: 'custom' }
                         ]}/>
                      )}
                 </Stack>
@@ -67,6 +70,15 @@ export default function Timer() {
                         </Text>
                      </Stack>
                 )}
+                {mode === 'focus' && technique === 'custom'&& (
+                    <CustomTechniqueModal
+                      opened={customOpened}
+                      onClose={closeCustom}
+                      onSave={addCustomTechnique}
+                    />
+                )
+
+                }
                 <TimerRing
                     mode={mode}
                     phase={phase} 

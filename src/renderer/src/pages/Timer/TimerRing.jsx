@@ -8,7 +8,9 @@
 
 import {Box, RingProgress, Stack, Text } from '@mantine/core'
 
-export default function TimerRing({ seconds=60, totalSeconds=60, isRunning=false }) {
+
+export default function TimerRing({ seconds, totalSeconds, isRunning, phase, mode }) {
+  const phaseColor = mode === 'focus' ? phase === 'work' ? 'pink' : phase === 'shortBreak' ? 'teal' : 'violet' : 'pink'
   
   const progress = totalSeconds === 0 ? 0 :(seconds/totalSeconds) * 100 
 
@@ -32,7 +34,7 @@ export default function TimerRing({ seconds=60, totalSeconds=60, isRunning=false
       style={{
         //  animation: isRunning ? 'breathe 1s ease-in-out infinite' : 'none',
         transitionTimingFunction: 'linear' }}
-      sections={[{value: progress, color: "pink"}]} 
+      sections={[{value: progress, color: phaseColor}]} 
       label={
         <Stack align="center" gap={0}>
           <Text size="2.5rem" fw={700} ta="center">{minutes}:{secs}</Text>

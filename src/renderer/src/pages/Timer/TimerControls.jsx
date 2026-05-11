@@ -1,5 +1,5 @@
 import { ActionIcon, Group, NumberInput, Stack, Text } from '@mantine/core'
-import { Play, Pause, Square, RotateCcw } from 'lucide-react'
+import { Play, Pause, Square, RotateCcw, SkipForward } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 
@@ -12,7 +12,7 @@ const PRESETS = [
   {label: '60m', minutes: 60, seconds: 0},
 ]
 
-export default function TimerControls({ isRunning, onStart, onPause,  onStop,  onReset,minutes, onDurationChange, totalSeconds}) {
+export default function TimerControls({ mode, isRunning, onStart, onPause, onSkip,  onStop,  onReset, minutes, onDurationChange, totalSeconds}) {
     const [inputMinutes, setInputMinutes] = useState(1)
     const [inputSeconds, setInputSeconds] = useState(0)
     const [activePreset, setActivePreset] = useState('1m')
@@ -40,7 +40,7 @@ export default function TimerControls({ isRunning, onStart, onPause,  onStop,  o
 
   return (
     <Stack align="center" gap="md">
-      {!isRunning && (
+      {!isRunning && mode === 'basic' && (
         <Stack align='center' gap="sm">
           <Group gap='xs'>
             {PRESETS.map(p => (
@@ -109,7 +109,12 @@ export default function TimerControls({ isRunning, onStart, onPause,  onStop,  o
       {isRunning ? (
         <>
         <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onPause}> <Pause size={16}/> </ActionIcon>
-        <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onStop}> <Square size={16}/> </ActionIcon>
+        {mode === 'focus' ? (
+          <ActionIcon variant="filled" color='teal' size="xl" radius='xl' onClick={onSkip}> <SkipForward size={16}/> </ActionIcon>
+        ):(
+          <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onStop}> <Square size={16}/> </ActionIcon>
+        )}
+        
         </>
       ):(
         <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onStart}> <Play size={16}/> </ActionIcon>

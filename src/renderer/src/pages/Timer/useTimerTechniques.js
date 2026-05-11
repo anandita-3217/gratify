@@ -21,17 +21,17 @@ import { useState } from "react"
 
 const TECHNIQUES = {
   pomodoro: {name: 'Pomodoro', work: 25, shortBreak: 5, longBreak: 15, cyclesBeforeLongBreak: 4 },
-  '52/17': {name: 'Pomodoro', work: 52, shortBreak: 17, longBreak: null, cyclesBeforeLongBreak: null },
+  '52/17': {name: '52/17', work: 52, shortBreak: 17, longBreak: null, cyclesBeforeLongBreak: null },
   custom: {name: 'Custom', work: 25, shortBreak: 5, longBreak: 15, cyclesBeforeLongBreak: 4 },
 }
 
 export default function useTimerTechniques(){
 
-  const [technique, setTechnique] = useState('pomodoro')
+  const [technique, setTechnique] = useLocalStorage('technique','pomodoro')
   const [settings, setSettings] = useLocalStorage('timerSettings', TECHNIQUES)
   const cyclesBeforeLongBreak = settings[technique].cyclesBeforeLongBreak
 
-  function getPhaseSeconds(){
+  function getPhaseSeconds(phase){
     const duration = settings[technique][phase]
     if(!duration) return 0
     return duration * 60

@@ -12,19 +12,15 @@ function getGreeting(){
     if (hour < 18) return ('Good Afternoon!')
     return 'Good Evening!' 
 }
-
-// owns nothing except drawer open state
-// gets everything from usePomodoro()
-// layout: session type label → TimerRing → TimerControls → stats summary (sessions done today)
-// settings button top right → opens TimerSettings drawer
-
 export default function Timer() {
-  // const { ...everything } = usePomodoro()
-  const {seconds, totalSeconds, isRunning, mode, setMode, resetKey, start, stop, pause, reset, setDuration}  = useTimer()
+
+  const {seconds, totalSeconds, cyclesCompleted,
+    isRunning, setDuration, phase, 
+    mode, setMode, resetKey, settings, updateSettings,
+    start, stop, pause, skip, reset, technique, setTechnique, TECHNIQUES}  = useTimer()
   const minutes = Math.floor(seconds / 60)
-  // const [settingsOpened, { open, close }] = useDisclosure(false)
   const [settingsOpened, { open, close }] = useDisclosure(false)
-  // layout here
+  
 
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>
@@ -41,27 +37,57 @@ export default function Timer() {
             </Group>
             <Stack>
                 <Box h={1} bg='pink'/>
-                <Group gap={8}>
+                <Stack gap={4} align='center' >
                     <SegmentedControl value={mode} onChange={setMode} fullWidth withItemsBorders={false} radius='md' 
                      data={[
                         { label: 'Basic', value: 'basic' },
                         { label: 'Focus', value: 'focus' },
                      ]} />
-                     
-                </Group>
+                     {mode === 'focus' && (
+                        <SegmentedControl
+                        fullWidth
+                        withItemsBorders={false}
+                        radius='md'
+                        value={technique}
+                        onChange={setTechnique}
+                        data={[
+                            { label: 'Pomodoro', value: 'pomodoro' },
+                            { label: '52/17', value: '52/17' },
+                            { label: 'Custom', value: 'custom' },
+                        ]}/>
+                     )}
+                </Stack>
+                {mode === 'focus' && (
+                    <Stack align="center" gap={4}>
+                        <Text size="sm" c="dimmed" tt="uppercase" fw={600}>
+                          {phase === 'work' ? 'Focus' : phase === 'shortBreak' ? 'Short Break' : 'Long Break'}
+                        </Text>
+                        <Text size="xs" c="dimmed">
+                          Cycle {cyclesCompleted + 1}
+                        </Text>
+                     </Stack>
+                )}
+                <TimerRing
+                    mode={mode}
+                    phase={phase} 
+                    seconds={seconds} 
+                    totalSeconds={totalSeconds} 
+                    isRunning={isRunning}/>
+                <TimerControls
+                    mode={mode} 
+                    isRunning={isRunning} 
+                    onStart={start} 
+                    onPause={pause} 
+                    onStop={stop} 
+                    onReset={reset}
+                    onSkip={skip}
+                    resetKey={resetKey}
+                    totalSeconds={totalSeconds}
+                    onDurationChange={(totalSecs) => setDuration(totalSecs)}/>
                 
-                <TimerRing seconds={seconds} totalSeconds={totalSeconds} isRunning={isRunning}/>
-                <TimerControls 
-                isRunning={isRunning} 
-                onStart={start} 
-                onPause={pause} 
-                onStop={stop} 
-                onReset={reset}
-                resetKey={resetKey} 
-                totalSeconds={totalSeconds}
-                onDurationChange={(totalSecs) => setDuration(totalSecs)}/>
-                <Button onClick={open}>Open Drawer</Button>
-                <TimerSettings opened={settingsOpened} onClose={close}/>
+                <TimerSettings 
+                opened={settingsOpened} onClose={close}
+                settings={settings} onSettingsChange={updateSettings}/>
             </Stack>
 
         </Stack>

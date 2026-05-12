@@ -6,6 +6,7 @@ import TimerRing from './TimerRing'
 import TimerSettings from './TimerSettings'
 import CustomTechniqueModal from './CustomTechniqueModal'
 import { useDisclosure } from '@mantine/hooks'
+import { useEffect } from 'react'
 
 function getGreeting(){
     const hour = new Date().getHours()
@@ -21,8 +22,11 @@ export default function Timer() {
     start, stop, pause, skip, reset, technique, setTechnique, TECHNIQUES}  = useTimer()
   const minutes = Math.floor(seconds / 60)
   const [settingsOpened, { open, close }] = useDisclosure(false)
-  const [customOpened, { openCustom, closeCustom }] = useDisclosure(false)
+  const [customOpened, { open: openCustom, close: closeCustom }] = useDisclosure(false)
 
+    useEffect(()=>{
+        if(technique === 'custom') openCustom()
+    },[technique])
 
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>
@@ -46,19 +50,19 @@ export default function Timer() {
                         { label: 'Focus', value: 'focus' },
                      ]} />
                      {mode === 'focus' && (
-                        <SegmentedControl
-                        fullWidth
-                        withItemsBorders={false}
-                        radius='md'
-                        value={technique}
-                        onChange={(val) => {
-                            if(val === 'custom') openCustom()
-                            else setTechnique(val)}}
-                        data={[
-                          ...Object.entries(TECHNIQUES).map(([key, val]) => ({ label: val.name, value: key })),
-                          { label: '+ Custom', value: 'custom' }
-                        ]}/>
-                     )}
+                         <SegmentedControl
+                             fullWidth
+                             withItemsBorders={false}
+                             radius='md'
+                             value={technique}
+                             onChange={(val) => {
+                                 if(val === 'custom') openCustom()
+                                 else setTechnique(val)}}
+                             data={[
+                               ...Object.entries(TECHNIQUES).map(([key, val]) => ({ label: val.name, value: key })),
+                               { label: '+ Custom', value: 'custom' }
+                             ]}/>
+                    )}
                 </Stack>
                 {mode === 'focus' && (
                     <Stack align="center" gap={4}>
@@ -70,15 +74,6 @@ export default function Timer() {
                         </Text>
                      </Stack>
                 )}
-                {mode === 'focus' && technique === 'custom'&& (
-                    <CustomTechniqueModal
-                      opened={customOpened}
-                      onClose={closeCustom}
-                      onSave={addCustomTechnique}
-                    />
-                )
-
-                }
                 <TimerRing
                     mode={mode}
                     phase={phase} 
@@ -100,6 +95,10 @@ export default function Timer() {
                 <TimerSettings 
                 opened={settingsOpened} onClose={close}
                 settings={settings} onSettingsChange={updateSettings}/>
+
+                <CustomTechniqueModal
+                opened={customOpened} onClose={closeCustom} onSave={addCustomTechnique}/>
+                
             </Stack>
 
         </Stack>

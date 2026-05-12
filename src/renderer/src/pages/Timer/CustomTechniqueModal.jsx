@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react'
 export default function CustomTechniqueModal({opened, onSave, onClose, technique}){
     const [techniqueName, setTechniqueName] = useState('untitled')
     const [techniqueError, setTechniqueError] = useState('')
-    const [work, setWork] = useState(0)
-    const [shortBreak, setShortBreak] = useState(0)
-    const [longBreak, setLongBreak] = useState(0)
-    const [cycles, setCycles] = useState(0)
+    const [work, setWork] = useState(20)
+    const [shortBreak, setShortBreak] = useState(5)
+    const [hasLongBreak, setHasLongBreak] =useState(true)
+    const [longBreak, setLongBreak] = useState(15)
+    const [cycles, setCycles] = useState(4)
 
     function handleSave(){
         if(!techniqueName.trim()){
@@ -15,7 +16,14 @@ export default function CustomTechniqueModal({opened, onSave, onClose, technique
             return
         }
         setTechniqueError('')
-        onSave(techniqueName, work, shortBreak, longBreak, cycles)
+        onSave(
+  techniqueName, 
+  work, 
+  shortBreak, 
+  hasLongBreak ? longBreak : null,
+  hasLongBreak ? cycles : null
+)
+        console.log('Works')
         onClose()
     }
 
@@ -37,7 +45,18 @@ export default function CustomTechniqueModal({opened, onSave, onClose, technique
                 <TextInput withAsterisk label="Technique Name" value={techniqueName} error={techniqueError} onChange={(e) => setTechniqueName(e.target.value) } />  
                 <NumberInput label="Work" min={1} max={180}  value={work} onChange={setWork} />
                 <NumberInput label="Short Break" min={1} max={180} value={shortBreak} onChange={setShortBreak} />
-                <NumberInput label="Long Break" min={1} max={180} value={longBreak} onChange={setLongBreak} />
+                <Checkbox 
+  label="Has long break" 
+  checked={hasLongBreak} 
+  onChange={(e) => setHasLongBreak(e.currentTarget.checked)} 
+/>
+{hasLongBreak && (
+  <>
+    <NumberInput label="Long Break" value={longBreak} onChange={setLongBreak} min={1} max={60} />
+    <NumberInput label="Cycles before long break" value={cycles} onChange={setCycles} min={1} max={10} />
+  </>
+)}
+{/* TODO: change the name to sessions add sessiion name as many sessions as the user wants */}
                 <Group justify='center'>
                         <Button color='pink'  onClick={handleSave}>Save</Button>
                         <Button color='pink' onClick={onClose} >Cancel</Button>

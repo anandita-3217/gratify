@@ -44,6 +44,7 @@ export default function Timer() {
             <Stack>
                 <Box h={1} bg='pink'/>
                 <Stack gap={4} align='center' >
+                    {/* Change custom to user defined and then improve the ux */}
                     <SegmentedControl value={mode} onChange={setMode} fullWidth withItemsBorders={false} radius='md' 
                      data={[
                         { label: 'Basic', value: 'basic' },

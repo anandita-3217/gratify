@@ -162,6 +162,6 @@ export default function useTimer(){
         settings, updateSettings,
         TECHNIQUES,
         start, stop, pause, reset, skip,
-        setDuration
+        setDuration, addCustomTechnique
     }
 }

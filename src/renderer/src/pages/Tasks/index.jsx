@@ -11,12 +11,6 @@ import useNotifications from '../../hooks/useNotifications'
 
 import * as chrono from 'chrono-node';
 
-function getGreeting(){
-    const hour = new Date().getHours()
-    if(hour < 12) return 'Good Morning!'
-    if(hour < 18) return 'Good Afternoon!'
-    return 'Good Evening!';
-}
 
 export default function Tasks({ onNavigate }){
     const {tasks, addTask, deleteTask, toggleTask,updateTask} = useTasks();
@@ -185,18 +179,8 @@ export default function Tasks({ onNavigate }){
         <Box p = "xl" style={{ height: '100%', overflow: 'auto'}}>
             
             <Stack gap={4} mb='xl'>
-                <Title order={2} fw={600}>
-                    {getGreeting()}
-                </Title>
-                <Group gap={8}>
-                    <Text c="dimmed" size="sm">
-                      {new Date().toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                    </Text>
-                </Group>
+                <Title order={3} fw={600}>Tasks</Title>
+                <Text c="dimmed" size="sm">Organize your tasks!</Text>
                 <Box bg='pink' h='1px' />
                 <Stack mt={'xl'}>
                     <Progress value={percentage} color="pink" />

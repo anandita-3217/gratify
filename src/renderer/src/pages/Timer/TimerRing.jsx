@@ -44,8 +44,11 @@ const PHASE_COLOR = {
   shortBreak: 'teal',
   longBreak: 'violet',
 }
+const PHASE_LABEL = { work: 'Focus', shortBreak: 'Short Break', longBreak: 'Long Break' }
 
-export default function TimerRing({ seconds, totalSeconds, isRunning, phase, mode }) {
+
+
+export default function TimerRing({ seconds, totalSeconds, isRunning, phase, mode, cyclesCompleted  }) {
   const color = mode === 'focus' ? (PHASE_COLOR[phase] ?? 'pink') : 'pink'
   const progress = totalSeconds === 0 ? 0 : (seconds / totalSeconds) * 100
   const mm = Math.floor(seconds / 60).toString().padStart(2, '0')
@@ -61,9 +64,17 @@ export default function TimerRing({ seconds, totalSeconds, isRunning, phase, mod
         style={{ transitionTimingFunction: 'linear' }}
         sections={[{ value: progress, color }]}
         label={
-          <Text size="2.5rem" fw={700} ta="center">
-            {mm}:{ss}
-          </Text>
+          <Stack align='center'>
+            {mode === 'focus' &&(
+              <Text size='xs' c={PHASE_COLOR[phase]} tt='uppercase' fw={600} lts={1}>{PHASE_LABEL[phase]}</Text>
+            )}
+            <Text size="2.5rem" fw={700} ta="center">
+              {mm}:{ss}
+            </Text>
+            {mode === 'focus' &&(
+              <Text size='xs' c="dimmed">cycle: {cyclesCompleted + 1}</Text>
+            )}
+          </Stack>
         }
       />
     </Stack>

@@ -8,13 +8,6 @@ import NoteCard from './NoteCard'
 import NoteModal from './NoteModal'
 import NoteDrawer from './NoteDrawer'
 
-
-function getGreeting(){
-    const hour = new Date().getHours()
-    if (hour < 12) return ('Good Morning!')
-    if (hour < 18) return ('Good Afternoon!')
-    return 'Good Evening!'
-}
 // TODO: make markdown compatible and code recognizable and format it even if i need to use a packagae or a 3rd party app - later
 export default function Notes() {
   const { notes, addNote, deleteNote, updateNote, pinNote } = useNotes()
@@ -100,16 +93,8 @@ const noteColors = ['gray', 'red', 'pink', 'grape',
 
       {/* Header */}
       <Stack gap={4} mb="xl">
-        <Title order={2} fw={600}>{getGreeting()}</Title>
-        <Group gap={8}>
-            <Text c="dimmed" size='sm'>
-              { new Date().toLocaleDateString('en-us',{
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric'
-              }) }
-            </Text>
-        </Group>
+          <Title order={3} fw={600}>Notes</Title>
+          <Text c="dimmed" size='sm'>Record your thoughts!</Text>
         <Box bg='pink' h={1}/>
         {/* search input + new note button */}
         <Stack mt={'xl'}>

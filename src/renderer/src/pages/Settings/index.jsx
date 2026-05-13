@@ -483,6 +483,10 @@ export default function Settings() {
                     />
                   </Box>
                 ))}
+                  <Box>
+                    <Text> keyboard shortcuts list them all currnt one ctrl+b sidebar collapse toggle for now is written into the sidebar.jsx code as a useeffect and change. in settings list all the shortcuts with toggles to see if the user wants them enabled and also add a feature to add new keyboard shortcuts  also keyboard shortcut for themetoggle</Text>
+
+                  </Box>
               </Group>
             </Box>
           </Stack>

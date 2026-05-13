@@ -20,7 +20,7 @@ export default function Timer() {
     isRunning, setDuration, phase, 
     mode, setMode, resetKey, settings, updateSettings, techniqueName, addCustomTechnique,
     start, stop, pause, skip, reset, technique, setTechnique, TECHNIQUES}  = useTimer()
-  const minutes = Math.floor(seconds / 60)
+//   const minutes = Math.floor(seconds / 60)
   const [settingsOpened, { open, close }] = useDisclosure(false)
   const [customOpened, { open: openCustom, close: closeCustom }] = useDisclosure(false)
 

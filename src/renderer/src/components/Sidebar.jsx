@@ -1,22 +1,37 @@
-import { ListChecks , NotepadText , Calendar,Timer ,ChartLine , Settings, Sun, Moon      } from 'lucide-react'
+import { ListChecks , NotepadText , Calendar,Timer ,ChartLine , Settings, Sun, Moon , PanelLeftOpen, PanelLeftClose     } from 'lucide-react'
 import NavItem from './NavItem'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMantineColorScheme, useComputedColorScheme } from '@mantine/core'
 
-function ThemeToggle(){
+function ThemeToggle({ collapsed }){
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light');
 
   return(
     <button
-    className='text-gray-500'
+    className='flex items-center gap-2 w-full pl-3 py-2 cursor-pointer text-gray-500 hover:text-gray-600  rounder-md transition-colors'
     onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
-    >{computedColorScheme === 'light' ? <Moon size={25}/> : <Sun size={25} />}</button>
+    >
+      {computedColorScheme === 'light' ? <Moon size={25}/> : <Sun size={25} />}
+    </button>
   )
 
 }
 
 export default function Sidebar({activePage, onNavigate}){
+  const[ collapsed, setCollapsed ] = useState(false)
+
+  useEffect(() => {
+    const handler = (e) => {
+      if(e.ctrlKey && e.key === 'b'){
+        e.preventDefault()
+        setCollapsed(c => !c)
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () =>window.removeEventListener('keydown', handler)
+  },[])
+
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: <ChartLine size={20} /> },
     { id: 'tasks', label: 'Tasks', icon: <ListChecks  size={20} /> },
@@ -27,14 +42,16 @@ export default function Sidebar({activePage, onNavigate}){
     
   ]
   return (
-    <div className='flex flex-col gap-2 p-4 h-full w-56 '>
-      <div className='flex items-center gap-2 p-4'>
-        <div className='w-8 h-8 rounded-lg bg-[#cc225c] flex justify-center items-center'>
-          <p className='text-white font-bold text-base'>G</p>
+    <div className={`flex flex-col h-full border-r border-white/[0.07] transition-all duration-200 overflow-hidden ${ collapsed ? 'w-14' : 'w-52'}`}>
+      <div className='flex items-center gap-2.5 px-5 h-14'>
+        <div className='w-5 h-5 min-w-[20px] flex justify-center items-center rounded-md bg-[#cc225c]'>
+          <p className='text-white font-bold text-xs'>G</p>
         </div>
-        <span className='text-gray-600 font-semibold'>Gratify</span>
+        <span className={`text-sm text-gray-500 font-semibold whitespace-nowrap transition-opacity duration-150 ${collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
+          Gratify
+        </span>
       </div>
-      <div className='flex flex-col flex-1'>
+      <div className='flex flex-col flex-1 gap-0.5 px-2'>
       {navItems.map(
         item => (
           <NavItem
@@ -43,13 +60,20 @@ export default function Sidebar({activePage, onNavigate}){
           icon={item.icon}
           isActive={activePage === item.id}
           onClick={() => onNavigate(item.id)}
+          collapsed={collapsed}
           />
         )
       ) }
 
       </div>
-      <div className='p-4 m-3'>
-        <ThemeToggle/>
+      <div className='pb-4 px-2 pt-3 border-t border-white/[0.07] flex flex-col gap-0.5'>
+        <button onClick={() => setCollapsed(c => !c)}
+          className='flex items-center gap-2.5 w-full px-2.5 py-2 text-gray-600 hover:text-gray-600 cursor-pointer p-1 transition-colors'>
+            <span className='min-w-[20px] flex'>
+              {collapsed ? <PanelLeftOpen size={20}/> : <PanelLeftClose size={20}/>}
+            </span>
+          </button>
+        <ThemeToggle collapsed={collapsed}/>
       </div>
     </div>
   );

@@ -93,7 +93,7 @@ const noteColors = ['gray', 'red', 'pink', 'grape',
 
       {/* Header */}
       <Stack gap={4} mb="xl">
-          <Title order={3} fw={600}>Notes</Title>
+          <Title order={2} fw={600}>Notes</Title>
           <Text c="dimmed" size='sm'>Record your thoughts!</Text>
         <Box bg='pink' h={1}/>
         {/* search input + new note button */}

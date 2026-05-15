@@ -30,7 +30,7 @@ export default function CustomTechniqueModal({opened, onSave, onClose, technique
 
     return (
         <Modal 
-            size={"100%"}
+            size="md"
             opened={opened} onClose={onClose} 
             title="New Technique"
             centered

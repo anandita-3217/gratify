@@ -26,7 +26,7 @@ const INPUT_STYLES = {
 export default function TimerControls({ mode, isRunning, onStart, onPause, onSkip,  onStop,  onReset, onDurationChange, totalSeconds}) {
     const [inputMinutes, setInputMinutes] = useState(20)
     const [inputSeconds, setInputSeconds] = useState(0)
-    const [activePreset, setActivePreset] = useState('1m')
+    const [activePreset, setActivePreset] = useState('25m')
 
     useEffect(() => {
       if(!isRunning){

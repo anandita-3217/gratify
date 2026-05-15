@@ -24,10 +24,10 @@ export default function Timer() {
 
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>
-        <Stack gap={2}>
+        <Stack gap={2} mb='xl'>
             <Group gap={8} justify='space-between'>
-                <Title fw={600} order={3}>Timer</Title>
-                <Button variant='subtle' size='sm'><Settings2 size={16} /></Button>
+                <Title fw={600} order={2}>Timer</Title>
+                <Button variant='subtle' size='sm' onClick={open}><Settings2 size={16}/></Button>
             </Group>
             <Text c='dimmed' size='sm'>Focus effectively!</Text>
             <Stack>

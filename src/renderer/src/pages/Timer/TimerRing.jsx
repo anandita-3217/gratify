@@ -57,8 +57,8 @@ export default function TimerRing({ seconds, totalSeconds, isRunning, phase, mod
   return (
     <Stack align="center" justify="center">
       <RingProgress
-        size={300}
-        thickness={14}
+        size={280}
+        thickness={12}
         roundCaps
         transitionDuration={1000}
         style={{ transitionTimingFunction: 'linear' }}

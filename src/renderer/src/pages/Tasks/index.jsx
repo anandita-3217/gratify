@@ -2,7 +2,7 @@ import TaskItem from "./TaskItem";
 import TaskModal from "./TaskModal";
 // TODO: add a search bar too 
 import { Box, Badge, Chip ,Group, MultiSelect  ,TextInput, Button, Stack, Text, Title, Progress, Select  } from "@mantine/core";
-import {  Plus,SlidersHorizontal   } from 'lucide-react';
+import {  Plus,PlusIcon,SlidersHorizontal   } from 'lucide-react';
 
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect,useRef,  useState } from "react";
@@ -179,12 +179,16 @@ export default function Tasks({ onNavigate }){
         <Box p = "xl" style={{ height: '100%', overflow: 'auto'}}>
             
             <Stack gap={4} mb='xl'>
-                <Title order={3} fw={600}>Tasks</Title>
+                <Group gap={8} justify="space-between">
+                    <Title order={2} fw={600}>Tasks</Title>
+                    <Button variant="subtle" onClick={open}><PlusIcon size={18}/></Button>
+
+                </Group>
                 <Text c="dimmed" size="sm">Organize your tasks!</Text>
                 <Box bg='pink' h='1px' />
                 <Stack mt={'xl'}>
                     <Progress value={percentage} color="pink" />
-                    <Button onClick={open} color="pink" leftSection={<Plus size={16}/>} >New Task</Button>
+                    {/* <Button onClick={open} color="pink" leftSection={<Plus size={16}/>} >New Task</Button> */}
                     
                 </Stack>
             </Stack>

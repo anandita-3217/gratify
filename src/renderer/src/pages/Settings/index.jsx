@@ -164,6 +164,7 @@ export default function Settings() {
       <Stack gap={4} mb="xl">
         <Title order={2} fw={600}>Settings</Title>
         <Text c="dimmed" size="sm">Customise your Gratify experience.</Text>
+        <Box bg='pink' h='1px'/>
       </Stack>
 
       <Stack gap="md">

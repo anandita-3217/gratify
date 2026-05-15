@@ -13,9 +13,10 @@ export default function TimerSettings({ opened, onClose, settings, technique, on
   return (
     <Drawer
     opened={opened} onClose={onClose} position='right' title="Timer Settings">
+    <Box bg='pink' h='1px'/>
 
     <Box>
-        <Title order={1} fw={500}>I am Timer Settings and i work</Title>
+          {/* <Title order={1} fw={500}>I am Timer Settings and i work</Title> */}
     </Box>
     </Drawer>
   )

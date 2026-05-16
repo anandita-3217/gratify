@@ -181,7 +181,7 @@ export default function Tasks({ onNavigate }){
             <Stack gap={4} mb='xl'>
                 <Group gap={8} justify="space-between">
                     <Title order={2} fw={600}>Tasks</Title>
-                    <Button variant="subtle" onClick={open}><PlusIcon size={18}/></Button>
+                    <Button variant="subtle" size="sm" onClick={open} aria-label="New Task"><PlusIcon size={18}/></Button>
 
                 </Group>
                 <Text c="dimmed" size="sm">Organize your tasks!</Text>

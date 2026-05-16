@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { ActionIcon, Badge, Box, Button, Chip, ColorSwatch,  Group, Select, Stack, Text, TextInput, Title  } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { Plus, Search, SlidersHorizontal, X } from 'lucide-react'
+import { Plus, PlusIcon, Search, SlidersHorizontal, X } from 'lucide-react'
 import useNotes from './useNotes'
 import NoteCard from './NoteCard'
 import NoteModal from './NoteModal'
@@ -93,12 +93,15 @@ const noteColors = ['gray', 'red', 'pink', 'grape',
 
       {/* Header */}
       <Stack gap={4} mb="xl">
+        <Group gap={8} justify='space-between'>
           <Title order={2} fw={600}>Notes</Title>
+          <Button size='sm' variant='subtle' aria-label="New note" onClick={open}><PlusIcon size={18}/></Button>
+        </Group>
           <Text c="dimmed" size='sm'>Record your thoughts!</Text>
         <Box bg='pink' h={1}/>
         {/* search input + new note button */}
         <Stack mt={'xl'}>
-          <Button onClick={open} color='pink' leftSection={<Plus size={16}/>} > New Note</Button>
+
           <Button variant='light' leftSection={<SlidersHorizontal size={14}/>} onClick={() => setFiltersOpen(f => !f)}>Search & Filters</Button>
           {(filterColors.length > 0 || filterTags.length > 0) && (
             <Badge color='pink' variant='light' size='sm' >{filterColors.length + filterTags.length} active</Badge>

@@ -27,21 +27,30 @@ export default function Timer() {
         <Stack gap={2} mb='xl'>
             <Group gap={8} justify='space-between'>
                 <Title fw={600} order={2}>Timer</Title>
-                <Button variant='subtle' size='sm' onClick={open}><Settings2 size={16}/></Button>
+                 <SegmentedControl value={mode} onChange={setMode} fullWidth withItemsBorders={false} radius='md' 
+                     data={[
+                        { label: 'Basic', value: 'basic' },
+                        { label: 'Focus', value: 'focus' },
+                     ]} />
+                {/* <Button variant='subtle' size='sm' aria-label='Timer Settings' onClick={open}><Settings2 size={16}/></Button> */}
             </Group>
             <Text c='dimmed' size='sm'>Focus effectively!</Text>
             <Stack>
                 <Box h={1} bg='pink'/>
                 <Stack gap={4} align='center' >
                     {/* Change custom to user defined and then improve the ux */}
-                    <SegmentedControl value={mode} onChange={setMode} fullWidth withItemsBorders={false} radius='md' 
-                     data={[
-                        { label: 'Basic', value: 'basic' },
-                        { label: 'Focus', value: 'focus' },
-                     ]} />
-                     {mode === 'focus' && (
+                   
+                    
+                </Stack>
+                <TimerRing
+                    mode={mode}
+                    phase={phase} 
+                    seconds={seconds} 
+                    totalSeconds={totalSeconds} 
+                    isRunning={isRunning}
+                    cyclesCompleted={cyclesCompleted}/>
+                 {mode === 'focus' && (
                          <SegmentedControl
-                             fullWidth
                              withItemsBorders={false}
                              radius='md'
                              value={technique}
@@ -53,14 +62,6 @@ export default function Timer() {
                                { label: '+ Custom', value: 'custom' }
                              ]}/>
                     )}
-                </Stack>
-                <TimerRing
-                    mode={mode}
-                    phase={phase} 
-                    seconds={seconds} 
-                    totalSeconds={totalSeconds} 
-                    isRunning={isRunning}
-                    cyclesCompleted={cyclesCompleted}/>
                 <TimerControls
                     mode={mode} 
                     isRunning={isRunning} 

@@ -90,6 +90,7 @@ export default function TimerControls({ mode, isRunning, onStart, onPause, onSki
             <Text size='2.5rem' fw={700} c='pink' mb={4}>:</Text>
             <Stack align='center' gap={2}>
               <Text size='xs' c='dimmed'>sec</Text>
+              {/* TODO: the inputs should be 00 : 00 format */}
               <NumberInput value={inputSeconds} 
               onChange={(val) => { setInputSeconds(val)
                 handleCustomChange(inputMinutes, val)

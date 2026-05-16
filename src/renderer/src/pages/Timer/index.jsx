@@ -1,9 +1,10 @@
-import { Box, Button, Group, Stack, Text, Title, NumberInput, SegmentedControl } from '@mantine/core'
-import { Settings2 } from 'lucide-react'
+import { Box, Button, Group, Stack, Text, Title, NumberInput, SegmentedControl, Select } from '@mantine/core'
+import { PlusIcon, Settings2 } from 'lucide-react'
 import useTimer from './useTimer'
 import TimerControls from './TimerControls'
 import TimerRing from './TimerRing'
 import TimerSettings from './TimerSettings'
+import TechniquePicker from './TechniquePicker'
 import CustomTechniqueModal from './CustomTechniqueModal'
 import { useDisclosure } from '@mantine/hooks'
 import { useEffect } from 'react'
@@ -49,19 +50,7 @@ export default function Timer() {
                     totalSeconds={totalSeconds} 
                     isRunning={isRunning}
                     cyclesCompleted={cyclesCompleted}/>
-                 {mode === 'focus' && (
-                         <SegmentedControl
-                             withItemsBorders={false}
-                             radius='md'
-                             value={technique}
-                             onChange={(val) => {
-                                 if(val === 'custom') openCustom()
-                                 else setTechnique(val)}}
-                             data={[
-                               ...Object.entries(TECHNIQUES).map(([key, val]) => ({ label: val.name, value: key })),
-                               { label: '+ Custom', value: 'custom' }
-                             ]}/>
-                    )}
+                 
                 <TimerControls
                     mode={mode} 
                     isRunning={isRunning} 
@@ -73,7 +62,24 @@ export default function Timer() {
                     resetKey={resetKey}
                     totalSeconds={totalSeconds}
                     onDurationChange={(totalSecs) => setDuration(totalSecs)}/>
-                
+                {mode === 'focus' && (
+                        // <Group justify='center'>
+                        //     <Select data={[
+                        //        ...Object.entries(TECHNIQUES).map(([key, val]) => ({ label: val.name, value: key })),
+                        //        { label: '+ Custom', value: 'custom' }
+                        //      ]}/>
+                        //     <Button variant='outline' size='xs'><PlusIcon size={14}/></Button> 
+                        // </Group>
+                        <Box justify='center' mt='xs'>
+              <TechniquePicker
+                technique={technique}
+                setTechnique={setTechnique}
+                TECHNIQUES={settings}
+                isRunning={isRunning}
+                onNewTechnique={openCustom}
+              />
+            </Box>
+                    )}
                 <TimerSettings 
                 opened={settingsOpened} onClose={close}
                 settings={settings} onSettingsChange={updateSettings}/>

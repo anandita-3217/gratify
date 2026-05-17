@@ -8,6 +8,7 @@ export default function TechniquePicker({ technique, setTechnique, TECHNIQUES, i
   }))
 
   const current = TECHNIQUES[technique]
+  
 
   return (
     <Group gap='xs' align='flex-start' justify='center'>

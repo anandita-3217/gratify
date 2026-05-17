@@ -44,12 +44,30 @@ export default function useTimerTechniques(){
     }))
     setTechnique(key)
   }
+  function deleteTechnique(key) {
+  // don't allow deleting built-in techniques
+  if (key === 'pomodoro' || key === '52/17') return
+  setSettings(prev => {
+    const next = { ...prev }
+    delete next[key]
+    return next
+  })
+  // if currently on deleted technique, switch to pomodoro
+  if (technique === key) setTechnique('pomodoro')
+}
 
+function editTechnique(key, newValues) {
+  setSettings(prev => ({
+    ...prev,
+    [key]: { ...prev[key], ...newValues }
+  }))
+}
   function updateSettings(techniqueKey, newValues){
     setSettings(prev => ({
       ...prev, [techniqueKey]: {...prev[techniqueKey], ...newValues}
     }))
   }
 
-  return {technique, setTechnique, settings, updateSettings, cyclesBeforeLongBreak, getPhaseSeconds, addCustomTechnique, TECHNIQUES}
+  return {technique, setTechnique, settings, updateSettings, cyclesBeforeLongBreak, getPhaseSeconds, 
+    addCustomTechnique, editTechnique, deleteTechnique, TECHNIQUES}
 }

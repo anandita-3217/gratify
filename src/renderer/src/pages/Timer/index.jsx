@@ -19,9 +19,9 @@ export default function Timer() {
   const [settingsOpened, { open, close }] = useDisclosure(false)
   const [customOpened, { open: openCustom, close: closeCustom }] = useDisclosure(false)
 
-    useEffect(()=>{
-        if(technique === 'custom') openCustom()
-    },[technique])
+    // useEffect(()=>{
+    //     if(technique === 'custom') openCustom()
+    // },[technique])
 
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>

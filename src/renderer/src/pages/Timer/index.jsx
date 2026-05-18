@@ -7,17 +7,27 @@ import TimerSettings from './TimerSettings'
 import TechniquePicker from './TechniquePicker'
 import CustomTechniqueModal from './CustomTechniqueModal'
 import { useDisclosure } from '@mantine/hooks'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Timer() {
 
   const {seconds, totalSeconds, cyclesCompleted,
     isRunning, setDuration, phase, 
     mode, setMode, resetKey, settings, updateSettings, techniqueName, addCustomTechnique,
-    start, stop, pause, skip, reset, technique, setTechnique, TECHNIQUES}  = useTimer()
+    start, stop, pause, skip, reset, technique, setTechnique, TECHNIQUES, 
+BUILT_IN_TECHNIQUES, deleteTechnique, editTechnique}  = useTimer()
 //   const minutes = Math.floor(seconds / 60)
   const [settingsOpened, { open, close }] = useDisclosure(false)
   const [customOpened, { open: openCustom, close: closeCustom }] = useDisclosure(false)
+  const [editingTechnique, setEditingTechnique] = useState(null)
+
+  function handleEditTechnique(key) {
+  setEditingTechnique(key)
+  openCustom()
+}
+
+
+
 
     // useEffect(()=>{
     //     if(technique === 'custom') openCustom()
@@ -63,29 +73,29 @@ export default function Timer() {
                     totalSeconds={totalSeconds}
                     onDurationChange={(totalSecs) => setDuration(totalSecs)}/>
                 {mode === 'focus' && (
-                        // <Group justify='center'>
-                        //     <Select data={[
-                        //        ...Object.entries(TECHNIQUES).map(([key, val]) => ({ label: val.name, value: key })),
-                        //        { label: '+ Custom', value: 'custom' }
-                        //      ]}/>
-                        //     <Button variant='outline' size='xs'><PlusIcon size={14}/></Button> 
-                        // </Group>
-                        <Box justify='center' mt='xs'>
-              <TechniquePicker
-                technique={technique}
-                setTechnique={setTechnique}
-                TECHNIQUES={settings}
-                isRunning={isRunning}
-                onNewTechnique={openCustom}
-              />
-            </Box>
+                    <Box justify='center' mt='xs'>
+                        <TechniquePicker
+                          technique={technique}
+                          setTechnique={setTechnique}
+                          TECHNIQUES={settings}
+                          isRunning={isRunning}
+                          onNewTechnique={openCustom}
+                          BUILT_IN_TECHNIQUES={BUILT_IN_TECHNIQUES}
+
+                        />
+                    </Box>
                     )}
                 <TimerSettings 
                 opened={settingsOpened} onClose={close}
                 settings={settings} onSettingsChange={updateSettings}/>
 
                 <CustomTechniqueModal
-                opened={customOpened} onClose={closeCustom} onSave={addCustomTechnique}/>
+                opened={customOpened} 
+                onClose={() => { closeCustom(); setEditingTechnique(null) }} 
+                onSave={addCustomTechnique}
+                editingTechnique={editingTechnique ? settings[editingTechnique] : null}
+                editingKey={editingTechnique}
+/>
                 
             </Stack>
 

@@ -10,24 +10,61 @@ export default function CustomTechniqueModal({opened, onSave, onClose, technique
     const [longBreak, setLongBreak] = useState(15)
     const [cycles, setCycles] = useState(4)
 
-    function handleSave(){
-        console.log('handleSavCalled', techniqueName, work,shortBreak)
-        if(!techniqueName.trim()){
-            setTechniqueError('Technique Name cannot be empty')
-            return
-        }
-        setTechniqueError('')
-        onSave(
-  techniqueName, 
-  work, 
-  shortBreak, 
-  hasLongBreak ? longBreak : null,
-  hasLongBreak ? cycles : null
-)
-        console.log('Works')
-        onClose()
-    }
+//     function handleSave(){
+//         console.log('handleSavCalled', techniqueName, work,shortBreak)
+//         if(!techniqueName.trim()){
+//             setTechniqueError('Technique Name cannot be empty')
+//             return
+//         }
+//         setTechniqueError('')
+//         onSave(
+//   techniqueName, 
+//   work, 
+//   shortBreak, 
+//   hasLongBreak ? longBreak : null,
+//   hasLongBreak ? cycles : null
+// )
+//         console.log('Works')
+//         onClose()
+//     }
 
+function handleSave() {
+  if (!techniqueName.trim()) {
+    setTechniqueError('Technique name cannot be empty')
+    return
+  }
+  setTechniqueError('')
+  if (editingKey) {
+    // editing existing — use editTechnique instead
+    onEdit(editingKey, {
+      name: techniqueName,
+      work,
+      shortBreak,
+      longBreak: hasLongBreak ? longBreak : null,
+      cyclesBeforeLongBreak: hasLongBreak ? cycles : null
+    })
+  } else {
+    onSave(techniqueName, work, shortBreak, hasLongBreak ? longBreak : null, hasLongBreak ? cycles : null)
+  }
+  onClose()
+}
+useEffect(() => {
+  if (editingTechnique) {
+    setTechniqueName(editingTechnique.name)
+    setWork(editingTechnique.work)
+    setShortBreak(editingTechnique.shortBreak)
+    setHasLongBreak(!!editingTechnique.longBreak)
+    setLongBreak(editingTechnique.longBreak ?? 15)
+    setCycles(editingTechnique.cyclesBeforeLongBreak ?? 4)
+  } else {
+    setTechniqueName('untitled')
+    setWork(20)
+    setShortBreak(5)
+    setHasLongBreak(true)
+    setLongBreak(15)
+    setCycles(4)
+  }
+}, [opened])
     return (
         <Modal 
             size="md"

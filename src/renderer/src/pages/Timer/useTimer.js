@@ -19,7 +19,7 @@ export default function useTimer(){
     const {technique, setTechnique,
         settings,updateSettings,
         cyclesBeforeLongBreak, getPhaseSeconds, addCustomTechnique,
-        TECHNIQUES
+        TECHNIQUES, BUILT_IN_TECHNIQUES, deleteTechnique, editTechnique
     } = useTimerTechniques()
     
     const [mode, setMode] = useState('basic')
@@ -162,6 +162,7 @@ export default function useTimer(){
         settings, updateSettings,
         TECHNIQUES,
         start, stop, pause, reset, skip,
-        setDuration, addCustomTechnique
+        setDuration, addCustomTechnique,
+        BUILT_IN_TECHNIQUES, deleteTechnique, editTechnique
     }
 }

@@ -21,17 +21,11 @@ BUILT_IN_TECHNIQUES, deleteTechnique, editTechnique}  = useTimer()
   const [customOpened, { open: openCustom, close: closeCustom }] = useDisclosure(false)
   const [editingTechnique, setEditingTechnique] = useState(null)
 
-  function handleEditTechnique(key) {
-  setEditingTechnique(key)
-  openCustom()
-}
+  function handleEditTechnique(){
+    setEditingTechnique(key)
+    openCustom()
+  }
 
-
-
-
-    // useEffect(()=>{
-    //     if(technique === 'custom') openCustom()
-    // },[technique])
 
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>

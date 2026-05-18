@@ -1,7 +1,7 @@
 import { Box ,Center, Checkbox, Stack, Title,Text,TextInput, Modal, Group, Select, Button, NumberInput, SegmentedControl} from '@mantine/core'
 import { useEffect, useState } from 'react'
 // TODO: Saves but the technique doesnt appear in the segmented control
-export default function CustomTechniqueModal({opened, onSave, onClose, technique}){
+export default function CustomTechniqueModal({opened, onSave, onClose, technique, editingTechnique }){
     const [techniqueName, setTechniqueName] = useState('untitled')
     const [techniqueError, setTechniqueError] = useState('')
     const [work, setWork] = useState(20)

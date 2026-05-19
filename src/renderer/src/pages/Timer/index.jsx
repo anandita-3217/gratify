@@ -21,7 +21,7 @@ BUILT_IN_TECHNIQUES, deleteTechnique, editTechnique}  = useTimer()
   const [customOpened, { open: openCustom, close: closeCustom }] = useDisclosure(false)
   const [editingTechnique, setEditingTechnique] = useState(null)
 
-  function handleEditTechnique(){
+  function handleEditTechnique(key){
     setEditingTechnique(key)
     openCustom()
   }
@@ -75,6 +75,8 @@ BUILT_IN_TECHNIQUES, deleteTechnique, editTechnique}  = useTimer()
                           isRunning={isRunning}
                           onNewTechnique={openCustom}
                           BUILT_IN_TECHNIQUES={BUILT_IN_TECHNIQUES}
+                          onEdit={handleEditTechnique}
+                          onDelete={deleteTechnique}
 
                         />
                     </Box>
@@ -87,6 +89,7 @@ BUILT_IN_TECHNIQUES, deleteTechnique, editTechnique}  = useTimer()
                 opened={customOpened} 
                 onClose={() => { closeCustom(); setEditingTechnique(null) }} 
                 onSave={addCustomTechnique}
+                onEdit={editTechnique}
                 editingTechnique={editingTechnique ? settings[editingTechnique] : null}
                 editingKey={editingTechnique}
 />

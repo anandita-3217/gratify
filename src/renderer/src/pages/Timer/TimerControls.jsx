@@ -1,7 +1,7 @@
 import { ActionIcon, Group, NumberInput, Stack, Text } from '@mantine/core'
 import { Play, Pause, Square, RotateCcw, SkipForward } from 'lucide-react'
 import { useEffect, useState } from 'react'
-
+import { TimeInput } from '@mantine/dates'
 
 const PRESETS = [
   {label: '25m', minutes: 25, seconds: 0},
@@ -51,7 +51,7 @@ export default function TimerControls({ mode, isRunning, onStart, onPause, onSki
 
   return (
     <Stack align="center" gap="md">
-      {!isRunning && mode === 'basic' && (
+      {/* {!isRunning && mode === 'basic' && (
         <Stack align='center' gap="sm">
           <Group gap='xs'>
             {PRESETS.map(p => (
@@ -90,13 +90,14 @@ export default function TimerControls({ mode, isRunning, onStart, onPause, onSki
             <Text size='2.5rem' fw={700} c='pink' mb={4}>:</Text>
             <Stack align='center' gap={2}>
               <Text size='xs' c='dimmed'>sec</Text>
-              {/* TODO: the inputs should be 00 : 00 format */}
+              
               <NumberInput value={inputSeconds} 
               onChange={(val) => { setInputSeconds(val)
                 handleCustomChange(inputMinutes, val)
               }} 
               min={0} max={59} 
               hideControls
+              formatter={(val) => String(val).padStart(2,'0')}
               styles={{
                 input: {
                   fontSize: '2.5rem',
@@ -116,7 +117,44 @@ export default function TimerControls({ mode, isRunning, onStart, onPause, onSki
           </Group>
         </Stack>
 
-      )}
+      )} */}
+      {/* DOesnt work for values greater than 24 */}
+      {!isRunning && mode === 'basic' && (
+  <Stack align='center' gap="sm">
+    <Group gap='xs'>
+      {PRESETS.map(p => (
+        <ActionIcon key={p.label} variant={activePreset === p.label ? 'filled' : 'light'}
+          color='pink' size='lg' radius='xl'
+          onClick={() => handlePreset(p)}>
+          <Text size='xs' fw={600}>{p.label}</Text>
+        </ActionIcon>
+      ))}
+    </Group>
+
+    <TimeInput
+      withSeconds
+      value={`${String(inputMinutes).padStart(2,'0')}:${String(inputSeconds).padStart(2,'0')}`}
+      onChange={(e) => {
+        const [mins, secs] = e.target.value.split(':').map(Number)
+        setInputMinutes(mins || 0)
+        setInputSeconds(secs || 0)
+        handleCustomChange(mins || 0, secs || 0)
+      }}
+      styles={{
+        input: {
+          fontSize: '2.5rem',
+          fontWeight: 700,
+          textAlign: 'center',
+          width: '160px',
+          background: 'transparent',
+          border: 'none',
+          borderBottom: '2px solid var(--mantine-color-pink-8)',
+          borderRadius: 0,
+        }
+      }}
+    />
+  </Stack>
+)}
       <Group justify='center' gap="xl">
       {isRunning ? (
         <>

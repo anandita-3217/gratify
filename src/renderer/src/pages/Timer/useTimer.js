@@ -25,7 +25,7 @@ export default function useTimer(){
     const [mode, setMode] = useState('basic')
     const [phase, setPhase] = useState('work')
     const [isRunning, setIsRunning] = useState(false)
-    const [basicDuration, setBasicDuration] = useState(60)
+    const [basicDuration, setBasicDuration] = useState(1200)
 
     const [seconds, setSeconds] = useState(basicDuration)
     const [totalSeconds, setTotalSeconds] = useState(basicDuration)

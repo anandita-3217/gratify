@@ -51,110 +51,54 @@ export default function TimerControls({ mode, isRunning, onStart, onPause, onSki
 
   return (
     <Stack align="center" gap="md">
-      {/* {!isRunning && mode === 'basic' && (
-        <Stack align='center' gap="sm">
-          <Group gap='xs'>
-            {PRESETS.map(p => (
-              <ActionIcon key={p.label} variant={ activePreset === p.label ? 'filled' : 'light'} 
-              color='pink' size='lg' radius='xl' 
-              onClick={() => handlePreset(p)}>
-                <Text size='xs' fw={600}>{p.label}</Text>
-              </ActionIcon>
-            ))}
-          </Group>
-          <Group gap='xs' align='center'>
-            <Stack align='center' gap={2}>
-              <Text size='xs' c='dimmed'>min</Text>
-              <NumberInput value={inputMinutes} 
-              onChange={(val) => { setInputMinutes(val)
-                handleCustomChange(val, inputMinutes)
-              }} 
-              min={0} max={180} 
-              hideControls
-              styles={{
-                input: {
-                  fontSize: '2.5rem',
-                  fontWeight: 400,
-                  fontFamily: 'sans-serif',
-                  textAlign: 'center',
-                  width: '100px',
-                  background: 'transparent',
-                  border: 'none',
-                  borderBottom: '2px solid var(--mantine-color-pink-8)',
-                  borderRadius: '0',
-                  padding: '0 8px'
-                }
-              }}/>
-
-            </Stack>
-            <Text size='2.5rem' fw={700} c='pink' mb={4}>:</Text>
-            <Stack align='center' gap={2}>
-              <Text size='xs' c='dimmed'>sec</Text>
-              
-              <NumberInput value={inputSeconds} 
-              onChange={(val) => { setInputSeconds(val)
-                handleCustomChange(inputMinutes, val)
-              }} 
-              min={0} max={59} 
-              hideControls
-              formatter={(val) => String(val).padStart(2,'0')}
-              styles={{
-                input: {
-                  fontSize: '2.5rem',
-                  fontWeight: 400,
-                  fontFamily: 'sans-serif',
-                  textAlign: 'center',
-                  width: '100px',
-                  background: 'transparent',
-                  border: 'none',
-                  borderBottom: '2px solid var(--mantine-color-pink-8)',
-                  borderRadius: '0',
-                  padding: '0 8px'
-                }
-              }}/>
-
-            </Stack>
-          </Group>
-        </Stack>
-
-      )} */}
       {/* DOesnt work for values greater than 24 */}
-      {!isRunning && mode === 'basic' && (
-  <Stack align='center' gap="sm">
-    <Group gap='xs'>
-      {PRESETS.map(p => (
-        <ActionIcon key={p.label} variant={activePreset === p.label ? 'filled' : 'light'}
-          color='pink' size='lg' radius='xl'
-          onClick={() => handlePreset(p)}>
-          <Text size='xs' fw={600}>{p.label}</Text>
-        </ActionIcon>
-      ))}
-    </Group>
-
-    <TimeInput
-      withSeconds
-      value={`${String(inputMinutes).padStart(2,'0')}:${String(inputSeconds).padStart(2,'0')}`}
-      onChange={(e) => {
-        const [mins, secs] = e.target.value.split(':').map(Number)
-        setInputMinutes(mins || 0)
-        setInputSeconds(secs || 0)
-        handleCustomChange(mins || 0, secs || 0)
-      }}
-      styles={{
-        input: {
-          fontSize: '2.5rem',
-          fontWeight: 700,
-          textAlign: 'center',
-          width: '160px',
-          background: 'transparent',
-          border: 'none',
-          borderBottom: '2px solid var(--mantine-color-pink-8)',
-          borderRadius: 0,
-        }
-      }}
-    />
-  </Stack>
-)}
+      <Group gap='xs' align='center'>
+  <input
+    type="number"
+    value={String(inputMinutes).padStart(2, '0')}
+    onChange={(e) => {
+      const val = Math.min(180, Math.max(0, parseInt(e.target.value) || 0))
+      setInputMinutes(val)
+      handleCustomChange(val, inputSeconds)
+    }}
+    style={{
+      fontSize: '2.5rem',
+      fontWeight: 700,
+      textAlign: 'center',
+      width: '90px',
+      background: 'transparent',
+      border: 'none',
+      borderBottom: '2px solid var(--mantine-color-pink-8)',
+      borderRadius: 0,
+      padding: '0 8px',
+      color: 'inherit',
+      outline: 'none',
+    }}
+  />
+  <Text size='2.5rem' fw={700} c='pink'>:</Text>
+  <input
+    type="number"
+    value={String(inputSeconds).padStart(2, '0')}
+    onChange={(e) => {
+      const val = Math.min(59, Math.max(0, parseInt(e.target.value) || 0))
+      setInputSeconds(val)
+      handleCustomChange(inputMinutes, val)
+    }}
+    style={{
+      fontSize: '2.5rem',
+      fontWeight: 700,
+      textAlign: 'center',
+      width: '90px',
+      background: 'transparent',
+      border: 'none',
+      borderBottom: '2px solid var(--mantine-color-pink-8)',
+      borderRadius: 0,
+      padding: '0 8px',
+      color: 'inherit',
+      outline: 'none',
+    }}
+  />
+</Group>
       <Group justify='center' gap="xl">
       {isRunning ? (
         <>

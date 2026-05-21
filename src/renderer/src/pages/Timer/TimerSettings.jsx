@@ -5,18 +5,17 @@
 //   2. duration inputs (only editable when custom)
 //   3. sound settings (placeholder for now)
 //   4. encouraging message toggle (placeholder for now)
-import useTimer from './useTimer'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
-import { Box, Drawer,Divider, Stack, Switch, Text, Title } from '@mantine/core'
+import { Drawer,Divider, Stack, Switch, Text } from '@mantine/core'
 import { useState } from 'react'
 import { BellRing , BellOff  } from 'lucide-react';
 
 export default function TimerSettings({ opened, onClose, settings, technique, onTechniqueChange, onSettingsChange }) {
     // sound enabled state — useLocalStorage
-    const [sound, setSound] = useState(true)
+    const [sound, setSound] = useLocalStorage('timerSound', true)
  
     // notifications enabled state — useLocalStorage
-    const [notifications, setNotifications] = useState(false)
+    const [notifications, setNotifications] = useLocalStorage('timerNotifications', false)
   return (
     <Drawer
     opened={opened} onClose={onClose}
@@ -57,6 +56,9 @@ export default function TimerSettings({ opened, onClose, settings, technique, on
       onChange={(e) => setNotifications(e.currentTarget.checked) }
       label='Notifications On'
       />
+      <Text size='xs' c='dimmed'>
+  Enabling this allows Gratify to send system notifications when a phase ends.
+</Text>
     </Stack>
     </Drawer>
   )

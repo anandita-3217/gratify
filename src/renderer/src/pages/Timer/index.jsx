@@ -32,12 +32,15 @@ BUILT_IN_TECHNIQUES, deleteTechnique, editTechnique}  = useTimer()
         <Stack gap={2} mb='xl'>
             <Group gap={8} justify='space-between'>
                 <Title fw={600} order={2}>Timer</Title>
+                <Group gap='xs'>
                  <SegmentedControl value={mode} onChange={setMode} fullWidth withItemsBorders={false} radius='md' 
                      data={[
                         { label: 'Basic', value: 'basic' },
                         { label: 'Focus', value: 'focus' },
                      ]} />
-                {/* <Button variant='subtle' size='sm' aria-label='Timer Settings' onClick={open}><Settings2 size={16}/></Button> */}
+                <Button variant='subtle' size='xs' aria-label='Timer Settings' onClick={open}><Settings2 size={12}/></Button>
+
+                </Group>
             </Group>
             <Text c='dimmed' size='sm'>Focus effectively!</Text>
             <Stack>

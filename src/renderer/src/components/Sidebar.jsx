@@ -1,19 +1,31 @@
 import { ListChecks , NotepadText , Calendar,Timer ,ChartLine , Settings, Sun, Moon , PanelLeftOpen, PanelLeftClose     } from 'lucide-react'
 import NavItem from './NavItem'
 import { useEffect, useState } from 'react';
-import { useMantineColorScheme, useComputedColorScheme } from '@mantine/core'
+import { useMantineColorScheme, useComputedColorScheme, Switch } from '@mantine/core'
 
 function ThemeToggle({ collapsed }){
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light');
 
   return(
+    <>
     <button
     className='flex items-center gap-2 w-full pl-3 py-2 cursor-pointer text-gray-500 hover:text-gray-600  rounder-md transition-colors'
     onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
     >
       {computedColorScheme === 'light' ? <Moon size={25}/> : <Sun size={25} />}
     </button>
+    <Switch
+      p={8}
+      // onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
+      size="md"
+      // color="gray.4"
+      onLabel={<Sun size={16} color="orange" />}
+      offLabel={<Moon size={16} color="gray" />}
+    />
+
+    </>
+
   )
 
 }
@@ -78,3 +90,16 @@ export default function Sidebar({activePage, onNavigate}){
     </div>
   );
 }
+// TODO: replace themetoggle with this import { Switch } from '@mantine/core';
+// import { SunIcon, MoonStarsIcon } from '@phosphor-icons/react';
+
+// function Demo() {
+//   return (
+//     <Switch
+//       size="md"
+//       color="dark.4"
+//       onLabel={<SunIcon size={16} color="var(--mantine-color-yellow-4)" />}
+//       offLabel={<MoonStarsIcon size={16} color="var(--mantine-color-blue-6)" />}
+//     />
+//   );
+// }

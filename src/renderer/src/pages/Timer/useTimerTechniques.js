@@ -76,10 +76,37 @@ import { useState } from "react"
 //   return {technique, setTechnique, settings, updateSettings, cyclesBeforeLongBreak, getPhaseSeconds, 
 //     addCustomTechnique, editTechnique, deleteTechnique, TECHNIQUES}
 // }
+/**
+ * // new technique shape
+{
+  name: 'My Technique',
+  phases: [
+    { name: 'Work', duration: 25 },
+    { name: 'Short Break', duration: 5 },
+    { name: 'Long Break', duration: 15 },
+  ]
+}
+ */
 
 const BUILT_IN_TECHNIQUES = {
-  pomodoro: { name: 'Pomodoro', work: 25, shortBreak: 5, longBreak: 15, cyclesBeforeLongBreak: 4 },
-  '52/17': { name: '52/17', work: 52, shortBreak: 17, longBreak: null, cyclesBeforeLongBreak: null },
+  pomodoro: {
+    name: 'Pomodoro',
+    phases: [
+      { name: 'Work', duration: 25 },
+      { name: 'Short Break', duration: 5 },
+      { name: 'Long Break', duration: 15 },
+    ],
+    cyclesBeforeLongBreak: 4
+  },
+  '52/17': {
+    name: '52/17',
+    phases: [
+      { name: 'Work', duration: 52 },
+      { name: 'Short Break', duration: 17 },
+    ],
+    cyclesBeforeLongBreak: null
+  },
+
 }
 
 export default function useTimerTechniques() {

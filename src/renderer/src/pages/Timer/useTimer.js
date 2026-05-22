@@ -9,7 +9,7 @@
  * @property {function} pause
  * @property {function} reset
  * @property {function} setDuration    // takes minutes, sets total and resets timer
- */
+*/
 
 import { useEffect, useState, useRef } from "react";
 import useTimerTechniques from "./useTimerTechniques";

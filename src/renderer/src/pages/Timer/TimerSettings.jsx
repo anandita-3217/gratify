@@ -6,6 +6,7 @@
 //   3. sound settings (placeholder for now)
 //   4. encouraging message toggle (placeholder for now)
 import { useLocalStorage } from '../../hooks/useLocalStorage'
+import useTimerPreferences from '../../hooks/useTimerPreferences';
 import { Drawer,Divider, Stack, Switch, Text } from '@mantine/core'
 import { useState } from 'react'
 import { BellRing , BellOff  } from 'lucide-react';

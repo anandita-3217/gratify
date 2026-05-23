@@ -120,17 +120,17 @@ export default function useTimerTechniques() {
 
   const cyclesBeforeLongBreak = settings[technique]?.cyclesBeforeLongBreak
 
-  function getPhaseSeconds(phase) {
-    const duration = settings[technique]?.[phase]
-    if (!duration) return 0
-    return duration * 60
+  function getPhaseSeconds(phaseIndex) {
+    const phases = settings[technique]?.phases
+    if (!phases || !phases[phaseIndex]) return 0
+    return phases[phaseIndex].duration * 60
   }
 
-  function addCustomTechnique(name, work, shortBreak, longBreak, cyclesBeforeLongBreak) {
+  function addCustomTechnique(name, phases, cyclesBeforeLongBreak) {
     const key = name.toLowerCase().replace(/\s+/g, '-')
     setCustomTechniques(prev => ({
       ...prev,
-      [key]: { name, work, shortBreak, longBreak, cyclesBeforeLongBreak }
+      [key]: { name, phases, cyclesBeforeLongBreak }
     }))
     setTechnique(key)
   }

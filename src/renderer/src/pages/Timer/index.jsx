@@ -12,11 +12,11 @@ import { useState, useEffect } from 'react'
 export default function Timer() {
 
   const {seconds, totalSeconds, cyclesCompleted,
-    isRunning, setDuration, phase, 
+    isRunning, setDuration, phaseIndex,  currentPhase, 
     mode, setMode, resetKey, settings, updateSettings, techniqueName, addCustomTechnique,
     start, stop, pause, skip, reset, technique, setTechnique, TECHNIQUES, 
-BUILT_IN_TECHNIQUES, deleteTechnique, editTechnique}  = useTimer()
-//   const minutes = Math.floor(seconds / 60)
+    BUILT_IN_TECHNIQUES, deleteTechnique, editTechnique}  = useTimer()
+
   const [settingsOpened, { open, close }] = useDisclosure(false)
   const [customOpened, { open: openCustom, close: closeCustom }] = useDisclosure(false)
   const [editingTechnique, setEditingTechnique] = useState(null)
@@ -45,14 +45,20 @@ BUILT_IN_TECHNIQUES, deleteTechnique, editTechnique}  = useTimer()
             <Text c='dimmed' size='sm'>Focus effectively!</Text>
             <Stack>
                 <Box h={1} bg='pink'/>
-                <Stack gap={4} align='center' >
-                    {/* Change custom to user defined and then improve the ux */}
-                   
-                    
-                </Stack>
+                {mode === 'focus' && (
+                    <Stack align='center' gap={4}>
+                        <Text size='sm' c='dimmed' tt='uppercase' fw={600}>
+                            {currentPhase?.name ?? 'Focus'}
+                        </Text>
+                        <Text size='sm' c='dimmed' tt='uppercase' fw={600}>
+                            Cycle {cyclesCompleted + 1}
+                        </Text>
+                    </Stack>
+                )}
                 <TimerRing
                     mode={mode}
-                    phase={phase} 
+                    phaseIndex={phaseIndex}
+                    currentPhase={currentPhase} 
                     seconds={seconds} 
                     totalSeconds={totalSeconds} 
                     isRunning={isRunning}

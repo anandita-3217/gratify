@@ -23,7 +23,7 @@ export default function useTimer(){
     } = useTimerTechniques()
     
     const [mode, setMode] = useState('basic')
-    const [phase, setPhase] = useState('work')
+    const [phaseIndex, setPhaseIndex] = useState(0)
     const [isRunning, setIsRunning] = useState(false)
     const [basicDuration, setBasicDuration] = useState(1200)
 
@@ -32,9 +32,10 @@ export default function useTimer(){
     const [cyclesCompleted, setCyclesCompleted] = useLocalStorage('cyclesCompleted', 0)
     const [resetKey, setResetKey] = useState(0)
     
+    const currentPhase = settings[technique]?.phases?.[phaseIndex]
     const modeRef = useRef(mode)
     const secondsRef = useRef(seconds)
-    const phaseRef = useRef(phase)
+    const phaseIndexRef  = useRef(phaseIndex)
     const cyclesRef = useRef(cyclesCompleted)
 
     useEffect(() => {
@@ -46,8 +47,8 @@ export default function useTimer(){
     },[mode])
     
     useEffect(() => {
-        phaseRef.current = phase
-    },[phase])
+        phaseIndexRef.current = phaseIndex
+    },[phaseIndex])
     
     useEffect(() => {
         cyclesRef.current = cyclesCompleted
@@ -55,8 +56,8 @@ export default function useTimer(){
 
     useEffect(() => {
         if(mode === 'focus') {
-            setPhase('work')
-            const secs = getPhaseSeconds('work')
+            setPhaseIndex(0)
+            const secs = getPhaseSeconds(0)
             setSeconds(secs)
             setTotalSeconds(secs)
             secondsRef.current = secs
@@ -72,11 +73,11 @@ export default function useTimer(){
         secondsRef.current = secs
       }
       else{
-        const secs = getPhaseSeconds('work')
+        const secs = getPhaseSeconds(0)
         setSeconds(secs)
         setTotalSeconds(secs)
         secondsRef.current = secs
-        setPhase('work')
+        setPhaseIndex(0)
       }
     }, [mode])
    
@@ -131,20 +132,15 @@ export default function useTimer(){
     
     function handlePhaseComplete(){
         setIsRunning(false)
-
-        if(phaseRef.current === 'work'){
-            const newCycles = cyclesRef.current + 1 
-            setCyclesCompleted(newCycles)
-            if(cyclesBeforeLongBreak && newCycles % cyclesBeforeLongBreak === 0){
-                setPhase('longBreak')
-                setDuration(getPhaseSeconds('longBreak'))
-            } else{
-                setPhase('shortBreak')
-                setDuration(getPhaseSeconds('shortBreak'))
-            }
+        const phases =  settings[technique]?.phases ?? []
+        const nextIndex = phaseIndexRef.current + 1
+        if(nextIndex >= phases.length){
+            setCyclesCompleted(c => c + 1)
+            setPhaseIndex(0)
+            setDuration(getPhaseSeconds(0))
         } else {
-            setPhase('work')
-            setDuration(getPhaseSeconds('work'))
+            setPhaseIndex(nextIndex)
+            setDuration(getPhaseSeconds(nextIndex))
         }
     }
 
@@ -156,7 +152,8 @@ export default function useTimer(){
     return {
         seconds, totalSeconds, isRunning, resetKey,
         mode, setMode,
-        phase,
+        phaseIndex, setPhaseIndex,
+        currentPhase,
         cyclesCompleted,
         technique, setTechnique,
         settings, updateSettings,

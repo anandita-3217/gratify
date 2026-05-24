@@ -115,6 +115,8 @@ export default function CustomTechniqueModal({ opened, onClose, onSave, editingT
   useEffect(() => {
     if (editingTechnique) {
       // prefill from existing technique
+      setTechniqueName(editingTechnique.name)
+      setPhases(editingTechnique.phases)
       // hint: editingTechnique.phases is the array
     } else {
       // reset to defaults
@@ -128,9 +130,12 @@ export default function CustomTechniqueModal({ opened, onClose, onSave, editingT
 
   function addPhase() {
     // add a new phase with default values to phases array
+    setPhases(prev => [...prev, {name: 'New Phase', duration: 25}])
   }
 
   function removePhase(index) {
+    if (phases.length <= 1) return
+    setPhases(prev => prev.filter((_, i) => i !== index))
     // filter out phase at index
     // don't allow less than 1 phase
   }
@@ -138,14 +143,26 @@ export default function CustomTechniqueModal({ opened, onClose, onSave, editingT
   function updatePhase(index, field, value) {
     // map over phases, update matching index
     // hint: same pattern as updateTask
+    setPhases(prev => prev.map((p, i) => i === index ? {...p,[field]: value} : p))
   }
 
   function handleSave() {
     // validate technique name
+    if (!techniqueName.trim()) {
+      setTechniqueError('Technique name cannot be empty')
+      return
+    }
     // validate at least one phase
+    if (phases.length < 1) return
+    setTechniqueError('There must be atleast one phase')
     // build technique object from phases
-    // call onSave or onEdit
-    // onClose
+    if (editingKey){
+      onEdit(editingKey, {name: techniqueName, phases})
+    }
+    else{
+      onSave(techniqueName, phases, null)
+    }
+    onClose()
   }
 
   return (
@@ -178,8 +195,25 @@ export default function CustomTechniqueModal({ opened, onClose, onSave, editingT
         {phases.map((phase, index) => (
           <Group key={index} gap="xs" align="flex-end">
             {/* phase name input */}
+            <TextInput label={index === 0 ? 'Phase Name' : undefined}
+            value={phase.name}
+            onChange={(e) => updatePhase(index, 'name', e.target.value)}
+            style={{ flex: 1 }}/>
             {/* phase duration input */}
+            <NumberInput label={index === 0 ? 'Minutes': undefined}
+            value={phase.duration}
+            onChange={(val) => updatePhase(index, 'duration', val)}
+            min={1}
+            max={180}
+            w={80}/>
             {/* delete button — disabled if only 1 phase left */}
+            <ActionIcon
+            variant='subtle'
+            color='red'
+            mb={4}
+            disabled={phases.length <= 1}
+            onClick={() => removePhase(index)}
+            ><Trash size={14}/></ActionIcon>
           </Group>
         ))}
 

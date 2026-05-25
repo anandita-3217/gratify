@@ -46,16 +46,14 @@ export default function TechniquePicker({ technique, setTechnique, TECHNIQUES, B
           )}
           <ActionIcon
             variant="subtle"
-            size='sm'
+            size='md'
             disabled={isRunning}
             onClick={onNewTechnique}
-          ><Plus size={14}/></ActionIcon>
+          ><Plus size={16}/></ActionIcon>
         </Group>
         {current && (
           <Text size='xs' c='dimmed'>
-            {current.work}m work
-            {current.shortBreak ? `. ${current.shortBreak}m break` : ''}
-            {current.cyclesBeforeLongBreak ? `. ${current.cyclesBeforeLongBreak} cycles` : ''}
+            {current.phases?.map(p => `${p.name}: ${p.durration}m`).join('.')}
           </Text>
         )}
       </Stack>

@@ -45,16 +45,6 @@ export default function Timer() {
             <Text c='dimmed' size='sm'>Focus effectively!</Text>
             <Stack>
                 <Box h={1} bg='pink'/>
-                {mode === 'focus' && (
-                    <Stack align='center' gap={4}>
-                        <Text size='sm' c='dimmed' tt='uppercase' fw={600}>
-                            {currentPhase?.name ?? 'Focus'}
-                        </Text>
-                        <Text size='sm' c='dimmed' tt='uppercase' fw={600}>
-                            Cycle {cyclesCompleted + 1}
-                        </Text>
-                    </Stack>
-                )}
                 <TimerRing
                     mode={mode}
                     phaseIndex={phaseIndex}

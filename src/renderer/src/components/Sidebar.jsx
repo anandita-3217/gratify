@@ -6,24 +6,25 @@ import { useMantineColorScheme, useComputedColorScheme, Switch } from '@mantine/
 function ThemeToggle({ collapsed }){
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light');
+  
+  const isDark = computedColorScheme === 'dark'
 
   return(
     <>
-    <button
+    {/* <button
     className='flex items-center gap-2 w-full pl-3 py-2 cursor-pointer text-gray-500 hover:text-gray-600  rounder-md transition-colors'
     onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
     >
       {computedColorScheme === 'light' ? <Moon size={25}/> : <Sun size={25} />}
-    </button>
+    </button> */}
     <Switch
       p={8}
-      // onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
       size="md"
-      // color="gray.4"
+      checked={isDark}
+      onChange={(event) => setColorScheme(event.currentTarget.checked ? 'dark' : 'light')}
       onLabel={<Sun size={16} color="orange" />}
       offLabel={<Moon size={16} color="gray" />}
     />
-
     </>
 
   )

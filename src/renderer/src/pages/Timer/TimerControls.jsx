@@ -49,73 +49,79 @@ export default function TimerControls({ mode, isRunning, onStart, onPause, onSki
       onDurationChange(total)
     }
 
-  return (
-    <Stack align="center" gap="md">
-      {/* DOesnt work for values greater than 24 */}
-      <Group gap='xs' align='center'>
-  <input
-    type="number"
-    value={String(inputMinutes).padStart(2, '0')}
-    onChange={(e) => {
-      const val = Math.min(180, Math.max(0, parseInt(e.target.value) || 0))
-      setInputMinutes(val)
-      handleCustomChange(val, inputSeconds)
-    }}
-    style={{
-      fontSize: '2.5rem',
-      fontWeight: 700,
-      textAlign: 'center',
-      width: '90px',
-      background: 'transparent',
-      border: 'none',
-      borderBottom: '2px solid var(--mantine-color-pink-8)',
-      borderRadius: 0,
-      padding: '0 8px',
-      color: 'inherit',
-      outline: 'none',
-    }}
-  />
-  <Text size='2.5rem' fw={700} c='pink'>:</Text>
-  <input
-    type="number"
-    value={String(inputSeconds).padStart(2, '0')}
-    onChange={(e) => {
-      const val = Math.min(59, Math.max(0, parseInt(e.target.value) || 0))
-      setInputSeconds(val)
-      handleCustomChange(inputMinutes, val)
-    }}
-    style={{
-      fontSize: '2.5rem',
-      fontWeight: 700,
-      textAlign: 'center',
-      width: '90px',
-      background: 'transparent',
-      border: 'none',
-      borderBottom: '2px solid var(--mantine-color-pink-8)',
-      borderRadius: 0,
-      padding: '0 8px',
-      color: 'inherit',
-      outline: 'none',
-    }}
-  />
-</Group>
-      <Group justify='center' gap="xl">
-      {isRunning ? (
-        <>
-        <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onPause}> <Pause size={16}/> </ActionIcon>
-        {mode === 'focus' ? (
-          <ActionIcon variant="filled" color='teal' size="xl" radius='xl' onClick={onSkip}> <SkipForward size={16}/> </ActionIcon>
+  return (<>
+    {!isRunning && mode === 'basic' && (
+      
+      <Stack align="center" gap="md">
+        {/* DOesnt work for values greater than 24 */}
+        <Group gap='xs' align='center'>
+    <input
+      type="number"
+      value={String(inputMinutes).padStart(2, '0')}
+      onChange={(e) => {
+        const val = Math.min(180, Math.max(0, parseInt(e.target.value) || 0))
+        setInputMinutes(val)
+        handleCustomChange(val, inputSeconds)
+      }}
+      style={{
+        fontSize: '2.5rem',
+        fontWeight: 700,
+        textAlign: 'center',
+        width: '90px',
+        background: 'transparent',
+        border: 'none',
+        borderBottom: '2px solid var(--mantine-color-pink-8)',
+        borderRadius: 0,
+        padding: '0 8px',
+        color: 'inherit',
+        outline: 'none',
+      }}
+    />
+    <Text size='2.5rem' fw={700} c='pink'>:</Text>
+    <input
+      type="number"
+      value={String(inputSeconds).padStart(2, '0')}
+      onChange={(e) => {
+        const val = Math.min(59, Math.max(0, parseInt(e.target.value) || 0))
+        setInputSeconds(val)
+        handleCustomChange(inputMinutes, val)
+      }}
+      style={{
+        fontSize: '2.5rem',
+        fontWeight: 700,
+        textAlign: 'center',
+        width: '90px',
+        background: 'transparent',
+        border: 'none',
+        borderBottom: '2px solid var(--mantine-color-pink-8)',
+        borderRadius: 0,
+        padding: '0 8px',
+        color: 'inherit',
+        outline: 'none',
+      }}
+    />
+  </Group>
+      </Stack>
+    )}
+    <Stack>
+        <Group justify='center' gap="xl">
+        {isRunning ? (
+          <>
+          <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onPause}> <Pause size={16}/> </ActionIcon>
+          {mode === 'focus' ? (
+            <ActionIcon variant="filled" color='teal' size="xl" radius='xl' onClick={onSkip}> <SkipForward size={16}/> </ActionIcon>
+          ):(
+            <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onStop}> <Square size={16}/> </ActionIcon>
+          )}
+          
+          </>
         ):(
-          <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onStop}> <Square size={16}/> </ActionIcon>
+          <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onStart}> <Play size={16}/> </ActionIcon>
+          
         )}
-        
-        </>
-      ):(
-        <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onStart}> <Play size={16}/> </ActionIcon>
-        
-      )}
-        <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onReset}> <RotateCcw size={16}/> </ActionIcon>
-      </Group>
-    </Stack>
+          <ActionIcon variant="filled" color='pink' size="xl" radius='xl' onClick={onReset}> <RotateCcw size={16}/> </ActionIcon>
+        </Group>
+      </Stack>
+    </>
   )
 }

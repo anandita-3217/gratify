@@ -92,21 +92,20 @@ const BUILT_IN_TECHNIQUES = {
   pomodoro: {
     name: 'Pomodoro',
     phases: [
-      { name: 'Work', duration: 25 },
-      { name: 'Short Break', duration: 5 },
-      { name: 'Long Break', duration: 15 },
+      { name: 'Work', duration: 25 * 60 },
+      { name: 'Short Break', duration: 5 * 60 },
+      { name: 'Long Break', duration: 15 * 60 },
     ],
     cyclesBeforeLongBreak: 4
   },
   '52/17': {
     name: '52/17',
     phases: [
-      { name: 'Work', duration: 52 },
-      { name: 'Short Break', duration: 17 },
+      { name: 'Work', duration: 52 * 60 },
+      { name: 'Short Break', duration: 17 * 60 },
     ],
     cyclesBeforeLongBreak: null
   },
-
 }
 
 export default function useTimerTechniques() {
@@ -123,7 +122,7 @@ export default function useTimerTechniques() {
   function getPhaseSeconds(phaseIndex) {
     const phases = settings[technique]?.phases
     if (!phases || !phases[phaseIndex]) return 0
-    return phases[phaseIndex].duration * 60
+    return phases[phaseIndex].duration 
   }
 
   function addCustomTechnique(name, phases, cyclesBeforeLongBreak) {

@@ -53,7 +53,7 @@ export default function TechniquePicker({ technique, setTechnique, TECHNIQUES, B
         </Group>
         {current && (
           <Text size='xs' c='dimmed'>
-            {current.phases?.map(p => `${p.name}: ${p.durration}m`).join('.')}
+            {current.phases?.map(p => `${p.name}: ${Math.floor(p.duration/60)}m`).join('. ')}
           </Text>
         )}
       </Stack>

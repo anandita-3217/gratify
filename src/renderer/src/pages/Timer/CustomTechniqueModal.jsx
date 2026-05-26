@@ -108,8 +108,8 @@ export default function CustomTechniqueModal({ opened, onClose, onSave, editingT
   
   // phases is an array of { name, duration }
   const [phases, setPhases] = useState([
-    { name: 'Work', duration: 25 },
-    { name: 'Short Break', duration: 5 },
+    { name: 'Work', minutes: 25, seconds: 0  },
+    { name: 'Short Break', minutes: 5, seconds: 0 },
   ])
 
   useEffect(() => {
@@ -154,13 +154,17 @@ export default function CustomTechniqueModal({ opened, onClose, onSave, editingT
     }
     // validate at least one phase
     if (phases.length < 1) return
-    setTechniqueError('There must be atleast one phase')
+    setTechniqueError('')
     // build technique object from phases
+    const processedPhases = phases.map(p => ({
+      name: p.name,
+      duration: (p.minutes * 60) + (p.seconds || 0)
+    }))
     if (editingKey){
-      onEdit(editingKey, {name: techniqueName, phases})
+      onEdit(editingKey, {name: techniqueName, phases: processedPhases})
     }
     else{
-      onSave(techniqueName, phases, null)
+      onSave(techniqueName, processedPhases, null)
     }
     onClose()
   }
@@ -200,11 +204,17 @@ export default function CustomTechniqueModal({ opened, onClose, onSave, editingT
             onChange={(e) => updatePhase(index, 'name', e.target.value)}
             style={{ flex: 1 }}/>
             {/* phase duration input */}
-            <NumberInput label={index === 0 ? 'Minutes': undefined}
-            value={phase.duration}
-            onChange={(val) => updatePhase(index, 'duration', val)}
+            <NumberInput label={index === 0 ? 'Min': undefined}
+            value={phase.minutes}
+            onChange={(val) => updatePhase(index, 'minutes', val)}
             min={1}
             max={180}
+            w={80}/>
+            <NumberInput label={index === 0 ? 'Sec': undefined}
+            value={phase.seconds}
+            onChange={(val) => updatePhase(index, 'seconds', val)}
+            min={0}
+            max={59}
             w={80}/>
             {/* delete button — disabled if only 1 phase left */}
             <ActionIcon

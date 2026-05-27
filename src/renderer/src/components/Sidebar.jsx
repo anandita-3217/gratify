@@ -6,7 +6,7 @@ import { useMantineColorScheme, useComputedColorScheme, Switch } from '@mantine/
 function ThemeToggle({ collapsed }){
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light');
-  
+  const [checked, setChecked] = useState(false)
   const isDark = computedColorScheme === 'dark'
 
   return(
@@ -19,12 +19,14 @@ function ThemeToggle({ collapsed }){
     </button> */}
     <Switch
       p={8}
+      cursor="pointer"
       size="md"
       checked={isDark}
       onChange={(event) => setColorScheme(event.currentTarget.checked ? 'dark' : 'light')}
-      onLabel={<Sun size={16} color="orange" />}
-      offLabel={<Moon size={16} color="gray" />}
+      offLabel={<Sun size={16} color="red" />}
+      onLabel={<Moon size={16} color="blue" />}
     />
+    {/* <Switch checked={checked} onChange={(event) => setChecked(event.currentTarget.checked)}/> */}
     </>
 
   )

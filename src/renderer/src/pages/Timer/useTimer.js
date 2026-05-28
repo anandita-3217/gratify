@@ -14,13 +14,19 @@
 import { useEffect, useState, useRef } from "react";
 import useTimerTechniques from "./useTimerTechniques";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
+import useNotifications from "../../hooks/useNotifications";
+import useTimerPreferences from "../../hooks/useTimerPreferences";
 
 export default function useTimer(){
+    
     const {technique, setTechnique,
         settings,updateSettings,
         cyclesBeforeLongBreak, getPhaseSeconds, addCustomTechnique,
         TECHNIQUES, BUILT_IN_TECHNIQUES, deleteTechnique, editTechnique
     } = useTimerTechniques()
+
+    const {sound, notifications} = useTimerPreferences()
+    const {notify} = useNotifications()
     
     const [mode, setMode] = useState('basic')
     const [phaseIndex, setPhaseIndex] = useState(0)
@@ -96,6 +102,27 @@ export default function useTimer(){
         return () => clearInterval(interval)
     },[isRunning])
 
+
+    function playSound(){
+        try{
+            const ctx = new AudioContext()
+            const osc = ctx.createOscillator()
+            const gain = ctx.createGain()
+            osc.connect(gain)
+            gain.connect(ctx.destination)
+            osc.type = 'sine'
+            osc.frequency.value = 520
+            gain.gain.setValueAtTime(0.3, ctx.currentTime)
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8)
+            osc.start(ctx.currentTime)
+            osc.stop(ctx.currentTime + 0.8)
+        }
+        catch(err){
+            console.error("An Error occured: ", err);
+            
+        }
+    }
+
     function start(){
         setIsRunning(true)
     }
@@ -134,7 +161,15 @@ export default function useTimer(){
         setIsRunning(false)
         const phases =  settings[technique]?.phases ?? []
         const nextIndex = phaseIndexRef.current + 1
-        if(nextIndex >= phases.length){
+        const nextPhase = phases[nextIndex] ?? phases[0]
+        if (sound) playSound()
+        if (notifications) notify({
+            title: `${currentPhase?.name ?? 'Phase'} complete!`,
+            message: nextPhase ? `Up next :${nextPhase.name}` : 'Cycle complete',
+            color: 'purple',
+            sound: false
+        })
+            if(nextIndex >= phases.length){
             setCyclesCompleted(c => c + 1)
             setPhaseIndex(0)
             setDuration(getPhaseSeconds(0))
@@ -146,7 +181,14 @@ export default function useTimer(){
 
     function handleTimeUp() {
       setIsRunning(false)
-      // play sound + notify will go here
+      if(sound) playSound()
+        if (notifications) notify({
+            title: 'Timer complete!',
+            message: 'Time up!',
+            color: 'pink',
+            sound: false
+        })
+    // play sound + notify will go here
     }
 
     return {

@@ -23,8 +23,15 @@ function ThemeToggle({ collapsed }){
       size="md"
       checked={isDark}
       onChange={(event) => setColorScheme(event.currentTarget.checked ? 'dark' : 'light')}
-      offLabel={<Sun size={16} color="red" />}
-      onLabel={<Moon size={16} color="blue" />}
+      thumbIcon={
+        isDark ? (
+          <Moon size={16} color="blue" />
+          
+        ):(
+          
+          <Sun size={16} color="red" />
+        )
+      }
     />
     {/* <Switch checked={checked} onChange={(event) => setChecked(event.currentTarget.checked)}/> */}
     </>

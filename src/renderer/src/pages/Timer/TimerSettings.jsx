@@ -6,19 +6,13 @@
 //   3. sound settings (placeholder for now)
 //   4. encouraging message toggle (placeholder for now)
 import { useLocalStorage } from '../../hooks/useLocalStorage'
-import {useTimerPreferences} from '../../hooks/useTimerPreferences';
+import useTimerPreferences from '../../hooks/useTimerPreferences';
 import { Drawer,Divider, Stack, Switch, Text } from '@mantine/core'
 import { useState } from 'react'
 import { BellRing , BellOff  } from 'lucide-react';
 
 export default function TimerSettings({ opened, onClose, settings, technique, onTechniqueChange, onSettingsChange }) {
     const {sound, setSound, notifications, setNotifications} = useTimerPreferences()
-    
-  // sound enabled state — useLocalStorage
-    // const [sound, setSound] = useLocalStorage('timerSound', true)
-
-    // notifications enabled state — useLocalStorage
-    // const [notifications, setNotifications] = useLocalStorage('timerNotifications', false)
   return (
     <Drawer
     opened={opened} onClose={onClose}

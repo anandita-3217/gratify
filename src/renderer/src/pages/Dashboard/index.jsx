@@ -435,28 +435,28 @@ export default function Dashboard({ onNavigate }) {
       </Group>
 
       {/* Widgets grid */}
-      <Grid gutter="md">
-        <Grid.Col span={{ base: 12, md: 5 }}>
+      <Stack gap="md">
+        {/* <Grid.Col span={{ base: 12, md: 5 }}> */}
           <TasksWidget
             tasks={tasks}
             onToggle={handleToggleTask}
             onNavigate={() => onNavigate('tasks')}
           />
-        </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 4 }}>
+        {/* </Grid.Col> */}
+        {/* <Grid.Col span={{ base: 12, md: 4 }}> */}
           <CalendarWidget
             events={events}
             onNavigate={() => onNavigate('calendar')}
           />
-        </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 3 }}>
+        {/* </Grid.Col> */}
+        {/* <Grid.Col span={{ base: 12, md: 3 }}> */}
           <QuickNotesWidget
             notes={notes}
             onAddNote={handleAddNote}
             onNavigate={() => onNavigate('notes')}
           />
-        </Grid.Col>
-      </Grid>
+        {/* </Grid.Col> */}
+      </Stack>
     </Box>
   )
 }

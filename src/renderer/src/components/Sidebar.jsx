@@ -20,16 +20,16 @@ function ThemeToggle({ collapsed }){
     <Switch
       p={8}
       cursor="pointer"
-      size="md"
+      size="sm"
       checked={isDark}
       onChange={(event) => setColorScheme(event.currentTarget.checked ? 'dark' : 'light')}
       thumbIcon={
         isDark ? (
-          <Moon size={16} color="blue" />
+          <Moon size={14} color="blue" />
           
         ):(
           
-          <Sun size={16} color="red" />
+          <Sun size={14} color="red" />
         )
       }
     />

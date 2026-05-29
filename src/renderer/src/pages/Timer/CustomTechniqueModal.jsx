@@ -127,7 +127,7 @@ export default function CustomTechniqueModal({ opened, onClose, onSave, editingT
             <NumberInput label={index === 0 ? 'Min': undefined}
             value={phase.minutes}
             onChange={(val) => updatePhase(index, 'minutes', val)}
-            min={1}
+            min={0}
             max={180}
             w={80}/>
             <NumberInput label={index === 0 ? 'Sec': undefined}

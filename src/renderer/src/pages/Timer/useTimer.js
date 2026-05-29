@@ -165,7 +165,7 @@ export default function useTimer(){
         if (sound) playSound()
         if (notifications) notify({
             title: `${currentPhase?.name ?? 'Phase'} complete!`,
-            message: nextPhase ? `Up next :${nextPhase.name}` : 'Cycle complete',
+            message: nextPhase ? `Up next: ${nextPhase.name}` : 'Cycle complete',
             color: 'purple',
             sound: false
         })

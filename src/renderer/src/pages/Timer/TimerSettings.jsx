@@ -33,7 +33,6 @@ export default function TimerSettings({ opened, onClose, settings, technique, on
         <BellOff size={12} color='gray' />
       )}
       onLabel="ON" offLabel="OFF"
-      defaultChecked
       checked={sound}
       onChange={(e) => setSound(e.currentTarget.checked) }
       label='Sound On'
@@ -48,7 +47,6 @@ export default function TimerSettings({ opened, onClose, settings, technique, on
         <BellOff size={12} color='gray' />
       )}
       onLabel="ON" offLabel="OFF"
-      defaultChecked
       checked={notifications}
       onChange={(e) => setNotifications(e.currentTarget.checked) }
       label='Notifications On'

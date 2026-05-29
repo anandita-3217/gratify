@@ -112,7 +112,7 @@ function TasksWidget({ tasks, onToggle, onNavigate }) {
   const pct = total > 0 ? Math.round((done / total) * 100) : 0
 
   return (
-    <Paper withBorder radius="md" p="md" h="100%">
+    <Paper withBorder radius="md" p="md" h="80%">
       <SectionHeader
         icon={IconChecklist}
         title="Tasks"
@@ -133,7 +133,8 @@ function TasksWidget({ tasks, onToggle, onNavigate }) {
 
       {today.length === 0 ? (
         <Stack align="center" gap={4} py="lg">
-          <IconCircleCheck size={28} color="var(--mantine-color-teal-5)" />
+          <IconCircleCheck size={28} color="green" />
+          {/* <IconCircleCheck size={28} color="var(--mantine-color-teal-5" /> */}
           <Text size="sm" c="dimmed">All caught up!</Text>
         </Stack>
       ) : (
@@ -186,7 +187,7 @@ function CalendarWidget({ events, onNavigate }) {
   }
 
   return (
-    <Paper withBorder radius="md" p="md" h="100%">
+    <Paper withBorder radius="md" p="md" h="80%">
       <SectionHeader
         icon={IconCalendar}
         title="Upcoming"
@@ -196,7 +197,7 @@ function CalendarWidget({ events, onNavigate }) {
 
       {upcoming.length === 0 ? (
         <Stack align="center" gap={4} py="lg">
-          <IconCalendar size={28} color="var(--mantine-color-gray-4)" />
+          <IconCalendar size={28} color="green" />
           <Text size="sm" c="dimmed">No events this week</Text>
         </Stack>
       ) : (
@@ -266,7 +267,7 @@ function QuickNotesWidget({ notes, onAddNote, onNavigate }) {
   }
 
   return (
-    <Paper withBorder radius="md" p="md" h="100%">
+    <Paper withBorder radius="md" p="md" h="80%">
       <SectionHeader
         icon={IconNotes}
         title="Quick Notes"
@@ -296,7 +297,11 @@ function QuickNotesWidget({ notes, onAddNote, onNavigate }) {
       </Group>
 
       {recent.length === 0 ? (
-        <Text size="sm" c="dimmed" ta="center" py="md">No notes yet</Text>
+        <Stack align="center" gap={4} py="lg">
+          <IconChecklist size={28} color="green" />
+          <Text size="sm" c="dimmed" ta="center" py="md">No notes yet</Text>
+        </Stack>
+
       ) : (
         <ScrollArea h={160}>
           <Stack gap={6}>
@@ -327,6 +332,7 @@ function QuickNotesWidget({ notes, onAddNote, onNavigate }) {
 }
 
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
+
 
 export default function Dashboard({ onNavigate }) {
   const navigate = useNavigate()
@@ -434,28 +440,21 @@ export default function Dashboard({ onNavigate }) {
         ))}
       </Group>
 
-      {/* Widgets grid */}
       <Stack gap="md">
-        {/* <Grid.Col span={{ base: 12, md: 5 }}> */}
           <TasksWidget
             tasks={tasks}
             onToggle={handleToggleTask}
             onNavigate={() => onNavigate('tasks')}
           />
-        {/* </Grid.Col> */}
-        {/* <Grid.Col span={{ base: 12, md: 4 }}> */}
           <CalendarWidget
             events={events}
             onNavigate={() => onNavigate('calendar')}
           />
-        {/* </Grid.Col> */}
-        {/* <Grid.Col span={{ base: 12, md: 3 }}> */}
           <QuickNotesWidget
             notes={notes}
             onAddNote={handleAddNote}
             onNavigate={() => onNavigate('notes')}
           />
-        {/* </Grid.Col> */}
       </Stack>
     </Box>
   )

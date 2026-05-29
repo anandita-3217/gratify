@@ -32,9 +32,7 @@ export default function TimerRing({ seconds, totalSeconds, isRunning, currentPha
             <Text size="2.5rem" fw={700} ta="center">
               {mm}:{ss}
             </Text>
-            {mode === 'focus' &&(
-              <Text size='xs' c="dimmed">cycle: {cyclesCompleted + 1}</Text>
-            )}
+
           </Stack>
         }
       />

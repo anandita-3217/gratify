@@ -25,11 +25,11 @@ function ThemeToggle({ collapsed }){
       onChange={(event) => setColorScheme(event.currentTarget.checked ? 'dark' : 'light')}
       thumbIcon={
         isDark ? (
-          <Moon size={14} color="blue" />
+          <Moon size={12} color="blue" />
           
         ):(
           
-          <Sun size={14} color="red" />
+          <Sun size={12} color="red" />
         )
       }
     />

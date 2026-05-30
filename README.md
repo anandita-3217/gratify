@@ -173,6 +173,81 @@ All notes saved to `localStorage` under the key `notes`.
 All notes saved to `localStorage` under the key `notes` and persist across app restarts.
 
 
+## 3. Timer
+
+A flexible timer with a basic countdown mode and a structured focus mode with custom techniques.
+
+### Features
+
+**Basic mode**
+- Countdown timer with preset durations (25m, 45m, 60m)
+- Custom duration via mm:ss input
+- Play, pause, stop, reset controls
+- Ring progress visualization
+
+**Focus mode**
+- Built-in techniques: Pomodoro (25/5/15) and 52/17
+- Custom techniques — user defines name, phases, durations and cycles
+- Each phase has a name and duration in minutes + seconds
+- Ring color changes per phase (pink → teal → violet → ...)
+- Phase label and cycle counter shown on ring
+- Skip button to advance to next phase
+- Technique picker with edit and delete for user-created techniques
+
+**Settings**
+- Sound toggle — plays a sine tone when timer or phase completes
+- Desktop notifications toggle — fires OS notification via Electron IPC
+- Both settings persist to localStorage
+
+### Data structure
+```js
+// Technique
+{
+  name: string,
+  phases: [
+    { name: string, duration: number }  // duration in seconds
+  ],
+  cyclesBeforeLongBreak: number | null
+}
+
+// Timer state
+{
+  mode: 'basic' | 'focus',
+  phaseIndex: number,
+  seconds: number,
+  totalSeconds: number,
+  isRunning: boolean,
+  cyclesCompleted: number  // persisted to localStorage
+}
+```
+
+### Storage
+- `technique` — current technique key
+- `customTechniques` — user created techniques
+- `cyclesCompleted` — total cycles completed
+- `timerSound` — sound preference
+- `timerNotifications` — notification preference
+
+<!-- 
+useCalendarGrid.js    ← pure date math, no React
+      ↓
+useCalendar.js        ← CRUD
+      ↓
+useCalendarSync.js    ← task sync
+      ↓
+EventModal.jsx        ← create/edit
+      ↓
+MonthView.jsx         ← simplest view
+      ↓
+index.jsx             ← wire everything together
+      ↓
+WeekView.jsx          ← time grid
+      ↓
+DayView.jsx           ← zoom in on week
+      ↓
+useDragToCreate.js    ← add drag last
+
+ -->
 
 ## Project Setup
 ### Full file structure for Gratify
@@ -212,6 +287,11 @@ src/renderer/src/
 │   │   ├── MonthView.jsx
 │   │   ├── WeekView.jsx
 │   │   ├── DayView.jsx
+│   │   ├── EventModal.jsx
+│   │   ├── useCalendarGrid.js
+│   │   ├── useDragToCreate.js
+│   │   ├── useCalendarSync.js
+│   │   ├── useEventColors.js
 │   │   └── useCalendar.js    ← Event CRUD logic
 │   │
 │   ├── Stats/

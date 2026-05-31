@@ -27,6 +27,7 @@ import {
   IconDownload,
   IconUpload,
   IconInfoCircle,
+  IconKeyboard 
 } from '@tabler/icons-react'
 import { Calendar, ListChecks, NotepadText, Timer } from 'lucide-react'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
@@ -484,12 +485,28 @@ export default function Settings() {
                     />
                   </Box>
                 ))}
-                  <Box>
-                    <Text> keyboard shortcuts list them all currnt one ctrl+b sidebar collapse toggle for now is written into the sidebar.jsx code as a useeffect and change. in settings list all the shortcuts with toggles to see if the user wants them enabled and also add a feature to add new keyboard shortcuts  also keyboard shortcut for themetoggle</Text>
-
-                  </Box>
+                 
               </Group>
             </Box>
+          </Stack>
+        </Section>
+        {/* ── Keyboard Shortcuts ── */}
+        <Section icon={IconKeyboard } title="Keyboard Shortcuts">
+          <Text size='xs' c='dimmed'>Disable and enable Keyboard shortcuts</Text>
+          <Divider color='red'/>
+          <Stack gap="sm">
+            <SettingRow label="App Shortcuts">
+              <Text size='xs' c='dimmed' >Ctrl + T - toggle theme</Text>
+              <Text size='xs' c='dimmed' >Ctrl + B - toggle sidebar</Text>
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Timer Shortcuts">
+              <Text size='xs' c='dimmed'> T - toggle today</Text>
+              <Text size='xs' c='dimmed'> D - toggle Day View</Text>
+              <Text size='xs' c='dimmed'> W - toggle Week View</Text>
+              <Text size='xs' c='dimmed'> M - toggle Month View</Text>
+            </SettingRow>
+
           </Stack>
         </Section>
 

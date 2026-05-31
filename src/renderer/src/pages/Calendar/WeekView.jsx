@@ -1,12 +1,22 @@
-// props: events, selectedDate, onEventClick, onSlotClick
+
 // drag handlers passed in from index.jsx via useDragToCreate
 import { Box, Button, Grid,  Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
 
 import { getWeekDays, getHourSlots, getEventsForDay, getEventPosition, isToday } from './useCalendarGrid'
+import { useEffect, useState } from "react";
 
 export default function WeekView({ events = [], selectedDate = new Date(), onEventClick, onSlotClick, onDayClick, dragHandlers }) {
+  const [now, setNow] = useState(new Date())
+
   const weekDays = getWeekDays(selectedDate)
   const hourSlots = getHourSlots()
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()),60000)
+    return () => clearInterval(interval)
+  },[])
+
+  const nowPosition = ((now.getHours() * 60 + now.getMinutes()) / (24 * 60)) * 100
   
   return (
     <Box style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -64,6 +74,20 @@ export default function WeekView({ events = [], selectedDate = new Date(), onEve
                     {...dragHandlers}
                   />
                 ))}
+                {isToday(day) && (
+                 <Box
+                 style={{
+                   position: 'absolute',
+                   top: `${nowPosition}%`,
+                   left: 0,
+                   right: 0,
+                   height: 2,
+                   backgroundColor: 'var(--mantine-color-red-8)',
+                   zIndex: 2,
+                   pointerEvents: 'none'
+                 }}
+                 />
+                )}
                 {/* events — absolutely positioned */}
                 {dayEvents.map(event => {
                   const { top, height } = getEventPosition(event, day)
@@ -74,7 +98,7 @@ export default function WeekView({ events = [], selectedDate = new Date(), onEve
                       height: `${height}%`,
                       width: '90%',
                       left: '5%',
-                      // background color from event.color
+                      backgroundColor: `var(--mantine-color-${event.color}-5)`,
                       borderRadius: 4,
                       cursor: 'pointer',
                       padding: '2px 4px'

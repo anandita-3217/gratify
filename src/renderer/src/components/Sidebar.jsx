@@ -1,14 +1,24 @@
 import { ListChecks , NotepadText , Calendar,Timer ,ChartLine , Settings, Sun, Moon , PanelLeftOpen, PanelLeftClose     } from 'lucide-react'
 import NavItem from './NavItem'
 import { useEffect, useState } from 'react';
-import { useMantineColorScheme, useComputedColorScheme, Switch } from '@mantine/core'
+import { useMantineColorScheme, useComputedColorScheme, Switch, Tooltip } from '@mantine/core'
 
 function ThemeToggle({ collapsed }){
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light');
   const [checked, setChecked] = useState(false)
   const isDark = computedColorScheme === 'dark'
-
+  
+  useEffect(() =>{
+    const handler = (e) => {
+      if(e.ctrlKey && e.key === 't'){
+        e.preventDefault()
+        setColorScheme(isDark ? 'light': 'dark')
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown',handler)
+  },[isDark, setColorScheme])
   return(
     <>
     {/* <button
@@ -19,7 +29,6 @@ function ThemeToggle({ collapsed }){
     </button> */}
     <Switch
       p={8}
-      cursor="pointer"
       size="sm"
       checked={isDark}
       onChange={(event) => setColorScheme(event.currentTarget.checked ? 'dark' : 'light')}
@@ -33,6 +42,7 @@ function ThemeToggle({ collapsed }){
         )
       }
     />
+
     {/* <Switch checked={checked} onChange={(event) => setChecked(event.currentTarget.checked)}/> */}
     </>
 
@@ -53,6 +63,8 @@ export default function Sidebar({activePage, onNavigate}){
     window.addEventListener('keydown', handler)
     return () =>window.removeEventListener('keydown', handler)
   },[])
+
+
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: <ChartLine size={20} /> },
@@ -89,27 +101,20 @@ export default function Sidebar({activePage, onNavigate}){
 
       </div>
       <div className='pb-4 px-2 pt-3 border-t border-white/[0.07] flex flex-col gap-0.5'>
+      
         <button onClick={() => setCollapsed(c => !c)}
           className='flex items-center gap-2.5 w-full px-2.5 py-2 text-gray-600 hover:text-gray-600 cursor-pointer p-1 transition-colors'>
+          <Tooltip label="Ctrl + B">
             <span className='min-w-[20px] flex'>
               {collapsed ? <PanelLeftOpen size={20}/> : <PanelLeftClose size={20}/>}
             </span>
+          </Tooltip>
           </button>
+          <Tooltip label="Ctrl +  T">
         <ThemeToggle collapsed={collapsed}/>
+
+          </Tooltip>
       </div>
     </div>
   );
 }
-// TODO: replace themetoggle with this import { Switch } from '@mantine/core';
-// import { SunIcon, MoonStarsIcon } from '@phosphor-icons/react';
-
-// function Demo() {
-//   return (
-//     <Switch
-//       size="md"
-//       color="dark.4"
-//       onLabel={<SunIcon size={16} color="var(--mantine-color-yellow-4)" />}
-//       offLabel={<MoonStarsIcon size={16} color="var(--mantine-color-blue-6)" />}
-//     />
-//   );
-// }

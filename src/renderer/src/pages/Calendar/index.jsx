@@ -4,7 +4,7 @@ import DayView from "./DayView";
 
 import { ActionIcon, Box, Button, Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
 import { ChevronLeft, ChevronRight, Plus, Settings2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getWeekDays } from "./useCalendarGrid";
 
 import useCalendar from './useCalendar'
@@ -27,6 +27,8 @@ export default function Calendar({ onNavigate }){
     const [opened, {open, close}] = useDisclosure(false)
     const [editOpened, {open: editOpen, close: editClose}] = useDisclosure(false)
 
+
+    
     function goBack(){
         const d = new Date(selectedDate)
         if (view === 'dayview') d.setDate(d.getDate() - 1)
@@ -56,13 +58,31 @@ export default function Calendar({ onNavigate }){
         open()
     }
 
+    useEffect(() => {
+        function handleKeyDown(e){
+            if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' ) return
+            if(opened || editOpened) return
+
+            if(e.key === 'd') setView('dayview')
+            if(e.key === 'w') setView('weekview')
+            if(e.key === 'm') setView('monthview')
+            if(e.key === 't') goToday()
+
+        }
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown) 
+
+    },[opened, editOpened]) 
+
+
+
     return(
     <Box p='xl' style={{ height: '100%', overflow: 'auto' }}>
         <Stack gap={4} mb='xl'>
             <Group gap={8} justify="space-between">
                 <Title fw={600} order={2}>Calendar</Title>
                 <Group>
-                    <Button variant="subtle" size="xs" aria-label="Calendar Settings"><Settings2 size={12}/></Button>
+                    {/* <Button variant="subtle" size="xs" aria-label="Calendar Settings"><Settings2 size={12}/></Button> */}
                     <Button variant="subtle" onClick={open} size="xs" aria-label="Add Event"><Plus size={12}/></Button>
 
                 </Group>
@@ -71,19 +91,6 @@ export default function Calendar({ onNavigate }){
             <Stack>
                 <Box bg='pink' h='1px'/>
                 <Group justify="space-between" align="center">
-                    <Group gap='xs'>
-                        <ActionIcon variant="subtle" onClick={goBack} ><ChevronLeft size={16}/></ActionIcon>
-                        <ActionIcon variant="subtle" onClick={goForward} ><ChevronRight size={16}/></ActionIcon>
-                        <Button variant="subtle" size="xs" onClick={goToday} leftSection="Today"/>
-                    </Group>
-                </Group>
-                
-                <Text fw={600}>
-                    {view === 'monthview' && selectedDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
-                    {view === 'weekview' && `Week of ${getWeekDays(selectedDate)[0].toLocaleString('default', { month: 'short', day: 'numeric' })}`}
-                    {view === 'dayview' && selectedDate.toLocaleString('default' ,{ weekday: 'long', month: 'long', day: 'numeric' })} 
-                </Text>
-                
                 <SegmentedControl
                 variant="subtle"
                 color="pink"
@@ -92,11 +99,24 @@ export default function Calendar({ onNavigate }){
                 value={view}
                 onChange={setView}
                 data={[
-                        { label: 'Day View', value: 'dayview' },
-                        { label: 'Week View', value: 'weekview' },
-                        { label: 'Month View', value: 'monthview' },
+                        { label: 'Day ', value: 'dayview' },
+                        { label: 'Week ', value: 'weekview' },
+                        { label: 'Month ', value: 'monthview' },
                      ]}
                 />
+                    <Group justify="center">
+                        <ActionIcon variant="subtle" onClick={goBack} ><ChevronLeft size={16}/></ActionIcon>
+                        <Text fw={600}>
+                            {view === 'monthview' && selectedDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+                            {view === 'weekview' && `Week of ${getWeekDays(selectedDate)[0].toLocaleString('default', { month: 'short', day: 'numeric' })}`}
+                            {view === 'dayview' && selectedDate.toLocaleString('default' ,{ weekday: 'long', month: 'long', day: 'numeric' })} 
+                        </Text>
+                        <ActionIcon variant="subtle" onClick={goForward} ><ChevronRight size={16}/></ActionIcon>
+                        <Button variant="subtle" size="xs" onClick={goToday} leftSection="Today"/>
+                    </Group>
+                </Group>
+                
+                
                 {view === 'monthview' && (<MonthView
                     events={events} selectedDate={selectedDate} onDateSelect={(date) => {
                         setSelectedDate(date) 
@@ -138,7 +158,8 @@ export default function Calendar({ onNavigate }){
         defaultStart={newEventDefaults?.start}
         defaultEnd={newEventDefaults?.end}
         />
-        <EventModal opened={editOpened} onClose={editClose} 
+        <EventModal opened={editOpened} onClose={editClose}
+        onDelete={deleteEvent} 
         onSave={(eventData) => { 
             editEvent(selectedEvent.id, eventData )
             editClose()

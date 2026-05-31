@@ -13,7 +13,7 @@ const colors = ['orange', 'red', 'pink', 'grape',
       'violet', 'indigo', 'blue', 'cyan', 
       'teal', 'green', 'lime', 'yellow']
 
-export default function EventModal({opened, event, onSave, onClose, defaultStart, defaultEnd } ){
+export default function EventModal({opened, event, onSave, onClose, onDelete, defaultStart, defaultEnd } ){
     const [title, setTitle] = useState('Untitled')
     const [description, setDescription] = useState('')
     const [start, setStart] = useState()
@@ -115,6 +115,9 @@ export default function EventModal({opened, event, onSave, onClose, defaultStart
                     ))}
                 </Group>
                 <Group justify='center'>
+                    {event && (
+                        <Button color='red' variant='subtle' onClick={() => {onDelete(event.id); onClose()}} >Delete</Button>
+                    )}
                     <Button onClick={handleSave} >{event ? 'Save' : 'Add'}</Button>
                     <Button onClick={onClose}>Cancel</Button>
                 </Group>

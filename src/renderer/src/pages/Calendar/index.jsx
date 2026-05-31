@@ -3,15 +3,28 @@ import WeekView from "./WeekView";
 import DayView from "./DayView";
 
 import { ActionIcon, Box, Button, Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
-import { ChevronLeft, ChevronRight, Settings2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Settings2 } from "lucide-react";
 import { useState } from "react";
 import { getWeekDays } from "./useCalendarGrid";
+
+import useCalendar from './useCalendar'
 // Calendar settings must have date formats for displaying - both time and date
 
 
+import EventModal from "./EventModal";
+import { useDisclosure } from "@mantine/hooks";
+
 export default function Calendar({ onNavigate }){
+
+    const {events, addEvent, editEvent, deleteEvent} = useCalendar()
+
+    const [selectedEvent, setSelectedEvent] = useState(null)
+
     const [view, setView] = useState('dayview')
     const [selectedDate, setSelectedDate] = useState(new Date())
+
+    const [opened, {open, close}] = useDisclosure(false)
+    const [editOpened, {open: editOpen, close: editClose}] = useDisclosure(false)
 
     function goBack(){
         const d = new Date(selectedDate)
@@ -38,7 +51,11 @@ export default function Calendar({ onNavigate }){
         <Stack gap={4} mb='xl'>
             <Group gap={8} justify="space-between">
                 <Title fw={600} order={2}>Calendar</Title>
-                <Button variant="subtle" size="xs" aria-label="Calendar Settings"><Settings2 size={12}/></Button>
+                <Group>
+                    <Button variant="subtle" size="xs" aria-label="Calendar Settings"><Settings2 size={12}/></Button>
+                    <Button variant="subtle" onClick={open} size="xs" aria-label="Add Event"><Plus size={12}/></Button>
+
+                </Group>
             </Group>
             <Text c="dimmed" size="sm">Organize your time!</Text>
             <Stack>
@@ -97,7 +114,18 @@ export default function Calendar({ onNavigate }){
                 dragHandlers={{}}
                 />)}
             </Stack>    
-            
         </Stack>
+        <EventModal opened={opened} onClose={close} 
+        onSave={(eventData) => { 
+            addEvent(eventData)
+            close()
+        }}
+        />
+        <EventModal opened={editOpened} onClose={editClose} 
+        onSave={(eventData) => { 
+            editEvent(selectedEvent.id, eventData )
+            editClose()
+        }} event={selectedEvent}
+        />
     </Box>)
 }

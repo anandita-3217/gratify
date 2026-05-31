@@ -10,9 +10,9 @@ export default function NoteModal({ opened, onClose, onSave, note }) {
   const [titleError, setTitleError] = useState('')
   const [bodyError, setBodyError] = useState('')
 
-  const noteColors = ['gray', 'red', 'pink', 'grape', 
+  const noteColors = ['orange', 'red', 'pink', 'grape', 
       'violet', 'indigo', 'blue', 'cyan', 
-      'teal', 'green', 'lime', 'yellow', 'orange']
+      'teal', 'green', 'lime', 'yellow' ]
 
   useEffect(() => {
     // if note exists → prefill title, body, tags
@@ -107,7 +107,7 @@ export default function NoteModal({ opened, onClose, onSave, note }) {
           {noteColors.map(c => (
             <ColorSwatch
               key={c}
-              color={`var(--mantine-color-${c}-8)`}
+              color={`var(--mantine-color-${c}-5)`}
               size={24}
               style={{ cursor: 'pointer', outline: color == c ? '2px solid white' : 'none' }}
               onClick={() => setColor(c)}/>

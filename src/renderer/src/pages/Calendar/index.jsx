@@ -21,6 +21,7 @@ export default function Calendar({ onNavigate }){
     const [selectedEvent, setSelectedEvent] = useState(null)
 
     const [view, setView] = useState('dayview')
+    const [newEventDefaults, setNewEventDefaults] = useState(null)
     const [selectedDate, setSelectedDate] = useState(new Date())
 
     const [opened, {open, close}] = useDisclosure(false)
@@ -44,6 +45,15 @@ export default function Calendar({ onNavigate }){
 
     function goToday(){
         setSelectedDate(new Date())
+    }
+
+    function handleSlotClick(day, hour){
+        const start = new Date(day)
+        start.setHours(hour, 0, 0, 0)
+        const end = new Date(day)
+        end.setHours(hour+1,0,0,0)
+        setNewEventDefaults({ start, end })
+        open()
     }
 
     return(
@@ -88,19 +98,21 @@ export default function Calendar({ onNavigate }){
                      ]}
                 />
                 {view === 'monthview' && (<MonthView
-                    events={[]} selectedDate={selectedDate} onDateSelect={(date) => {
+                    events={events} selectedDate={selectedDate} onDateSelect={(date) => {
                         setSelectedDate(date) 
                         setView('dayview')
                     }}
-                    onEventClick={() => {}}
-                    onSlotClick={() => {}}
+                    onEventClick={(event) => {setSelectedEvent(event)
+                        editOpen()
+                    }}
+                    onSlotClick={(day, hour) => handleSlotClick(day,hour)}
                 />)}
                 {view === 'weekview' && (<WeekView
-                    events={[]} selectedDate={selectedDate} 
-                    onEventClick={() => {}}
-                    onSlotClick={(day, hour) => {
-                        setSelectedDate(day)
+                    events={events} selectedDate={selectedDate} 
+                    onEventClick={(event) => {setSelectedEvent(event)
+                        editOpen()
                     }}
+                    onSlotClick={(day, hour) => handleSlotClick(day,hour)}
                     onDayClick={(day) => {
                         setSelectedDate(day)
                         setView('dayview')
@@ -108,18 +120,23 @@ export default function Calendar({ onNavigate }){
                     dragHandlers={{}}
                 />)}
                 {view === 'dayview' && (<DayView
-                events={[]} selectedDate={selectedDate}
-                onEventClick={() => {}}
-                onSlotClick={(day, hour) => {}}
+                events={events} selectedDate={selectedDate}
+                onEventClick={(event) => {setSelectedEvent(event)
+                    editOpen()
+                }}
+                onSlotClick={(day, hour) => handleSlotClick(day,hour)}
                 dragHandlers={{}}
                 />)}
             </Stack>    
         </Stack>
-        <EventModal opened={opened} onClose={close} 
+        <EventModal opened={opened} 
+        onClose={() => { close(); setNewEventDefaults(null) }}
         onSave={(eventData) => { 
             addEvent(eventData)
             close()
         }}
+        defaultStart={newEventDefaults?.start}
+        defaultEnd={newEventDefaults?.end}
         />
         <EventModal opened={editOpened} onClose={editClose} 
         onSave={(eventData) => { 

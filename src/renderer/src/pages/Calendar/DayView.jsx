@@ -24,7 +24,7 @@ export default function DayView({ events = [], selectedDate = new Date(), onEven
           </Box>
 
           {/* single day column */}
-          <Box style={{ position: 'relative', borderLeft: '1px solid var(--mantine-color-default-border)' }}>
+          <Box style={{ position: 'relative', borderLeft: '1px solid var(--mantine-color-default-border)', cursor: 'pointer' }}>
             {hourSlots.map(slot => (
               <Box key={slot.hour} style={{ height: 60, borderBottom: '1px solid var(--mantine-color-default-border)' }}
                 onClick={() => onSlotClick(selectedDate, slot.hour)}

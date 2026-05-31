@@ -9,11 +9,11 @@ import { useEffect, useState } from 'react'
 // color — ColorSwatch picker, same as NoteModal
 // recurring — Checkbox
 // frequency — Select (daily/weekly/monthly)
-const colors = ['red', 'pink', 'grape', 
+const colors = ['orange', 'red', 'pink', 'grape', 
       'violet', 'indigo', 'blue', 'cyan', 
-      'teal', 'green', 'lime', 'yellow', 'orange']
+      'teal', 'green', 'lime', 'yellow']
 
-export default function EventModal({opened, onSave, onClose, event}){
+export default function EventModal({opened, event, onSave, onClose, defaultStart, defaultEnd } ){
     const [title, setTitle] = useState('Untitled')
     const [description, setDescription] = useState('')
     const [start, setStart] = useState()
@@ -40,8 +40,8 @@ export default function EventModal({opened, onSave, onClose, event}){
         else{
             setTitle('Untitled')
             setDescription('')
-            setStart(null)
-            setEnd(null)
+            setStart(defaultStart ?? null)
+            setEnd(defaultEnd ?? null)
             setAllDay(false)
             setFrequency(null)
             setColor('pink')

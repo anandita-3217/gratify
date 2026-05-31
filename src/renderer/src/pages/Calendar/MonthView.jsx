@@ -1,7 +1,8 @@
 // props: events, selectedDate, onDateSelect, onEventClick, onSlotClick
-import { Box, Button, Grid,  Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
+import { ActionIcon, Box, Button, Grid,  Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
 
 import { getMonthGrid, getEventsForDay, isToday, isSameDay } from './useCalendarGrid'
+import { Plus } from "lucide-react";
 
 export default function MonthView({ events = [], selectedDate = new Date(), onDateSelect, onEventClick, onSlotClick }) {
   const year = selectedDate.getFullYear()
@@ -24,7 +25,6 @@ export default function MonthView({ events = [], selectedDate = new Date(), onDa
 
       {/* day cells */}
       <Grid columns={7} 
-      // style={{ border: '1px solid var(--mantine-color-default-border)' }}
       >
         {grid.map((date, i) => {
           const dayEvents = getEventsForDay(events, date)
@@ -33,31 +33,53 @@ export default function MonthView({ events = [], selectedDate = new Date(), onDa
           const today = isToday(date)
 
           return (
-            <Grid.Col key={i} span={1}
+            <Grid.Col key={i} span={1} className="group"
               style={{ 
                 border: '1px solid var(--mantine-color-default-border)',
-                // borderBottom: '1px solid var(--mantine-color-default-border)',
                 minHeight: 100,
                 cursor: 'pointer',
                 opacity: isCurrentMonth ? 1 : 0.3,
-                borderColor : today ? '#cc225c' : 'dimmed'
+                borderColor : today ? '#cc225c' : 'dimmed',
+                position: 'relative'
               }}
               onClick={() => onDateSelect(date)}
             >
               {/* day number */}
-              <Text 
-              size="sm" fw={today ? 700 : 400}
-              c={today? '#cc225c': 'dimmed'}
-              style={{
-                width: 28,
-                height: 28,
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              >{date.getDate()}</Text>
+              <Group justify="space-between" align="center" mb={4}>
+                <Text 
+                size="sm" fw={today ? 700 : 400}
+                c={today? '#cc225c': 'dimmed'}
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                >{date.getDate()}</Text>
+                <ActionIcon size='xs' variant="subtle" className="opacity-0 group-hover:opacity-100"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onSlotClick(date,9)
+                }}>
+                  <Plus size={12}/>
+                </ActionIcon>
+              </Group>
               {/* events pills */}
+              {dayEvents.map(event =>(
+                <Box key={event.id}
+                onClick={(e) => {e.stopPropagation(); onEventClick(event)}}
+                style={{
+                  backgroundColor: `var(--mantine-color-${event.color}-5)`,
+                  borderRadius: 4,
+                  padding: '1px 4px',
+                  marginBottom: 2,
+                  cursor: 'pointer'
+                }}>
+                  <Text size="xs" c='white'>{event.title}</Text>
+                </Box>
+              ))}
             </Grid.Col>
           )
         })}

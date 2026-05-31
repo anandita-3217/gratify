@@ -59,7 +59,7 @@ export default function WeekView({ events = [], selectedDate = new Date(), onEve
               <Box key={i} style={{ position: 'relative', borderLeft: '1px solid var(--mantine-color-default-border)' }}>
                 {/* hour slot cells */}
                 {hourSlots.map(slot => (
-                  <Box key={slot.hour} style={{ height: 60, borderBottom: '1px solid var(--mantine-color-default-border)' }}
+                  <Box key={slot.hour} style={{ height: 60, borderBottom: '1px solid var(--mantine-color-default-border)', cursor: 'pointer' }}
                     onClick={() => onSlotClick(day, slot.hour)}
                     {...dragHandlers}
                   />

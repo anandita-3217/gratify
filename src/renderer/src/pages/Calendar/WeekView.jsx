@@ -4,22 +4,39 @@ import { Box, Button, Grid,  Group, SegmentedControl, Stack, Text, Title } from 
 
 import { getWeekDays, getHourSlots, getEventsForDay, getEventPosition, isToday } from './useCalendarGrid'
 
-export default function WeekView({ events = [], selectedDate = new Date(), onEventClick, onSlotClick, dragHandlers }) {
+export default function WeekView({ events = [], selectedDate = new Date(), onEventClick, onSlotClick, onDayClick, dragHandlers }) {
   const weekDays = getWeekDays(selectedDate)
   const hourSlots = getHourSlots()
-
+  
   return (
     <Box style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
 
       {/* header row — day names + dates */}
       <Box style={{ display: 'grid', gridTemplateColumns: '60px repeat(7, 1fr)' }}>
+        
         <Box /> {/* empty corner */}
-        {weekDays.map((day, i) => (
-          <Box key={i} ta='center'>
+        {weekDays.map((day, i) => {
+            const today = isToday(day)
+          return (<Box key={i} ta='center'
+            border= { today ? '#cc225c' : 'dimmed'} 
+            style={{
+              cursor: 'pointer'
+            }}
+            onClick={() => onDayClick(day)}>
             {/* day name */}
+            <Text>
+              {day.toLocaleString('default', { weekday: 'short' })}
+            </Text>
+            <Text 
+            fw={ today ? 700 : 400}
+            c={today ? '#cc225c' : 'dimmed'}
+            >
+              {day.toLocaleString('default', { day: '2-digit' })}
+            </Text>
+
             {/* date number — highlight if today */}
-          </Box>
-        ))}
+          </Box>)
+})}
       </Box>
 
       {/* scrollable time grid */}

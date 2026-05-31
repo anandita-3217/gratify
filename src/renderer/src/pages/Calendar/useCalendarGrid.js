@@ -1,10 +1,12 @@
 
 export function getMonthGrid(year, month) {
-    // → array of 35 Date objects (5 weeks) for the month grid
+    // → array of 40 Date objects (5 weeks) for the month grid
     const firstDay = new Date(year, month, 1)
     const startOffset = firstDay.getDay()
+    const daysInMonth = new Date(year, month+1,0).getDate()
+    const totalCells = startOffset + daysInMonth > 35 ? 42 : 35
     const grid = []
-    for (let i = 0; i < 35; i++){
+    for (let i = 0; i < totalCells; i++){
         grid.push(new Date(year, month, 1 - startOffset + i))
     }
     return grid

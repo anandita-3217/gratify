@@ -2,15 +2,36 @@ import MonthView from "./MonthView";
 import WeekView from "./WeekView";
 import DayView from "./DayView";
 
-import { Box, Button, Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
-import { Settings2 } from "lucide-react";
+import { ActionIcon, Box, Button, Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
+import { ChevronLeft, ChevronRight, Settings2 } from "lucide-react";
 import { useState } from "react";
+import { getWeekDays } from "./useCalendarGrid";
 // Calendar settings must have date formats for displaying - both time and date
 
 
 export default function Calendar({ onNavigate }){
     const [view, setView] = useState('dayview')
     const [selectedDate, setSelectedDate] = useState(new Date())
+
+    function goBack(){
+        const d = new Date(selectedDate)
+        if (view === 'dayview') d.setDate(d.getDate() - 1)
+        if (view === 'weekview') d.setDate(d.getDate() - 7)
+        if (view === 'monthview') d.setMonth(d.getMonth() - 1)
+        setSelectedDate(d)
+    }
+    
+    function goForward(){
+        const d = new Date(selectedDate)
+        if (view === 'dayview') d.setDate(d.getDate() + 1)
+        if (view === 'weekview') d.setDate(d.getDate() + 7)
+        if (view === 'monthview') d.setMonth(d.getMonth() + 1)
+        setSelectedDate(d)
+    }
+
+    function goToday(){
+        setSelectedDate(new Date())
+    }
 
     return(
     <Box p='xl' style={{ height: '100%', overflow: 'auto' }}>
@@ -22,6 +43,20 @@ export default function Calendar({ onNavigate }){
             <Text c="dimmed" size="sm">Organize your time!</Text>
             <Stack>
                 <Box bg='pink' h='1px'/>
+                <Group justify="space-between" align="center">
+                    <Group gap='xs'>
+                        <ActionIcon variant="subtle" onClick={goBack} ><ChevronLeft size={16}/></ActionIcon>
+                        <ActionIcon variant="subtle" onClick={goForward} ><ChevronRight size={16}/></ActionIcon>
+                        <Button variant="subtle" size="xs" onClick={goToday} leftSection="Today"/>
+                    </Group>
+                </Group>
+                
+                <Text fw={600}>
+                    {view === 'monthview' && selectedDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+                    {view === 'weekview' && `Week of ${getWeekDays(selectedDate)[0].toLocaleString('default', { month: 'short', day: 'numeric' })}`}
+                    {view === 'dayview' && selectedDate.toLocaleString('default' ,{ weekday: 'long', month: 'long', day: 'numeric' })} 
+                </Text>
+                
                 <SegmentedControl
                 variant="subtle"
                 color="pink"
@@ -35,9 +70,32 @@ export default function Calendar({ onNavigate }){
                         { label: 'Month View', value: 'monthview' },
                      ]}
                 />
-                {view === 'monthview' && <MonthView/>}
-                {view === 'weekview' && <WeekView/>}
-                {view === 'dayview' && <DayView/>}
+                {view === 'monthview' && (<MonthView
+                    events={[]} selectedDate={selectedDate} onDateSelect={(date) => {
+                        setSelectedDate(date) 
+                        setView('dayview')
+                    }}
+                    onEventClick={() => {}}
+                    onSlotClick={() => {}}
+                />)}
+                {view === 'weekview' && (<WeekView
+                    events={[]} selectedDate={selectedDate} 
+                    onEventClick={() => {}}
+                    onSlotClick={(day, hour) => {
+                        setSelectedDate(day)
+                    }}
+                    onDayClick={(day) => {
+                        setSelectedDate(day)
+                        setView('dayview')
+                    }}
+                    dragHandlers={{}}
+                />)}
+                {view === 'dayview' && (<DayView
+                events={[]} selectedDate={selectedDate}
+                onEventClick={() => {}}
+                onSlotClick={(day, hour) => {}}
+                dragHandlers={{}}
+                />)}
             </Stack>    
             
         </Stack>

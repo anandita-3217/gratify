@@ -11,6 +11,8 @@ export default function MonthView({ events = [], selectedDate = new Date(), onDa
 
   return (
     <Box>
+      <Box ta="center" py='sm'>
+      </Box>
       {/* day name headers */}
       <Grid columns={7}>
         {dayNames.map(d => (
@@ -21,7 +23,9 @@ export default function MonthView({ events = [], selectedDate = new Date(), onDa
       </Grid>
 
       {/* day cells */}
-      <Grid columns={7} style={{ border: '1px solid var(--mantine-color-default-border)' }}>
+      <Grid columns={7} 
+      // style={{ border: '1px solid var(--mantine-color-default-border)' }}
+      >
         {grid.map((date, i) => {
           const dayEvents = getEventsForDay(events, date)
           const isCurrentMonth = date.getMonth() === month
@@ -31,15 +35,28 @@ export default function MonthView({ events = [], selectedDate = new Date(), onDa
           return (
             <Grid.Col key={i} span={1}
               style={{ 
-                borderRight: '1px solid var(--mantine-color-default-border)',
-                borderBottom: '1px solid var(--mantine-color-default-border)',
+                border: '1px solid var(--mantine-color-default-border)',
+                // borderBottom: '1px solid var(--mantine-color-default-border)',
                 minHeight: 100,
                 cursor: 'pointer',
-                opacity: isCurrentMonth ? 1 : 0.3
+                opacity: isCurrentMonth ? 1 : 0.3,
+                borderColor : today ? '#cc225c' : 'dimmed'
               }}
               onClick={() => onDateSelect(date)}
             >
               {/* day number */}
+              <Text 
+              size="sm" fw={today ? 700 : 400}
+              c={today? '#cc225c': 'dimmed'}
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              >{date.getDate()}</Text>
               {/* events pills */}
             </Grid.Col>
           )

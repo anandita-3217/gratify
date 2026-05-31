@@ -4,6 +4,8 @@ import { Box, Button, Grid,  Group, SegmentedControl, Stack, Text, Title } from 
 
 import { getHourSlots, getEventsForDay, getEventPosition, isToday } from './useCalendarGrid'
 
+const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Sunday"];
+
 export default function DayView({ events = [], selectedDate = new Date(), onEventClick, onSlotClick, dragHandlers }) {
   const hourSlots = getHourSlots()
   const dayEvents = getEventsForDay(events, selectedDate)
@@ -14,8 +16,14 @@ export default function DayView({ events = [], selectedDate = new Date(), onEven
       {/* header — date + day name */}
       <Box ta='center' py='sm'>
         {/* day name */}
-        {new Date.getDay()}
+        <Text>
+        {dayNames[selectedDate.getDay()]}
+        </Text>
+        <Text>
+        {selectedDate.getDate()}
         {/* date number — highlight if today */}
+
+        </Text>
       </Box>
 
       {/* scrollable time grid */}

@@ -7,8 +7,9 @@ import { Settings2 } from "lucide-react";
 import { useState } from "react";
 // Calendar settings must have date formats for displaying - both time and date
 
+
 export default function Calendar({ onNavigate }){
-    const [view, setView] = useState('monthview')
+    const [view, setView] = useState('dayview')
     const [selectedDate, setSelectedDate] = useState(new Date())
 
     return(

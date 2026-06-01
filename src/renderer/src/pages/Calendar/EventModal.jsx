@@ -87,8 +87,8 @@ export default function EventModal({opened, event, onSave, onClose, onDelete, de
                 value={description} onChange={(e) => setDescription(e.target.value)}/>
                 <Checkbox aria-label='all-day' label="All Day" checked={allDay} onChange={(e) => setAllDay(e.currentTarget.checked)}/>
                 <Group grow align='flex-end'>
-                    <DateTimePicker label="Start" aria-label='start' withAsterisk  value={start} onChange={setStart} error={startError} />
-                    <DateTimePicker label="End" aria-label='end' withAsterisk  value={end} onChange={setEnd} error={endError} disabled={allDay}/>
+                    <DateTimePicker minDate={new Date()} label="Start" aria-label='start' withAsterisk  value={start} onChange={setStart} error={startError} />
+                    <DateTimePicker minDate={new Date()} label="End" aria-label='end' withAsterisk  value={end} onChange={setEnd} error={endError} disabled={allDay}/>
                 </Group>
                 <Checkbox aria-label='recurring' label='Recurring' checked={recurring} onChange={(e) => setRecurring(e.currentTarget.checked)} />
                 {recurring && (

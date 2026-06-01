@@ -1,7 +1,7 @@
 
 // drag handlers passed in from index.jsx via useDragToCreate
-import { Box, Button, Grid,  Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
-
+import { ActionIcon, Box, Button, Grid,  Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
+import { Plus } from "lucide-react";
 import { getWeekDays, getHourSlots, getEventsForDay, getEventPosition, isToday } from './useCalendarGrid'
 import { useEffect, useState } from "react";
 
@@ -69,10 +69,31 @@ export default function WeekView({ events = [], selectedDate = new Date(), onEve
               <Box key={i} style={{ position: 'relative', borderLeft: '1px solid var(--mantine-color-default-border)' }}>
                 {/* hour slot cells */}
                 {hourSlots.map(slot => (
-                  <Box key={slot.hour} style={{ height: 60, borderBottom: '1px solid var(--mantine-color-default-border)', cursor: 'pointer' }}
-                    onClick={() => onSlotClick(day, slot.hour)}
-                    {...dragHandlers}
-                  />
+                <Box 
+  key={slot.hour} 
+  className="group"  // ← add this
+  style={{ 
+    height: 60, 
+    borderBottom: '1px solid var(--mantine-color-default-border)', 
+    cursor: 'pointer',
+    position: 'relative'  // ← add this
+  }}
+  onClick={() => onSlotClick(day, slot.hour)}
+>
+  <ActionIcon 
+    size='xs'
+    variant='subtle'
+    color='pink'
+    className="opacity-0 group-hover:opacity-100"
+    style={{ position: 'absolute', top: 4, right: 4 }}
+    onClick={(e) => {
+      e.stopPropagation()
+      onSlotClick(day, slot.hour)
+    }}
+  >
+    <Plus size={12}/>
+  </ActionIcon>
+</Box>  
                 ))}
                 {isToday(day) && (
                  <Box
@@ -88,6 +109,7 @@ export default function WeekView({ events = [], selectedDate = new Date(), onEve
                  }}
                  />
                 )}
+                
                 {/* events — absolutely positioned */}
                 {dayEvents.map(event => {
                   const { top, height } = getEventPosition(event, day)

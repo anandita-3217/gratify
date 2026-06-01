@@ -1,7 +1,8 @@
 // same as WeekView but single column
 // props: events, selectedDate, onEventClick, onSlotClick, dragHandlers
-import { Box, Button, Grid,  Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
+import { ActionIcon, Box, Button, Grid,  Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
 import { useState, useEffect } from "react";
+import { Plus } from "lucide-react";
 
 import { getHourSlots, getEventsForDay, getEventPosition, isToday } from './useCalendarGrid'
 
@@ -41,12 +42,47 @@ export default function DayView({ events = [], selectedDate = new Date(), onEven
 
           {/* single day column */}
           <Box style={{ position: 'relative', borderLeft: '1px solid var(--mantine-color-default-border)', cursor: 'pointer' }}>
-            {hourSlots.map(slot => (
+            {/* {hourSlots.map(slot => (
               <Box key={slot.hour} style={{ height: 60, borderBottom: '1px solid var(--mantine-color-default-border)' }}
-                onClick={() => onSlotClick(selectedDate, slot.hour)}
+                className="group" onClick={() => onSlotClick(selectedDate, slot.hour)}
                 {...dragHandlers}
-              />
-            ))}
+              >
+                 <ActionIcon
+      size='xs'
+      variant='subtle'
+      color='pink'
+      className="opacity-0 group-hover:opacity-100"
+      style={{ position: 'absolute', top: 4, right: 4 }}
+      onClick={(e) => {
+        e.stopPropagation()
+        onSlotClick(day, slot.hour)
+      }}
+    >
+      <Plus size={10}/>
+    </ActionIcon>
+            </Box>              
+            ))} */}
+            {hourSlots.map(slot => (
+  <Box key={slot.hour} 
+    className="group"
+    style={{ height: 60, borderBottom: '1px solid var(--mantine-color-default-border)', position: 'relative', cursor: 'pointer' }}
+    onClick={() => onSlotClick(selectedDate, slot.hour)} {...dragHandlers}
+  >
+    <ActionIcon
+      size='xs'
+      variant='subtle'
+      color='pink'
+      className="opacity-0 group-hover:opacity-100"
+      style={{ position: 'absolute', top: 4, right: 4 }}
+      onClick={(e) => {
+        e.stopPropagation()
+        onSlotClick(day, slot.hour)
+      }}
+    >
+      <Plus size={14}/>
+    </ActionIcon>
+  </Box>
+))}
           {isToday(selectedDate) && (
             <Box
             style={{

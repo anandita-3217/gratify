@@ -42,26 +42,6 @@ export default function DayView({ events = [], selectedDate = new Date(), onEven
 
           {/* single day column */}
           <Box style={{ position: 'relative', borderLeft: '1px solid var(--mantine-color-default-border)', cursor: 'pointer' }}>
-            {/* {hourSlots.map(slot => (
-              <Box key={slot.hour} style={{ height: 60, borderBottom: '1px solid var(--mantine-color-default-border)' }}
-                className="group" onClick={() => onSlotClick(selectedDate, slot.hour)}
-                {...dragHandlers}
-              >
-                 <ActionIcon
-      size='xs'
-      variant='subtle'
-      color='pink'
-      className="opacity-0 group-hover:opacity-100"
-      style={{ position: 'absolute', top: 4, right: 4 }}
-      onClick={(e) => {
-        e.stopPropagation()
-        onSlotClick(day, slot.hour)
-      }}
-    >
-      <Plus size={10}/>
-    </ActionIcon>
-            </Box>              
-            ))} */}
             {hourSlots.map(slot => (
   <Box key={slot.hour} 
     className="group"

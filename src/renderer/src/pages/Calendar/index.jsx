@@ -52,6 +52,8 @@ export default function Calendar({ onNavigate }){
     function handleSlotClick(day, hour){
         const start = new Date(day)
         start.setHours(hour, 0, 0, 0)
+        if (start < new Date()) return
+        
         const end = new Date(day)
         end.setHours(hour+1,0,0,0)
         setNewEventDefaults({ start, end })

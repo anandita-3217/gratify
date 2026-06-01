@@ -3,10 +3,12 @@
 import { ActionIcon, Box, Button, Grid,  Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
 import { Plus } from "lucide-react";
 import { getWeekDays, getHourSlots, getEventsForDay, getEventPosition, isToday } from './useCalendarGrid'
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function WeekView({ events = [], selectedDate = new Date(), onEventClick, onSlotClick, onDayClick, dragHandlers }) {
   const [now, setNow] = useState(new Date())
+
+  const scrollRef = useRef(null)
 
   const weekDays = getWeekDays(selectedDate)
   const hourSlots = getHourSlots()
@@ -14,6 +16,13 @@ export default function WeekView({ events = [], selectedDate = new Date(), onEve
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()),60000)
     return () => clearInterval(interval)
+  },[])
+
+  useEffect(() => {
+    if(scrollRef.current){
+      const scrollTo = (now.getHours() / 24) * scrollRef.current.scrollHeight
+      scrollRef.current.scrollTop = scrollTo - 200
+    }
   },[])
 
   const nowPosition = ((now.getHours() * 60 + now.getMinutes()) / (24 * 60)) * 100
@@ -50,7 +59,7 @@ export default function WeekView({ events = [], selectedDate = new Date(), onEve
       </Box>
 
       {/* scrollable time grid */}
-      <Box style={{ overflowY: 'auto', flex: 1, position: 'relative' }}>
+      <Box ref={scrollRef}  style={{ overflowY: 'auto', flex: 1, position: 'relative' }}>
         <Box style={{ display: 'grid', gridTemplateColumns: '60px repeat(7, 1fr)' }}>
 
           {/* hour labels column */}
@@ -71,12 +80,12 @@ export default function WeekView({ events = [], selectedDate = new Date(), onEve
                 {hourSlots.map(slot => (
                 <Box 
   key={slot.hour} 
-  className="group"  // ← add this
+  className="group"  
   style={{ 
     height: 60, 
     borderBottom: '1px solid var(--mantine-color-default-border)', 
     cursor: 'pointer',
-    position: 'relative'  // ← add this
+    position: 'relative'  
   }}
   onClick={() => onSlotClick(day, slot.hour)}
 >

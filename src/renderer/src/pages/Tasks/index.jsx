@@ -2,7 +2,7 @@ import TaskItem from "./TaskItem";
 import TaskModal from "./TaskModal";
 // TODO: add a search bar too 
 import { Box, Badge, Chip ,Group, MultiSelect  ,TextInput, Button, Stack, Text, Title, Progress, Select  } from "@mantine/core";
-import {  Plus,PlusIcon,SlidersHorizontal   } from 'lucide-react';
+import {  Plus,PlusIcon,SlidersHorizontal, Search   } from 'lucide-react';
 
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect,useRef,  useState } from "react";
@@ -15,6 +15,8 @@ import * as chrono from 'chrono-node';
 export default function Tasks({ onNavigate }){
     const {tasks, addTask, deleteTask, toggleTask,updateTask} = useTasks();
     const [input, setInput] = useState('');
+    const [search, setSearch] = useState('')
+
     const [opened, { open, close }] = useDisclosure(false)
     const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false)
     const [selectedTask, setSelectedTask] = useState(null)
@@ -107,6 +109,10 @@ export default function Tasks({ onNavigate }){
     const percentage = total === 0 ? 0 : Math.round((completed / total) * 100)
 
     const filteredTasks = tasks.filter(task => {
+        if(search){
+            const s = search.toLowerCase()
+            if(!task.text.toLowerCase().includes(s)) return false 
+        }
       if (filter.priority.length > 0 && !filter.priority.includes(task.priority)) return false
       if (filter.status === 'active' && task.completed) return false
       if (filter.status === 'completed' && !task.completed) return false
@@ -190,6 +196,8 @@ export default function Tasks({ onNavigate }){
                     <Progress value={percentage} color="pink" />
                     {/* <Button onClick={open} color="pink" leftSection={<Plus size={16}/>} >New Task</Button> */}
                     
+
+                    
                 </Stack>
             </Stack>
             <Stack p="md">
@@ -209,7 +217,7 @@ export default function Tasks({ onNavigate }){
                                 color="pink" 
                                 size="xs" 
                                 leftSection={<SlidersHorizontal size={14}/>} 
-                                onClick={() => setFiltersOpen(f => !f)} >Filters & Sort</Button>
+                                onClick={() => setFiltersOpen(f => !f)} >Filter & Search</Button>
                             {(filter.priority.length > 0 || filter.frequency.length > 0 || filter.status !== 'all' ) && (
                                 <Badge color="pink" size={"sm"} variant="light">
                                     {filter.priority.length + filter.frequency.length * (filter.status !== 'all' ? 1 : 0)} active 
@@ -222,6 +230,7 @@ export default function Tasks({ onNavigate }){
                 </Group>
                 {filtersOpen &&(
                     <Stack gap={"xs"} mb={"md"} p={"sm"} style={{ border: '1px solid var(--mantine-color-default-border)', borderRadius: 8 }}>
+                        <TextInput placeholder='Search Tasks...' value={search} onChange={(e) => setSearch(e.target.value)} leftSection={<Search size={16} />}/>
                         <Group gap={"xs"} align="center">
                             <Text size="xs" c={"dimmed"} w={60}>Status</Text>
                             <Chip.Group value={filter.status} onChange={(val) => setFilter(f => ({...f, status: val}))}>

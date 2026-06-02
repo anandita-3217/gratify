@@ -245,7 +245,7 @@ WeekView.jsx          ← time grid
       ↓
 DayView.jsx           ← zoom in on week
       ↓
-useDragToCreate.js    ← add drag last
+useDragToCreate.js    ← add drag last  
 
  -->
 

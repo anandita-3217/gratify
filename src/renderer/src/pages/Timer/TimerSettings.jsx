@@ -25,7 +25,6 @@ export default function TimerSettings({ opened, onClose, settings, technique, on
     <Stack gap='lg'>
       <Text>Sounds</Text>
       <Switch
-      // TODO: add thumb icon
       size='md'
       thumbIcon={sound ? (
         <BellRing  size={12} color='pink'/>
@@ -39,7 +38,6 @@ export default function TimerSettings({ opened, onClose, settings, technique, on
       /><Divider color='pink'/>
       <Text>Notifications</Text>
       <Switch
-      // TODO: add thumb icon
       size='md'
       thumbIcon={notifications ? (
         <BellRing  size={12} color='pink'/>

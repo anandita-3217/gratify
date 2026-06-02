@@ -60,5 +60,4 @@ export default function TechniquePicker({ technique, setTechnique, TECHNIQUES, B
     </Group>
   )
 }
-// TODO: the edit and delete buttons should be next to the options and more animation?
-//  the action buttons arent working
+// TODO: more animation?

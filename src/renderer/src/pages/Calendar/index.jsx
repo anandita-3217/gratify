@@ -5,7 +5,7 @@ import DayView from "./DayView";
 import { ActionIcon, Box, Button, Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
 import { ChevronLeft, ChevronRight, Plus, Settings2 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { getWeekDays } from "./useCalendarGrid";
+import { getWeekDays, getEventsForDay, isSameDay } from "./useCalendarGrid";
 
 import useCalendar from './useCalendar'
 // Calendar settings must have date formats for displaying - both time and date
@@ -108,11 +108,51 @@ export default function Calendar({ onNavigate }){
                 />
                     <Group justify="center">
                         <ActionIcon variant="subtle" onClick={goBack} ><ChevronLeft size={16}/></ActionIcon>
-                        <Text fw={600}>
-                            {view === 'monthview' && selectedDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
-                            {view === 'weekview' && `Week of ${getWeekDays(selectedDate)[0].toLocaleString('default', { month: 'short', day: 'numeric' })}`}
-                            {view === 'dayview' && selectedDate.toLocaleString('default' ,{ weekday: 'long', month: 'long', day: 'numeric' })} 
-                        </Text>
+                        {view === 'dayview' && (
+                            <Group gap={4} align="center">
+                                <Text size="sm" fw={500}>
+                                    {selectedDate.toLocaleString('default', {weekday : 'long', day: 'numeric', month: 'long', year: 'numeric'})}
+                                </Text>
+                                {getEventsForDay(events, selectedDate).length > 0 && (
+                                    <Box style={{
+                                        width: 6, height: 6,
+                                        borderRadius: '50%',
+                                        backgroundColor: 'var(--mantine-color-cyan-6)',
+                                        marginBottom: 2
+                                    }}/> 
+                                )}
+                            </Group> 
+                        )}
+                        {view === 'weekview' && (
+                            <Group gap={4} align="center">
+                                <Text size="sm" fw={500}>
+                                    {`Week ${getWeekDays(selectedDate)[0].toLocaleString('default', { month: 'short', day: 'numeric' })} - ${getWeekDays(selectedDate)[6].toLocaleString('default', { month: 'short', day: 'numeric', year: 'numeric' })}`}
+                                </Text>
+                                {/* {getEventsForDay(events, selectedDate).length > 0 && (
+                                    <Box style={{
+                                        width: 6, height: 6,
+                                        borderRadius: '50%',
+                                        backgroundColor: 'var(--mantine-color-cyan-6)',
+                                        marginBottom: 2
+                                    }}/> 
+                                )} */}
+                            </Group> 
+                        )}
+                        {view === 'monthview' && (
+                            <Group gap={4} align="center">
+                                <Text size="sm" fw={500}>
+                                    {selectedDate.toLocaleString('default', {month: 'long', year: 'numeric'})}
+                                </Text>
+                                {/* {getEventsForDay(events, selectedDate).length > 0 && (
+                                    <Box style={{
+                                        width: 6, height: 6,
+                                        borderRadius: '50%',
+                                        backgroundColor: 'var(--mantine-color-cyan-6)',
+                                        marginBottom: 2
+                                    }}/> 
+                                )} */}
+                            </Group> 
+                        )}
                         <ActionIcon variant="subtle" onClick={goForward} ><ChevronRight size={16}/></ActionIcon>
                         <Button variant="subtle" size="xs" onClick={goToday} leftSection="Today"/>
                     </Group>

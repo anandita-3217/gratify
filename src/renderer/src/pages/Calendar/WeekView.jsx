@@ -19,12 +19,14 @@ export default function WeekView({ events = [], selectedDate = new Date(), onEve
   },[])
 
   useEffect(() => {
-    if(scrollRef.current){
+  const timer = setTimeout(() => {
+    if (scrollRef.current) {
       const scrollTo = (now.getHours() / 24) * scrollRef.current.scrollHeight
       scrollRef.current.scrollTop = scrollTo - 200
     }
-  },[])
-
+  }, 50)
+  return () => clearTimeout(timer)
+}, [])
   const nowPosition = ((now.getHours() * 60 + now.getMinutes()) / (24 * 60)) * 100
   
   return (

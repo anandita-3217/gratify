@@ -8,6 +8,9 @@ import NoteCard from './NoteCard'
 import NoteModal from './NoteModal'
 import NoteDrawer from './NoteDrawer'
 
+const noteColors = ['orange', 'red', 'pink', 'grape', 
+      'violet', 'indigo', 'blue', 'cyan', 
+      'teal', 'green', 'lime', 'yellow']
 // TODO: make markdown compatible and code recognizable and format it even if i need to use a packagae or a 3rd party app - later
 export default function Notes() {
   const { notes, addNote, deleteNote, updateNote, pinNote } = useNotes()
@@ -84,9 +87,7 @@ export default function Notes() {
     }
   })
 
-const noteColors = ['gray', 'red', 'pink', 'grape', 
-      'violet', 'indigo', 'blue', 'cyan', 
-      'teal', 'green', 'lime', 'yellow', 'orange']
+
 
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>

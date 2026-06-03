@@ -2,7 +2,7 @@ import MonthView from "./MonthView";
 import WeekView from "./WeekView";
 import DayView from "./DayView";
 
-import { ActionIcon, Box, Button, Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
+import { ActionIcon, Box, Button, Group, SegmentedControl, Stack, Text, Title, Tooltip } from "@mantine/core";
 import { ChevronLeft, ChevronRight, Plus, Settings2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getWeekDays, getEventsForDay, isSameDay } from "./useCalendarGrid";
@@ -95,16 +95,37 @@ export default function Calendar({ onNavigate }){
                 <Group justify="space-between" align="center">
                 <SegmentedControl
                 variant="subtle"
-                color="pink"
                 withItemsBorders={false}
                 radius='md'
                 value={view}
                 onChange={setView}
                 data={[
-                        { label: 'Day ', value: 'dayview' },
-                        { label: 'Week ', value: 'weekview' },
-                        { label: 'Month ', value: 'monthview' },
-                     ]}
+    {
+      label: (
+        <Tooltip label="D" position="bottom" withArrow>
+          <span>Day</span>
+        </Tooltip>
+      ),
+      value: 'dayview'
+    },
+    {
+      label: (
+        <Tooltip label="W" position="bottom" withArrow>
+          <span>Week</span>
+        </Tooltip>
+      ),
+      value: 'weekview'
+    },
+    {
+      label: (
+        <Tooltip label="M" position="bottom" withArrow>
+          <span>Month</span>
+        </Tooltip>
+      ),
+      value: 'monthview'
+    },
+  ]}
+
                 />
                     <Group justify="center">
                         <ActionIcon variant="subtle" onClick={goBack} ><ChevronLeft size={16}/></ActionIcon>
@@ -128,30 +149,12 @@ export default function Calendar({ onNavigate }){
                                 <Text size="sm" fw={500}>
                                     {`Week ${getWeekDays(selectedDate)[0].toLocaleString('default', { month: 'short', day: 'numeric' })} - ${getWeekDays(selectedDate)[6].toLocaleString('default', { month: 'short', day: 'numeric', year: 'numeric' })}`}
                                 </Text>
-                                {/* {getEventsForDay(events, selectedDate).length > 0 && (
-                                    <Box style={{
-                                        width: 6, height: 6,
-                                        borderRadius: '50%',
-                                        backgroundColor: 'var(--mantine-color-cyan-6)',
-                                        marginBottom: 2
-                                    }}/> 
-                                )} */}
                             </Group> 
                         )}
                         {view === 'monthview' && (
-                            <Group gap={4} align="center">
                                 <Text size="sm" fw={500}>
                                     {selectedDate.toLocaleString('default', {month: 'long', year: 'numeric'})}
                                 </Text>
-                                {/* {getEventsForDay(events, selectedDate).length > 0 && (
-                                    <Box style={{
-                                        width: 6, height: 6,
-                                        borderRadius: '50%',
-                                        backgroundColor: 'var(--mantine-color-cyan-6)',
-                                        marginBottom: 2
-                                    }}/> 
-                                )} */}
-                            </Group> 
                         )}
                         <ActionIcon variant="subtle" onClick={goForward} ><ChevronRight size={16}/></ActionIcon>
                         <Button variant="subtle" size="xs" onClick={goToday} leftSection="Today"/>

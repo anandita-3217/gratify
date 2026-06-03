@@ -4,7 +4,7 @@ import { getEventsForDay, getHourSlots, getWeekDays, getEventPosition, isToday }
 import { Plus } from "lucide-react";
 
 export default function WeekView ({events = [], selectedDate = new Date(),onEventClick,  onDayClick, onSlotClick, dragHandlers}) {
-  
+  // TODO: sth like freeze panes for week and mont views so day labels stay in vision
   const [now, setNow] = useState(new Date())
   const currentHourRef = useRef(null)
 

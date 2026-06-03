@@ -1,6 +1,5 @@
 import TaskItem from "./TaskItem";
 import TaskModal from "./TaskModal";
-// TODO: add a search bar too 
 import { Box, Badge, Chip ,Group, MultiSelect  ,TextInput, Button, Stack, Text, Title, Progress, Select  } from "@mantine/core";
 import {  Plus,PlusIcon,SlidersHorizontal, Search   } from 'lucide-react';
 

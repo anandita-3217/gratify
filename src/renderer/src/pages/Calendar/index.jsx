@@ -5,6 +5,9 @@ import DayView from "./DayView";
 import { ActionIcon, Box, Button, Group, SegmentedControl, Stack, Text, Title, Tooltip } from "@mantine/core";
 import { ChevronLeft, ChevronRight, Plus, Settings2 } from "lucide-react";
 import { useState, useEffect } from "react";
+
+
+import useCalendarSync from './useCalendarSync'
 import { getWeekDays, getEventsForDay, isSameDay } from "./useCalendarGrid";
 
 import useCalendar from './useCalendar'
@@ -17,6 +20,7 @@ import { useDisclosure } from "@mantine/hooks";
 export default function Calendar({ onNavigate }){
 
     const {events, addEvent, editEvent, deleteEvent} = useCalendar()
+    const { syncedEvents } = useCalendarSync(events)
 
     const [selectedEvent, setSelectedEvent] = useState(null)
 

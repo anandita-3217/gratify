@@ -81,138 +81,261 @@ export default function Calendar({ onNavigate }){
     },[opened, editOpened]) 
 
 
-
-    return(
-    <Box p='xl' style={{ height: '100%', overflow: 'auto' }}>
-        <Stack gap={4} mb='xl'>
-            <Group gap={8} justify="space-between">
-                <Title fw={600} order={2}>Calendar</Title>
-                <Group>
-                    {/* <Button variant="subtle" size="xs" aria-label="Calendar Settings"><Settings2 size={12}/></Button> */}
-                    <Button variant="subtle" onClick={open} size="xs" aria-label="Add Event"><Plus size={12}/></Button>
-
-                </Group>
-            </Group>
-            <Text c="dimmed" size="sm">Organize your time!</Text>
-            <Stack>
-                <Box bg='pink' h='1px'/>
-                <Group justify="space-between" align="center">
-                <SegmentedControl
-                variant="subtle"
-                withItemsBorders={false}
-                radius='md'
-                value={view}
-                onChange={setView}
-                data={[
-    {
-      label: (
-        <Tooltip label="D" position="bottom" withArrow>
-          <span>Day</span>
-        </Tooltip>
-      ),
-      value: 'dayview'
-    },
-    {
-      label: (
-        <Tooltip label="W" position="bottom" withArrow>
-          <span>Week</span>
-        </Tooltip>
-      ),
-      value: 'weekview'
-    },
-    {
-      label: (
-        <Tooltip label="M" position="bottom" withArrow>
-          <span>Month</span>
-        </Tooltip>
-      ),
-      value: 'monthview'
-    },
-  ]}
-
-                />
-                    <Group justify="center">
-                        <ActionIcon variant="subtle" onClick={goBack} ><ChevronLeft size={16}/></ActionIcon>
-                        {view === 'dayview' && (
-                            <Group gap={4} align="center">
-                                <Text size="sm" fw={500}>
-                                    {selectedDate.toLocaleString('default', {weekday : 'long', day: 'numeric', month: 'long', year: 'numeric'})}
-                                </Text>
-                                {getEventsForDay(events, selectedDate).length > 0 && (
-                                    <Box style={{
-                                        width: 6, height: 6,
-                                        borderRadius: '50%',
-                                        backgroundColor: 'var(--mantine-color-cyan-6)',
-                                        marginBottom: 2
-                                    }}/> 
-                                )}
-                            </Group> 
-                        )}
-                        {view === 'weekview' && (
-                            <Group gap={4} align="center">
-                                <Text size="sm" fw={500}>
-                                    {`Week ${getWeekDays(selectedDate)[0].toLocaleString('default', { month: 'short', day: 'numeric' })} - ${getWeekDays(selectedDate)[6].toLocaleString('default', { month: 'short', day: 'numeric', year: 'numeric' })}`}
-                                </Text>
-                            </Group> 
-                        )}
-                        {view === 'monthview' && (
-                                <Text size="sm" fw={500}>
-                                    {selectedDate.toLocaleString('default', {month: 'long', year: 'numeric'})}
-                                </Text>
-                        )}
-                        <ActionIcon variant="subtle" onClick={goForward} ><ChevronRight size={16}/></ActionIcon>
-                        <Button variant="subtle" size="xs" onClick={goToday} leftSection="Today"/>
-                    </Group>
-                </Group>
-                
-                
-                {view === 'monthview' && (<MonthView
-                    events={events} selectedDate={selectedDate} onDateSelect={(date) => {
-                        setSelectedDate(date) 
-                        setView('dayview')
-                    }}
-                    onEventClick={(event) => {setSelectedEvent(event)
-                        editOpen()
-                    }}
-                    onSlotClick={(day, hour) => handleSlotClick(day,hour)}
-                />)}
-                {view === 'weekview' && (<WeekView
-                    events={events} selectedDate={selectedDate} 
-                    onEventClick={(event) => {setSelectedEvent(event)
-                        editOpen()
-                    }}
-                    onSlotClick={(day, hour) => handleSlotClick(day,hour)}
-                    onDayClick={(day) => {
-                        setSelectedDate(day)
-                        setView('dayview')
-                    }}
-                    dragHandlers={{}}
-                />)}
-                {view === 'dayview' && (<DayView
-                events={events} selectedDate={selectedDate}
-                onEventClick={(event) => {setSelectedEvent(event)
-                    editOpen()
-                }}
-                onSlotClick={(day, hour) => handleSlotClick(day,hour)}
-                dragHandlers={{}}
-                />)}
-            </Stack>    
+return (
+  <Box p='xl' style={{ height: '100%', overflow: 'auto' }}>
+    <Stack gap={8}>
+      
+      {/* title row */}
+      <Group justify="space-between" align="center">
+        <Stack gap={0}>
+          <Title fw={600} order={2}>Calendar</Title>
+          <Text c="dimmed" size="sm">Organize your time!</Text>
         </Stack>
-        <EventModal opened={opened} 
-        onClose={() => { close(); setNewEventDefaults(null) }}
-        onSave={(eventData) => { 
-            addEvent(eventData)
-            close()
-        }}
-        defaultStart={newEventDefaults?.start}
-        defaultEnd={newEventDefaults?.end}
+        <Button 
+          variant="subtle" 
+          color="pink" 
+          size="xs" 
+          radius="xl"
+          onClick={open}
+        >
+            <Plus size={12}/>
+        </Button>
+      </Group>
+
+      <Box h={1} style={{ background: 'linear-gradient(to right, transparent, var(--mantine-color-pink-6), transparent)' }}/>
+
+      {/* nav row — segmented control + prev/next/today + date display */}
+      <Group justify="space-between" align="center">
+        
+        <SegmentedControl
+          withItemsBorders={false}
+          radius='md'
+          value={view}
+          onChange={setView}
+          data={[
+            { label: <Tooltip label="D" position="bottom" withArrow><span>Day</span></Tooltip>, value: 'dayview' },
+            { label: <Tooltip label="W" position="bottom" withArrow><span>Week</span></Tooltip>, value: 'weekview' },
+            { label: <Tooltip label="M" position="bottom" withArrow><span>Month</span></Tooltip>, value: 'monthview' },
+          ]}
         />
-        <EventModal opened={editOpened} onClose={editClose}
-        onDelete={deleteEvent} 
-        onSave={(eventData) => { 
-            editEvent(selectedEvent.id, eventData )
-            editClose()
-        }} event={selectedEvent}
+
+        {/* date display — center */}
+        <Group gap={6} align="center">
+          <ActionIcon variant="subtle" color="pink" onClick={goBack}><ChevronLeft size={16}/></ActionIcon>
+          
+          <Group gap={4} align="center">
+            {view === 'dayview' && (
+              <>
+                <Text size="sm" fw={600}>
+                  {selectedDate.toLocaleString('default', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+                </Text>
+                {getEventsForDay(events, selectedDate).length > 0 && (
+                  <Box style={{
+                    width: 6, height: 6,
+                    borderRadius: '50%',
+                    backgroundColor: 'var(--mantine-color-pink-6)',
+                    marginBottom: 2
+                  }}/>
+                )}
+              </>
+            )}
+            {view === 'weekview' && (
+              <Text size="sm" fw={600}>
+                {`${getWeekDays(selectedDate)[0].toLocaleString('default', { month: 'short', day: 'numeric' })} — ${getWeekDays(selectedDate)[6].toLocaleString('default', { month: 'short', day: 'numeric', year: 'numeric' })}`}
+              </Text>
+            )}
+            {view === 'monthview' && (
+              <Text size="sm" fw={600}>
+                {selectedDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+              </Text>
+            )}
+          </Group>
+
+          <ActionIcon variant="subtle" color="pink" onClick={goForward}><ChevronRight size={16}/></ActionIcon>
+          <Button variant="subtle" color="pink" size="xs" onClick={goToday}>Today</Button>
+        </Group>
+
+      </Group>
+
+      {/* views */}
+      {view === 'monthview' && (
+        <MonthView
+          events={syncedEvents}
+          selectedDate={selectedDate}
+          onDateSelect={(date) => { setSelectedDate(date); setView('dayview') }}
+          onEventClick={(event) => { setSelectedEvent(event); editOpen() }}
+          onSlotClick={(day, hour) => handleSlotClick(day, hour)}
         />
-    </Box>)
+      )}
+      {view === 'weekview' && (
+        <WeekView
+          events={syncedEvents}
+          selectedDate={selectedDate}
+          onEventClick={(event) => { setSelectedEvent(event); editOpen() }}
+          onSlotClick={(day, hour) => handleSlotClick(day, hour)}
+          onDayClick={(day) => { setSelectedDate(day); setView('dayview') }}
+          dragHandlers={{}}
+        />
+      )}
+      {view === 'dayview' && (
+        <DayView
+          events={syncedEvents}
+          selectedDate={selectedDate}
+          onEventClick={(event) => { setSelectedEvent(event); editOpen() }}
+          onSlotClick={(day, hour) => handleSlotClick(day, hour)}
+          dragHandlers={{}}
+        />
+      )}
+
+    </Stack>
+
+    <EventModal
+      opened={opened}
+      onClose={() => { close(); setNewEventDefaults(null) }}
+      onSave={(eventData) => { addEvent(eventData); close() }}
+      defaultStart={newEventDefaults?.start}
+      defaultEnd={newEventDefaults?.end}
+    />
+    <EventModal
+      opened={editOpened}
+      onClose={editClose}
+      onDelete={deleteEvent}
+      onSave={(eventData) => { editEvent(selectedEvent.id, eventData); editClose() }}
+      event={selectedEvent}
+    />
+  </Box>
+)
+//     return(
+//     <Box p='xl' style={{ height: '100%', overflow: 'auto' }}>
+//         <Stack gap={4} mb='xl'>
+//             <Group gap={8} justify="space-between">
+//                 <Title fw={600} order={2}>Calendar</Title>
+//                 <Group>
+//                     {/* <Button variant="subtle" size="xs" aria-label="Calendar Settings"><Settings2 size={12}/></Button> */}
+//                     <Button variant="subtle" onClick={open} size="xs" aria-label="Add Event"><Plus size={12}/></Button>
+
+//                 </Group>
+//             </Group>
+//             <Text c="dimmed" size="sm">Organize your time!</Text>
+//             <Stack>
+//                 <Box bg='pink' h='1px'/>
+//                 <Group justify="space-between" align="center">
+//                 <SegmentedControl
+//                 variant="subtle"
+//                 withItemsBorders={false}
+//                 radius='md'
+//                 value={view}
+//                 onChange={setView}
+//                 data={[
+//     {
+//       label: (
+//         <Tooltip label="D" position="bottom" withArrow>
+//           <span>Day</span>
+//         </Tooltip>
+//       ),
+//       value: 'dayview'
+//     },
+//     {
+//       label: (
+//         <Tooltip label="W" position="bottom" withArrow>
+//           <span>Week</span>
+//         </Tooltip>
+//       ),
+//       value: 'weekview'
+//     },
+//     {
+//       label: (
+//         <Tooltip label="M" position="bottom" withArrow>
+//           <span>Month</span>
+//         </Tooltip>
+//       ),
+//       value: 'monthview'
+//     },
+//   ]}
+
+//                 />
+//                     <Group justify="center">
+//                         <ActionIcon variant="subtle" onClick={goBack} ><ChevronLeft size={16}/></ActionIcon>
+//                         {view === 'dayview' && (
+//                             <Group gap={4} align="center">
+//                                 <Text size="sm" fw={500}>
+//                                     {selectedDate.toLocaleString('default', {weekday : 'long', day: 'numeric', month: 'long', year: 'numeric'})}
+//                                 </Text>
+//                                 {getEventsForDay(events, selectedDate).length > 0 && (
+//                                     <Box style={{
+//                                         width: 6, height: 6,
+//                                         borderRadius: '50%',
+//                                         backgroundColor: 'var(--mantine-color-cyan-6)',
+//                                         marginBottom: 2
+//                                     }}/> 
+//                                 )}
+//                             </Group> 
+//                         )}
+//                         {view === 'weekview' && (
+//                             <Group gap={4} align="center">
+//                                 <Text size="sm" fw={500}>
+//                                     {`Week ${getWeekDays(selectedDate)[0].toLocaleString('default', { month: 'short', day: 'numeric' })} - ${getWeekDays(selectedDate)[6].toLocaleString('default', { month: 'short', day: 'numeric', year: 'numeric' })}`}
+//                                 </Text>
+//                             </Group> 
+//                         )}
+//                         {view === 'monthview' && (
+//                                 <Text size="sm" fw={500}>
+//                                     {selectedDate.toLocaleString('default', {month: 'long', year: 'numeric'})}
+//                                 </Text>
+//                         )}
+//                         <ActionIcon variant="subtle" onClick={goForward} ><ChevronRight size={16}/></ActionIcon>
+//                         <Button variant="subtle" size="xs" onClick={goToday} leftSection="Today"/>
+//                     </Group>
+//                 </Group>
+                
+                
+//                 {view === 'monthview' && (<MonthView
+//                     events={events} selectedDate={selectedDate} onDateSelect={(date) => {
+//                         setSelectedDate(date) 
+//                         setView('dayview')
+//                     }}
+//                     onEventClick={(event) => {setSelectedEvent(event)
+//                         editOpen()
+//                     }}
+//                     onSlotClick={(day, hour) => handleSlotClick(day,hour)}
+//                 />)}
+//                 {view === 'weekview' && (<WeekView
+//                     events={events} selectedDate={selectedDate} 
+//                     onEventClick={(event) => {setSelectedEvent(event)
+//                         editOpen()
+//                     }}
+//                     onSlotClick={(day, hour) => handleSlotClick(day,hour)}
+//                     onDayClick={(day) => {
+//                         setSelectedDate(day)
+//                         setView('dayview')
+//                     }}
+//                     dragHandlers={{}}
+//                 />)}
+//                 {view === 'dayview' && (<DayView
+//                 events={events} selectedDate={selectedDate}
+//                 onEventClick={(event) => {setSelectedEvent(event)
+//                     editOpen()
+//                 }}
+//                 onSlotClick={(day, hour) => handleSlotClick(day,hour)}
+//                 dragHandlers={{}}
+//                 />)}
+//             </Stack>    
+//         </Stack>
+//         <EventModal opened={opened} 
+//         onClose={() => { close(); setNewEventDefaults(null) }}
+//         onSave={(eventData) => { 
+//             addEvent(eventData)
+//             close()
+//         }}
+//         defaultStart={newEventDefaults?.start}
+//         defaultEnd={newEventDefaults?.end}
+//         />
+//         <EventModal opened={editOpened} onClose={editClose}
+//         onDelete={deleteEvent} 
+//         onSave={(eventData) => { 
+//             editEvent(selectedEvent.id, eventData )
+//             editClose()
+//         }} event={selectedEvent}
+//         />
+//     </Box>)
 }

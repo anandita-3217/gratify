@@ -53,7 +53,11 @@ export default function DayView({events = [], selectedDate=new Date(), onEventCl
                 position: 'relative',
                 cursor: 'pointer'
               }}
-              onClick={() => onSlotClick(selectedDate, slot.hour)} {...dragHandlers}>
+              onClick={() => onSlotClick(selectedDate, slot.hour)}
+              onMouseDown={(e) => dragHandlers?.onMouseDown?.(e, selectedDate, slot.hour)}
+              onMouseMove={(e) => dragHandlers?.onMouseMove?.(e, selectedDate, slot.hour)}
+              onMouseUp={(e) => dragHandlers?.onMouseUp?.(e)}
+            >
                 <ActionIcon size='xs' variant="subtle" className="opacity-0 group-hover:opacity-100"
                 style={{ position: 'absolute', top: 4, right: 4 }}
                 onClick={(e) => {

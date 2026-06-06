@@ -73,6 +73,11 @@ export default function WeekView ({events = [], selectedDate = new Date(),onEven
             <Box key={i} style={{ position: 'relative', borderLeft: '1px solid var(--mantine-color-default-border)'  }}>
               {hourSlots.map(slot => (
                 <Box key={slot.hour} ref={slot.hour === now.getHours() && today ? currentHourRef : null} 
+                onMouseDown={(e) => dragHandlers?.onMouseDown?.(e, day, slot.hour)}
+                onMouseMove={(e) => dragHandlers?.onMouseMove?.(e, day, slot.hour)}
+                onMouseUp={(e) => dragHandlers?.onMouseUp?.(e)}
+
+                
                 className="group" style={{
                   height: 60, borderBottom: '1px solid var(--mantine-color-default-border)', 
                   position: 'relative', cursor: 'pointer'

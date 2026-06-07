@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 
 
 import TaskModal from '../Tasks/TaskModal'
+import useTasks from '../Tasks/useTasks'
 
 import useCalendarSync from './useCalendarSync'
 import useDragToCreate from "./useDragToCreate";
@@ -40,10 +41,11 @@ export default function Calendar({ onNavigate }){
     const [opened, {open, close}] = useDisclosure(false)
     const [editOpened, {open: editOpen, close: editClose}] = useDisclosure(false)
     
-    const [taskOpened, {open: taskOpen, close: taskClose}] = useDisclosure(false)
+    const [taskOpened, {open: taskModalOpen, close: taskModalClose}] = useDisclosure(false)
     const [selectedTask, setSelectedTask] = useState(null)
 
-    const tasks = useLocalStorage('tasks')
+    const [tasks] = useLocalStorage('tasks',[])
+    const { ediTask } = useTasks()
     
     function goBack(){
         const d = new Date(selectedDate)
@@ -171,23 +173,38 @@ return (
 
       {/* views */}
       {view === 'monthview' && (
-        <MonthView
-          events={syncedEvents}
-          selectedDate={selectedDate}
-          onDateSelect={(date) => { setSelectedDate(date); setView('dayview') }}
-          // onEventClick={(event) => { setSelectedEvent(event); editOpen() }}
-          onEventClick={(event) => {
-  if (event.isTaskEvent) {
-    // find the task and open TaskModal
-    setSelectedTask(tasks.find(t => t.id === event.taskId))
-    taskModalOpen()
-  } else {
-    setSelectedEvent(event)
-    editOpen()
-  }
-}}
-          // onSlotClick={(day, hour) => handleSlotClick(day, hour)}
-        />
+//         <MonthView
+//           events={syncedEvents}
+//           selectedDate={selectedDate}
+//           onDateSelect={(date) => { setSelectedDate(date); setView('dayview') }}
+//           // onEventClick={(event) => { setSelectedEvent(event); editOpen() }}
+//           onEventClick={(event) => {
+//   if (event.isTaskEvent) {
+//     // find the task and open TaskModal
+//     setSelectedTask(tasks.find(t => t.id === event.taskId))
+//     taskModalOpen()
+//   } else {
+//     setSelectedEvent(event)
+//     editOpen()
+//   }
+// }}
+//           // onSlotClick={(day, hour) => handleSlotClick(day, hour)}
+//         />
+<MonthView
+  events={syncedEvents}
+  selectedDate={selectedDate}
+  onDateSelect={(date) => { setSelectedDate(date); setView('dayview') }}
+  onEventClick={(event) => {
+    if (event.isTaskEvent) {
+      setSelectedTask(tasks.find(t => t.id === event.taskId))
+      taskOpen()
+    } else {
+      setSelectedEvent(event)
+      editOpen()
+    }
+  }}
+  onSlotClick={(day, hour) => handleSlotClick(day, hour)}  // ← add this back
+/>
       )}
       {view === 'weekview' && (
         <WeekView
@@ -225,6 +242,15 @@ return (
       onSave={(eventData) => { editEvent(selectedEvent.id, eventData); editClose() }}
       event={selectedEvent}
     />
+    <TaskModal
+  opened={taskOpened}
+  onClose={taskClose}
+  task={selectedTask}
+  onSave={(updates) => {
+    // update task in localStorage
+    // useTasks hook would be cleaner — import editTask from useTasks
+  }}
+/>
   </Box>
 )
 

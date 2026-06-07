@@ -7,6 +7,8 @@ import { ChevronLeft, ChevronRight, Plus, Settings2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
 
+import TaskModal from '../Tasks/TaskModal'
+
 import useCalendarSync from './useCalendarSync'
 import useDragToCreate from "./useDragToCreate";
 import { getWeekDays, getEventsForDay, isSameDay } from "./useCalendarGrid";
@@ -17,6 +19,7 @@ import useCalendar from './useCalendar'
 
 import EventModal from "./EventModal";
 import { useDisclosure } from "@mantine/hooks";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 export default function Calendar({ onNavigate }){
 
@@ -36,8 +39,11 @@ export default function Calendar({ onNavigate }){
 
     const [opened, {open, close}] = useDisclosure(false)
     const [editOpened, {open: editOpen, close: editClose}] = useDisclosure(false)
+    
+    const [taskOpened, {open: taskOpen, close: taskClose}] = useDisclosure(false)
+    const [selectedTask, setSelectedTask] = useState(null)
 
-
+    const tasks = useLocalStorage('tasks')
     
     function goBack(){
         const d = new Date(selectedDate)
@@ -169,8 +175,18 @@ return (
           events={syncedEvents}
           selectedDate={selectedDate}
           onDateSelect={(date) => { setSelectedDate(date); setView('dayview') }}
-          onEventClick={(event) => { setSelectedEvent(event); editOpen() }}
-          onSlotClick={(day, hour) => handleSlotClick(day, hour)}
+          // onEventClick={(event) => { setSelectedEvent(event); editOpen() }}
+          onEventClick={(event) => {
+  if (event.isTaskEvent) {
+    // find the task and open TaskModal
+    setSelectedTask(tasks.find(t => t.id === event.taskId))
+    taskModalOpen()
+  } else {
+    setSelectedEvent(event)
+    editOpen()
+  }
+}}
+          // onSlotClick={(day, hour) => handleSlotClick(day, hour)}
         />
       )}
       {view === 'weekview' && (

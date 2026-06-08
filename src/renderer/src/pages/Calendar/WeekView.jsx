@@ -1,6 +1,6 @@
 import { ActionIcon, Box, Text } from '@mantine/core'
 import { useEffect, useRef, useState } from 'react'
-import { 
+import {
   getEventsForDay,
   getHourSlots,
   getWeekDays,
@@ -205,6 +205,6 @@ WeekView.propTypes = {
   dragHandlers: PropTypes.shape({
     onMouseDown: PropTypes.func,
     onMouseMove: PropTypes.func,
-    onMouseUp: PropTypes.func,
-  }),
+    onMouseUp: PropTypes.func
+  })
 }

@@ -3,16 +3,16 @@ import WeekView from "./WeekView";
 import DayView from "./DayView";
 
 import { ActionIcon, Box, Button, Group, SegmentedControl, Stack, Text, Title, Tooltip } from "@mantine/core";
-import { ChevronLeft, ChevronRight, Plus, Settings2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 
 
-import TaskModal from '../Tasks/TaskModal'
-import useTasks from '../Tasks/useTasks'
+import TaskModal from '../Tasks/TaskModal';
+import {useTasks} from '../Tasks/useTasks';
 
 import useCalendarSync from './useCalendarSync'
 import useDragToCreate from "./useDragToCreate";
-import { getWeekDays, getEventsForDay, isSameDay } from "./useCalendarGrid";
+import { getWeekDays, getEventsForDay } from "./useCalendarGrid";
 
 import useCalendar from './useCalendar'
 // Calendar settings must have date formats for displaying - both time and date
@@ -22,7 +22,7 @@ import EventModal from "./EventModal";
 import { useDisclosure } from "@mantine/hooks";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 
-export default function Calendar({ onNavigate }){
+export default function Calendar(){
 
     const {events, addEvent, editEvent, deleteEvent} = useCalendar()
     const { syncedEvents } = useCalendarSync(events)
@@ -45,7 +45,7 @@ export default function Calendar({ onNavigate }){
     const [selectedTask, setSelectedTask] = useState(null)
 
     const [tasks] = useLocalStorage('tasks',[])
-    const { ediTask } = useTasks()
+    const { editTask } = useTasks()
     
     function goBack(){
         const d = new Date(selectedDate)
@@ -197,7 +197,7 @@ return (
   onEventClick={(event) => {
     if (event.isTaskEvent) {
       setSelectedTask(tasks.find(t => t.id === event.taskId))
-      taskOpen()
+      taskModalOpen()
     } else {
       setSelectedEvent(event)
       editOpen()
@@ -247,6 +247,9 @@ return (
   onClose={taskClose}
   task={selectedTask}
   onSave={(updates) => {
+    editTask(selectedTask.id, updates)
+    taskModalClose()
+
     // update task in localStorage
     // useTasks hook would be cleaner — import editTask from useTasks
   }}

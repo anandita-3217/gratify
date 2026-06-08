@@ -1,10 +1,16 @@
 // props: events, selectedDate, onDateSelect, onEventClick, onSlotClick
-import { ActionIcon, Box, Button, Grid,  Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
+import { ActionIcon, Box, Grid, Group, Text } from '@mantine/core'
+import PropTypes from 'prop-types'
+import { getMonthGrid, getEventsForDay, isToday } from './useCalendarGrid'
+import { Plus } from 'lucide-react'
 
-import { getMonthGrid, getEventsForDay, isToday, isSameDay } from './useCalendarGrid'
-import { Plus } from "lucide-react";
-
-export default function MonthView({ events = [], selectedDate = new Date(), onDateSelect, onEventClick, onSlotClick }) {
+export default function MonthView({
+  events = [],
+  selectedDate = new Date(),
+  onDateSelect,
+  onEventClick,
+  onSlotClick
+}) {
   const year = selectedDate.getFullYear()
   const month = selectedDate.getMonth()
   const grid = getMonthGrid(year, month)
@@ -12,72 +18,89 @@ export default function MonthView({ events = [], selectedDate = new Date(), onDa
 
   return (
     <Box>
-      <Box ta="center" py='sm'>
-      </Box>
+      <Box ta="center" py="sm"></Box>
       {/* day name headers */}
       <Grid columns={7}>
-        {dayNames.map(d => (
+        {dayNames.map((d) => (
           <Grid.Col key={d} span={1}>
-            <Text size='xs' c='dimmed' ta='center'>{d}</Text>
+            <Text size="xs" c="dimmed" ta="center">
+              {d}
+            </Text>
           </Grid.Col>
         ))}
       </Grid>
 
       {/* day cells */}
-      <Grid columns={7} 
-      >
+      <Grid columns={7}>
         {grid.map((date, i) => {
           const dayEvents = getEventsForDay(events, date)
           const isCurrentMonth = date.getMonth() === month
-          const isSelected = isSameDay(date, selectedDate)
+          // const isSelected = isSameDay(date, selectedDate)
           const today = isToday(date)
 
           return (
-            <Grid.Col key={i} span={1} className="group"
-              style={{ 
+            <Grid.Col
+              key={i}
+              span={1}
+              className="group"
+              style={{
                 border: '1px solid var(--mantine-color-default-border)',
                 minHeight: 100,
                 cursor: 'pointer',
                 opacity: isCurrentMonth ? 1 : 0.3,
-                borderColor : today ? '#cc225c' : 'dimmed',
+                borderColor: today ? '#cc225c' : 'dimmed',
                 position: 'relative'
               }}
               onClick={() => onDateSelect(date)}
             >
               {/* day number */}
               <Group justify="space-between" align="center" mb={4}>
-                <Text 
-                size="sm" fw={today ? 700 : 400}
-                c={today? '#cc225c': 'dimmed'}
-                style={{
-                  width: 28,
-                  height: 28,
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                >{date.getDate()}</Text>
-                <ActionIcon size='xs' variant="subtle" className="opacity-0 group-hover:opacity-100"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onSlotClick(date,9)
-                }}>
-                  <Plus size={12}/>
+                <Text
+                  size="sm"
+                  fw={today ? 700 : 400}
+                  c={today ? '#cc225c' : 'dimmed'}
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  {date.getDate()}
+                </Text>
+                <ActionIcon
+                  size="xs"
+                  variant="subtle"
+                  className="opacity-0 group-hover:opacity-100"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onSlotClick(date, 9)
+                  }}
+                >
+                  <Plus size={12} />
                 </ActionIcon>
               </Group>
               {/* events pills */}
-              {dayEvents.map(event =>(
-                <Box key={event.id}
-                onClick={(e) => {e.stopPropagation(); onEventClick(event)}}
-                style={{
-                  backgroundColor: `var(--mantine-color-${event.color}-5)`,
-                  borderRadius: 4,
-                  padding: '1px 4px',
-                  marginBottom: 2,
-                  cursor: 'pointer'
-                }}>
-                  <Text size="xs" c='white'>{event.title}</Text>
+              {dayEvents.map((event) => (
+                <Box
+                  key={event.id}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onEventClick(event)
+                  }}
+                  style={{
+                    backgroundColor: `var(--mantine-color-${event.color}-5)`,
+                    borderRadius: 4,
+                    padding: '1px 4px',
+                    marginBottom: 2,
+                    cursor: 'pointer'
+                  }}
+                >
+                  <Text size="xs" c="white">
+                    {event.title}
+                  </Text>
                 </Box>
               ))}
             </Grid.Col>
@@ -86,4 +109,11 @@ export default function MonthView({ events = [], selectedDate = new Date(), onDa
       </Grid>
     </Box>
   )
+}
+MonthView.propTypes = {
+  events: PropTypes.array,
+  selectedDate: PropTypes.instanceOf(Date),
+  onDateSelect: PropTypes.func,
+  onEventClick: PropTypes.func,
+  onSlotClick: PropTypes.func
 }

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { getHourSlots, getEventsForDay, getEventPosition, isToday } from './useCalendarGrid'
 import { Plus } from 'lucide-react'
 import PropTypes from 'prop-types'
+import EventCard from './EventCard'
 export default function DayView({
   events = [],
   selectedDate = new Date(),
@@ -124,18 +125,19 @@ export default function DayView({
                     height: `${Math.max(height, 2)}%`,
                     width: '90%',
                     left: '5%',
-                    backgroundColor: `var(--mantine-color-${event.color}-5)`,
-                    borderRadius: 4,
-                    cursor: 'pointer',
-                    padding: '2px 4px',
-                    overflow: 'hidden',
                     zIndex: 1
+                    // backgroundColor: `var(--mantine-color-${event.color}-5)`,
+                    // borderRadius: 4,
+                    // cursor: 'pointer',
+                    // padding: '2px 4px',
+                    // overflow: 'hidden',
                   }}
                   onClick={() => onEventClick(event)}
                 >
-                  <Text size="xs" fw={600} c="white">
+                  <EventCard event={event} onClick={onEventClick} />
+                  {/* <Text size="xs" fw={600} c="white">
                     {event.title}
-                  </Text>
+                  </Text> */}
                 </Box>
               )
             })}

@@ -3,6 +3,7 @@ import { ActionIcon, Box, Grid, Group, Text } from '@mantine/core'
 import PropTypes from 'prop-types'
 import { getMonthGrid, getEventsForDay, isToday } from './useCalendarGrid'
 import { Plus } from 'lucide-react'
+import EventCard from './EventCard'
 
 export default function MonthView({
   events = [],
@@ -84,24 +85,7 @@ export default function MonthView({
               </Group>
               {/* events pills */}
               {dayEvents.map((event) => (
-                <Box
-                  key={event.id}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    onEventClick(event)
-                  }}
-                  style={{
-                    backgroundColor: `var(--mantine-color-${event.color}-5)`,
-                    borderRadius: 4,
-                    padding: '1px 4px',
-                    marginBottom: 2,
-                    cursor: 'pointer'
-                  }}
-                >
-                  <Text size="xs" c="white">
-                    {event.title}
-                  </Text>
-                </Box>
+                <EventCard key={event.id} event={event} onClick={onEventClick} compact />
               ))}
             </Grid.Col>
           )

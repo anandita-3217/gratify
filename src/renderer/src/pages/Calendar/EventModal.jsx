@@ -1,19 +1,11 @@
 import { Box ,Center, Checkbox, Stack, Title,Text,TextInput, Modal, Group, Select, Button, NumberInput, SegmentedControl, Textarea, ColorSwatch} from '@mantine/core'
 import { DateTimePicker } from '@mantine/dates'
 import { useEffect, useState } from 'react'
-// title — TextInput
-// description — Textarea
-// start — DateTimePicker
-// end — DateTimePicker
-// allDay — Checkbox (hides time when checked)
-// color — ColorSwatch picker, same as NoteModal
-// recurring — Checkbox
-// frequency — Select (daily/weekly/monthly)
 const colors = ['orange', 'red', 'pink', 'grape', 
       'violet', 'indigo', 'blue', 'cyan', 
       'teal', 'green', 'lime', 'yellow']
 
-export default function EventModal({opened, event, onSave, onClose, onDelete, defaultStart, defaultEnd } ){
+export default function EventModal({opened, onSave, onClose, onDelete, onCreateTask, event, defaultStart, defaultEnd } ){
     const [title, setTitle] = useState('Untitled')
     const [description, setDescription] = useState('')
     const [start, setStart] = useState()
@@ -114,13 +106,19 @@ export default function EventModal({opened, event, onSave, onClose, onDelete, de
                         />
                     ))}
                 </Group>
-                <Group justify='center'>
-                    {event && (
-                        <Button color='red' variant='subtle' onClick={() => {onDelete(event.id); onClose()}} >Delete</Button>
-                    )}
-                    <Button onClick={handleSave} >{event ? 'Save' : 'Add'}</Button>
-                    <Button onClick={onClose}>Cancel</Button>
-                </Group>
+                <Group justify="center">
+  {event && onDelete && (
+    <Button color="red" variant="subtle" onClick={() => { onDelete(event.id); onClose() }}>
+      Delete
+    </Button>
+  )}
+  <Button color="pink" onClick={handleSave}>{event ? 'Save' : 'Add'}</Button>
+  <Button color="pink" variant="outline" onClick={() => onCreateTask({ title, start })}>
+    Create Task
+  </Button>
+  <Button color="pink" variant="subtle" onClick={onClose}>Cancel</Button>
+</Group>
+{/* Event modal isnot making the event a task */}
             </Stack>
             
         </Modal>

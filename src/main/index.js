@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain, Notification } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, Notification, session } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -12,7 +12,6 @@ function createWindow() {
     icon: icon,
     // autoHideMenuBar: false,
     // ...(process.platform === 'linux' ? { icon } : {}),
-    icon: icon,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
@@ -23,16 +22,16 @@ function createWindow() {
     mainWindow.show()
   })
 
-//   mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
-//   callback({
-//     responseHeaders: {
-//       ...details.responseHeaders,
-//       'Content-Security-Policy': [
-//         "default-src 'self'; img-src 'self' data: https://fonts.gstatic.com; script-src 'self'"
-//       ]
-//     }
-//   })
-// })
+  mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [
+          "default-src 'self'; img-src 'self' data: https://fonts.gstatic.com; script-src 'self'"
+        ]
+      }
+    })
+  })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
@@ -65,12 +64,19 @@ app.whenReady().then(() => {
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
 
-  ipcMain.handle('notify',(event, { title, body }) => {
+  ipcMain.handle('notify', (event, { title, body }) => {
     new Notification({ title, body }).show()
   })
 
   createWindow()
-
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Access-Control-Allow-Origin': ['*']
+      }
+    })
+  })
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.

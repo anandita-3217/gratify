@@ -1,6 +1,8 @@
 # gratify
 
 An Electron application with React
+<!-- For Dashboard add a banner on top and add an Image and of the add randomly picked  images from mantine's Image component -->
+<!-- Take care of CORS -->
 
 ## Features
 

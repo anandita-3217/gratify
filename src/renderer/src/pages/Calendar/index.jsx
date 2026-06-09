@@ -49,8 +49,13 @@ export default function Calendar() {
   const [taskOpened, { open: taskModalOpen, close: taskModalClose }] = useDisclosure(false)
   const [selectedTask, setSelectedTask] = useState(null)
 
+  const [taskFromEvent, setTaskFromEvent] = useState(null)
+  const [taskFromEventOpened, { open: openTaskFromEvent, close: closeTaskFromEvent }] = useDisclosure(false)
+
+
+
   const [tasks] = useLocalStorage('tasks', [])
-  const { editTask, deleteTask  } = useTasks()
+  const { editTask, deleteTask, addTask   } = useTasks()
   const { dragHandlers } = useDragToCreate(({ start, end }) => {
     if (start < new Date()) return
     setNewEventDefaults({ start, end })
@@ -278,9 +283,13 @@ export default function Calendar() {
           addEvent(eventData)
           close()
         }}
+        onCreateTask={({ title, start }) => {
+          setTaskFromEvent({ title, start })
+          openTaskFromEvent()
+        }}
         defaultStart={newEventDefaults?.start}
         defaultEnd={newEventDefaults?.end}
-      />
+        />
       <EventModal
         opened={editOpened}
         onClose={editClose}
@@ -289,17 +298,31 @@ export default function Calendar() {
           editEvent(selectedEvent.id, eventData)
           editClose()
         }}
+        onCreateTask={({ title, start }) => {
+          setTaskFromEvent({ title, start })
+          openTaskFromEvent()
+        }}
         event={selectedEvent}
       />
       <TaskModal
         key={selectedTask?.id ?? 'new'}
         opened={taskOpened}
         onClose={taskModalClose}
-        task={selectedTask}
-        onSave={(updates) => {
-          editTask(selectedTask.id, updates)
-          taskModalClose()
-        }}
+        task={taskFromEvent ? {
+          text: taskFromEvent.title,
+          deadline: taskFromEvent.start,
+          priority: 'low',
+          recurring: false,
+          frequency: null,
+          reminder: null,
+          customInterval: null,
+          customUnit: null
+        } : null}
+
+          onSave={(taskData) => {
+    addTask(taskData)
+    closeTaskFromEvent()
+          }}
         onDelete={(id) => {
           deleteTask(id)
           taskModalClose()

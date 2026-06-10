@@ -33,7 +33,6 @@ export default function EventCard({ event, onClick, compact = false }) {
         padding: '2px 6px',
         overflow: 'hidden',
         height: '100%'
-        // borderLeft: `3px solid color-mix(in srgb, ${bg} 70%, black)`
       }}
     >
       <Text size="xs" c="white" fw={600} truncate>

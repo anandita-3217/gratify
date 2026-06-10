@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import {
   Box,
-  Grid,
   Text,
   Title,
   Stack,
@@ -15,7 +14,8 @@ import {
   Divider,
   ScrollArea,
   ThemeIcon,
-  Button,
+  Image,
+  Button
 } from '@mantine/core'
 import {
   IconChecklist,
@@ -24,8 +24,7 @@ import {
   IconPlus,
   IconArrowRight,
   IconCircleCheck,
-  IconAlertCircle,
-  IconClock,
+  IconAlertCircle
 } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
@@ -34,9 +33,9 @@ import { useLocalStorage } from '../../hooks/useLocalStorage'
 
 function greeting() {
   const hours = new Date().getHours()
-    if (hours < 12) return 'Good Morning!'
-    if (hours < 18) return 'Good Afternoon'
-    return 'Good Evening!'
+  if (hours < 12) return 'Good Morning!'
+  if (hours < 18) return 'Good Afternoon'
+  return 'Good Evening!'
 }
 
 function todayKey() {
@@ -66,7 +65,7 @@ const PRIORITY_COLOR = {
   urgent: 'red',
   high: 'orange',
   medium: 'blue',
-  low: 'gray',
+  low: 'gray'
 }
 
 // ─── sub-components ──────────────────────────────────────────────────────────
@@ -100,12 +99,14 @@ function SectionHeader({ icon: Icon, title, linkLabel, onLink }) {
 // ─── Tasks widget ─────────────────────────────────────────────────────────────
 
 function TasksWidget({ tasks, onToggle, onNavigate }) {
-  const today = tasks.filter((t) => {
-    if (t.completed) return false
-    if (t.frequency === 'daily') return true
-    if (!t.deadline) return true
-    return isUpcoming(t.deadline)
-  }).slice(0, 6)
+  const today = tasks
+    .filter((t) => {
+      if (t.completed) return false
+      if (t.frequency === 'daily') return true
+      if (!t.deadline) return true
+      return isUpcoming(t.deadline)
+    })
+    .slice(0, 6)
 
   const total = tasks.length
   const done = tasks.filter((t) => t.completed).length
@@ -113,18 +114,15 @@ function TasksWidget({ tasks, onToggle, onNavigate }) {
 
   return (
     <Paper withBorder radius="md" p="md" h="80%">
-      <SectionHeader
-        icon={IconChecklist}
-        title="Tasks"
-        linkLabel="All tasks"
-        onLink={onNavigate}
-      />
+      <SectionHeader icon={IconChecklist} title="Tasks" linkLabel="All tasks" onLink={onNavigate} />
 
       <Group gap={6} mb="xs">
         <Text size="xs" c="dimmed">
           {done}/{total} completed
         </Text>
-        <Text size="xs" c="dimmed">·</Text>
+        <Text size="xs" c="dimmed">
+          ·
+        </Text>
         <Text size="xs" fw={500} c={pct === 100 ? 'teal' : 'blue'}>
           {pct}%
         </Text>
@@ -135,7 +133,9 @@ function TasksWidget({ tasks, onToggle, onNavigate }) {
         <Stack align="center" gap={4} py="lg">
           <IconCircleCheck size={28} color="green" />
           {/* <IconCircleCheck size={28} color="var(--mantine-color-teal-5" /> */}
-          <Text size="sm" c="dimmed">All caught up!</Text>
+          <Text size="sm" c="dimmed">
+            All caught up!
+          </Text>
         </Stack>
       ) : (
         <Stack gap={6}>
@@ -148,7 +148,11 @@ function TasksWidget({ tasks, onToggle, onNavigate }) {
                 radius="xl"
               />
               <Box style={{ flex: 1, minWidth: 0 }}>
-                <Text size="sm" truncate style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
+                <Text
+                  size="sm"
+                  truncate
+                  style={{ textDecoration: task.completed ? 'line-through' : 'none' }}
+                >
                   {task.text}
                 </Text>
                 {task.deadline && (
@@ -183,7 +187,7 @@ function CalendarWidget({ events, onNavigate }) {
     meetings: 'violet',
     deadlines: 'red',
     focus: 'teal',
-    personal: 'orange',
+    personal: 'orange'
   }
 
   return (
@@ -198,7 +202,9 @@ function CalendarWidget({ events, onNavigate }) {
       {upcoming.length === 0 ? (
         <Stack align="center" gap={4} py="lg">
           <IconCalendar size={28} color="green" />
-          <Text size="sm" c="dimmed">No events this week</Text>
+          <Text size="sm" c="dimmed">
+            No events this week
+          </Text>
         </Stack>
       ) : (
         <Stack gap={0}>
@@ -211,17 +217,25 @@ function CalendarWidget({ events, onNavigate }) {
                     height: 36,
                     borderRadius: 99,
                     background: `var(--mantine-color-${CATEGORY_COLOR[event.category] || 'blue'}-5)`,
-                    flexShrink: 0,
+                    flexShrink: 0
                   }}
                 />
                 <Box style={{ flex: 1, minWidth: 0 }}>
-                  <Text size="sm" fw={500} truncate>{event.title}</Text>
+                  <Text size="sm" fw={500} truncate>
+                    {event.title}
+                  </Text>
                   <Group gap={6}>
-                    <Text size="xs" c="dimmed">{formatDate(event.date || event.start)}</Text>
+                    <Text size="xs" c="dimmed">
+                      {formatDate(event.date || event.start)}
+                    </Text>
                     {event.time && (
                       <>
-                        <Text size="xs" c="dimmed">·</Text>
-                        <Text size="xs" c="dimmed">{event.time}</Text>
+                        <Text size="xs" c="dimmed">
+                          ·
+                        </Text>
+                        <Text size="xs" c="dimmed">
+                          {event.time}
+                        </Text>
                       </>
                     )}
                   </Group>
@@ -263,7 +277,7 @@ function QuickNotesWidget({ notes, onAddNote, onNavigate }) {
     blue: 'var(--mantine-color-blue-4)',
     green: 'var(--mantine-color-teal-4)',
     pink: 'var(--mantine-color-pink-4)',
-    purple: 'var(--mantine-color-violet-4)',
+    purple: 'var(--mantine-color-violet-4)'
   }
 
   return (
@@ -299,9 +313,10 @@ function QuickNotesWidget({ notes, onAddNote, onNavigate }) {
       {recent.length === 0 ? (
         <Stack align="center" gap={4} py="lg">
           <IconChecklist size={28} color="green" />
-          <Text size="sm" c="dimmed" ta="center" py="md">No notes yet</Text>
+          <Text size="sm" c="dimmed" ta="center" py="md">
+            No notes yet
+          </Text>
         </Stack>
-
       ) : (
         <ScrollArea h={160}>
           <Stack gap={6}>
@@ -312,14 +327,16 @@ function QuickNotesWidget({ notes, onAddNote, onNavigate }) {
                 style={{
                   borderRadius: 8,
                   borderLeft: `3px solid ${NOTE_COLORS[note.color] || NOTE_COLORS.default}`,
-                  background: 'var(--mantine-color-gray-0)',
+                  background: 'var(--mantine-color-gray-0)'
                 }}
               >
-                <Text size="xs" lineClamp={2}>{note.content || note.text}</Text>
+                <Text size="xs" lineClamp={2}>
+                  {note.content || note.text}
+                </Text>
                 <Text size="xs" c="dimmed" mt={2}>
                   {new Date(note.updatedAt || note.createdAt).toLocaleDateString('en-US', {
                     month: 'short',
-                    day: 'numeric',
+                    day: 'numeric'
                   })}
                 </Text>
               </Box>
@@ -333,8 +350,7 @@ function QuickNotesWidget({ notes, onAddNote, onNavigate }) {
 
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
 
-
-export default function Dashboard({ onNavigate }) {
+export default function Dashboard() {
   const navigate = useNavigate()
   const [tasks, setTasks] = useLocalStorage('gratify-tasks', [])
   const [events] = useLocalStorage('gratify-events', [])
@@ -358,46 +374,50 @@ export default function Dashboard({ onNavigate }) {
       pinned: false,
       archived: false,
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     }
     setNotes([note, ...notes])
   }
+  const random = Math.floor(Math.random() * 10)+1
+  console.log(random)
 
   return (
     <Box p="xl" style={{ height: '100%', overflowY: 'auto' }}>
       {/* Header */}
       <Stack gap={4} mb="xl">
-        <Title order={2} fw={600} >
+        <Title order={2} fw={600}>
           {greeting()}
-          {/* <img 
-  src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f44b/lottie.json" 
-  width={24} 
-  height={24} 
-/> */}
+          {/* TODO: See if this can be worked into a banner */}
+          <Image
+            src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-${random}.png`} 
+            height={160}
+            alt="Norway"
+          />
         </Title>
         <Group gap={8}>
           <Text c="dimmed" size="sm">
             {new Date().toLocaleDateString('en-US', {
               weekday: 'long',
               month: 'long',
-              day: 'numeric',
+              day: 'numeric'
             })}
           </Text>
-          
+
           {overdue > 0 && (
             <>
-              <Text c="dimmed" size="sm">·</Text>
+              <Text c="dimmed" size="sm">
+                ·
+              </Text>
               <Group gap={4}>
                 <IconAlertCircle size={14} color="var(--mantine-color-red-5)" />
                 <Text size="sm" c="red">
                   {overdue} overdue {overdue === 1 ? 'task' : 'tasks'}
                 </Text>
               </Group>
-              
             </>
           )}
         </Group>
-          <Box bg='pink' h='1px'/>
+        <Box bg="pink" h="1px" />
       </Stack>
 
       {/* Stat pills */}
@@ -406,55 +426,48 @@ export default function Dashboard({ onNavigate }) {
           {
             label: 'Tasks remaining',
             value: tasks.filter((t) => !t.completed).length,
-            color: 'blue',
+            color: 'blue'
           },
           {
             label: 'Done today',
-            value: tasks.filter((t) => t.completed && t.completedAt?.slice(0, 10) === todayKey()).length,
-            color: 'teal',
+            value: tasks.filter((t) => t.completed && t.completedAt?.slice(0, 10) === todayKey())
+              .length,
+            color: 'teal'
           },
           {
             label: 'Events this week',
             value: events.filter((e) => isUpcoming(e.date || e.start)).length,
-            color: 'violet',
+            color: 'violet'
           },
           {
             label: 'Notes',
             value: notes.filter((n) => !n.archived).length,
-            color: 'orange',
-          },
+            color: 'orange'
+          }
         ].map((stat) => (
-          <Paper
-            key={stat.label}
-            withBorder
-            radius="md"
-            px="md"
-            py="sm"
-            style={{ minWidth: 120 }}
-          >
+          <Paper key={stat.label} withBorder radius="md" px="md" py="sm" style={{ minWidth: 120 }}>
             <Text size="xl" fw={700} c={stat.color}>
               {stat.value}
             </Text>
-            <Text size="xs" c="dimmed">{stat.label}</Text>
+            <Text size="xs" c="dimmed">
+              {stat.label}
+            </Text>
           </Paper>
         ))}
       </Group>
 
       <Stack gap="md">
-          <TasksWidget
-            tasks={tasks}
-            onToggle={handleToggleTask}
-            onNavigate={() => onNavigate('tasks')}
-          />
-          <CalendarWidget
-            events={events}
-            onNavigate={() => onNavigate('calendar')}
-          />
-          <QuickNotesWidget
-            notes={notes}
-            onAddNote={handleAddNote}
-            onNavigate={() => onNavigate('notes')}
-          />
+        <TasksWidget
+          tasks={tasks}
+          onToggle={handleToggleTask}
+          onNavigate={() => onNavigate('tasks')}
+        />
+        <CalendarWidget events={events} onNavigate={() => onNavigate('calendar')} />
+        <QuickNotesWidget
+          notes={notes}
+          onAddNote={handleAddNote}
+          onNavigate={() => onNavigate('notes')}
+        />
       </Stack>
     </Box>
   )

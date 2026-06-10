@@ -318,7 +318,6 @@ export default function Calendar() {
           taskModalClose()
         }}
       />
-      {/* TODO: Task to event?? */}
       <TaskModal
         key={taskFromEvent?.title ?? 'from-event'}
         opened={taskFromEventOpened}

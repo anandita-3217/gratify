@@ -52,6 +52,7 @@ export default function TaskModal({ opened, onSave, onClose, onDelete, task }) {
   const [priority, setPriority] = useState(task?.priority ?? 'low')
   const [date, setDate] = useState(task?.deadline ? new Date(task.deadline) : null)
   const [recurring, setRecurring] = useState(task?.recurring ?? false)
+  const [addToCalendar, setAddToCalendar] = useState(false)
   const [frequency, setFrequency] = useState(task?.frequency ?? null)
   const [reminder, setReminder] = useState(task?.reminder ?? null)
   const [reminderType, setReminderType] = useState('preset')
@@ -87,6 +88,7 @@ export default function TaskModal({ opened, onSave, onClose, onDelete, task }) {
       text,
       priority,
       deadline: date,
+      addToCalendar,
       recurring,
       frequency,
       reminder: finalReminder,
@@ -188,6 +190,11 @@ export default function TaskModal({ opened, onSave, onClose, onDelete, task }) {
                 )}
               </Stack>
             )}
+            {date && (
+              <Checkbox label="Add to Calendar" checked={addToCalendar} onChange={(e) => setAddToCalendar(e.currentTarget.checked)}/>
+            )
+
+            }
           </Group>
 
           <Checkbox

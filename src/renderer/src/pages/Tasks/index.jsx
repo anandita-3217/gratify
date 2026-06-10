@@ -18,12 +18,14 @@ import { Plus, PlusIcon, SlidersHorizontal, Search } from 'lucide-react'
 import { useDisclosure } from '@mantine/hooks'
 import { useEffect, useRef, useState } from 'react'
 import { useTasks } from './useTasks'
+import useCalendar from '../Calendar/useCalendar'
 import useNotifications from '../../hooks/useNotifications'
 
 import * as chrono from 'chrono-node'
 
 export default function Tasks() {
   const { tasks, addTask, deleteTask, toggleTask, updateTask } = useTasks()
+  const { addEvent } = useCalendar()
   const [input, setInput] = useState('')
   const [search, setSearch] = useState('')
 
@@ -45,6 +47,7 @@ export default function Tasks() {
     let priority = 'low'
     let deadline = null
     let reminder = null
+    let addToCalendar = false
 
     // Priorities
     const priorities = ['low', 'medium', 'high', 'urgent']
@@ -104,12 +107,16 @@ export default function Tasks() {
       text = text.replace(reminderMatch[0], '').trim()
     }
 
+    if (text.toLowerCase().includes('+cal')) {
+      addToCalendar = true
+      text = text.replace(/\+cal/i, '').trim()
+    }
     // clean up any leftover @ time residue
     text = text.replace(/@\s*\d{1,2}(?::\d{2})?\s*(?:am|pm)/i, '').trim()
     // clean up double spaces
     text = text.replace(/\s+/g, ' ').trim()
 
-    return { text, priority, deadline, reminder }
+    return { text, priority, deadline, reminder, addToCalendar }
   }
 
   function handleAdd() {
@@ -414,7 +421,21 @@ export default function Tasks() {
         opened={opened}
         onClose={close}
         onSave={(taskData) => {
-          addTask(taskData)
+          const task = addTask(taskData)
+          if (taskData.addToCalendar && taskData.deadline) {
+            const start = new Date(taskData.deadline)
+            const end = new Date(taskData.deadline)
+            end.setHours(end.getHours() + 1)
+            addEvent({
+              title: taskData.text,
+              start: start.toISOString(),
+              end: end.toISOString(),
+              color: 'pink',
+              allDay: false,
+              taskId: task.id,
+              isTaskEvent: false // user created, so editable
+            })
+          }
           close()
         }}
         task={null}

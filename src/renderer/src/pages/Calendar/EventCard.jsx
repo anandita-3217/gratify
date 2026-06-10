@@ -1,9 +1,7 @@
-/* eslint-disable prettier/prettier */
 import { Box, Text } from '@mantine/core'
 import PropTypes from 'prop-types'
 
 export default function EventCard({ event, onClick, compact = false }) {
-  const bg = `var(--mantine-color-${event.color}-6)`
   if (compact) {
     return (
       <Box
@@ -12,11 +10,11 @@ export default function EventCard({ event, onClick, compact = false }) {
           onClick(event)
         }}
         style={{
-          backgroundColor: bg,
+          backgroundColor: `color-mix(in srgb, var(--mantine-color-${event.color}-5) 50%, var(--mantine-color-body))`,
           borderRadius: 4,
           cursor: 'pointer',
           padding: '2px 6px',
-          overflow: 'hidden',
+          overflow: 'hidden'
         }}
       >
         <Text size="xs" c="white" truncate fw={500}>
@@ -29,12 +27,12 @@ export default function EventCard({ event, onClick, compact = false }) {
     <Box
       onClick={() => onClick(event)}
       style={{
-        backgroundColor: bg,
+        backgroundColor: `color-mix(in srgb, var(--mantine-color-${event.color}-5) 50%, var(--mantine-color-body))`,
         borderRadius: 4,
         cursor: 'pointer',
         padding: '2px 6px',
         overflow: 'hidden',
-        height: '100%',
+        height: '100%'
         // borderLeft: `3px solid color-mix(in srgb, ${bg} 70%, black)`
       }}
     >
@@ -62,4 +60,3 @@ EventCard.propTypes = {
   onClick: PropTypes.func,
   compact: PropTypes.bool
 }
-

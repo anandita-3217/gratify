@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import MonthView from './MonthView'
 import WeekView from './WeekView'
 import DayView from './DayView'
@@ -50,12 +49,11 @@ export default function Calendar() {
   const [selectedTask, setSelectedTask] = useState(null)
 
   const [taskFromEvent, setTaskFromEvent] = useState(null)
-  const [taskFromEventOpened, { open: openTaskFromEvent, close: closeTaskFromEvent }] = useDisclosure(false)
-
-
+  const [taskFromEventOpened, { open: openTaskFromEvent, close: closeTaskFromEvent }] =
+    useDisclosure(false)
 
   const [tasks] = useLocalStorage('tasks', [])
-  const { editTask, deleteTask, addTask   } = useTasks()
+  const { editTask, deleteTask, addTask } = useTasks()
   const { dragHandlers } = useDragToCreate(({ start, end }) => {
     if (start < new Date()) return
     setNewEventDefaults({ start, end })
@@ -87,11 +85,11 @@ export default function Calendar() {
     start.setHours(hour, 0, 0, 0)
     if (start < new Date()) {
       notifications.show({
-      title: 'Cannot add event in the past',
-      message: 'Please select a future time slot',
-      color: 'red',
-    })
-    return
+        title: 'Cannot add event in the past',
+        message: 'Please select a future time slot',
+        color: 'red'
+      })
+      return
     }
 
     const end = new Date(day)
@@ -289,7 +287,7 @@ export default function Calendar() {
         }}
         defaultStart={newEventDefaults?.start}
         defaultEnd={newEventDefaults?.end}
-        />
+      />
       <EventModal
         opened={editOpened}
         onClose={editClose}
@@ -308,21 +306,24 @@ export default function Calendar() {
         key={selectedTask?.id ?? 'new'}
         opened={taskOpened}
         onClose={taskModalClose}
-        task={taskFromEvent ? {
-          text: taskFromEvent.title,
-          deadline: taskFromEvent.start,
-          priority: 'low',
-          recurring: false,
-          frequency: null,
-          reminder: null,
-          customInterval: null,
-          customUnit: null
-        } : null}
-
-          onSave={(taskData) => {
-    addTask(taskData)
-    closeTaskFromEvent()
-          }}
+        task={
+          taskFromEvent
+            ? {
+                text: taskFromEvent.title,
+                deadline: taskFromEvent.start,
+                priority: 'low',
+                recurring: false,
+                frequency: null,
+                reminder: null,
+                customInterval: null,
+                customUnit: null
+              }
+            : null
+        }
+        onSave={(taskData) => {
+          addTask(taskData)
+          closeTaskFromEvent()
+        }}
         onDelete={(id) => {
           deleteTask(id)
           taskModalClose()

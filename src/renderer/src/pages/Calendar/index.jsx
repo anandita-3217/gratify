@@ -228,9 +228,11 @@ export default function Calendar() {
             <ActionIcon variant="subtle" color="pink" onClick={goForward}>
               <ChevronRight size={16} />
             </ActionIcon>
-            <Button variant="subtle" color="pink" size="xs" onClick={goToday}>
-              Today
-            </Button>
+            <Tooltip label="T" withArrow position="bottom">
+              <Button variant="subtle" color="pink" size="xs" onClick={goToday}>
+                Today
+              </Button>
+            </Tooltip>
           </Group>
         </Group>
 
@@ -303,16 +305,31 @@ export default function Calendar() {
         event={selectedEvent}
       />
       <TaskModal
-        key={selectedTask?.id ?? 'new'}
+        key={selectedTask?.id ?? 'task-edit'}
         opened={taskOpened}
         onClose={taskModalClose}
+        task={selectedTask}
+        onSave={(updates) => {
+          editTask(selectedTask.id, updates)
+          taskModalClose()
+        }}
+        onDelete={(id) => {
+          deleteTask(id)
+          taskModalClose()
+        }}
+      />
+      {/* TODO: Task to event?? */}
+      <TaskModal
+        key={taskFromEvent?.title ?? 'from-event'}
+        opened={taskFromEventOpened}
+        onClose={closeTaskFromEvent}
         task={
           taskFromEvent
             ? {
                 text: taskFromEvent.title,
                 deadline: taskFromEvent.start,
-                priority: 'low',
-                recurring: false,
+                priorty: 'low',
+                reccuring: false,
                 frequency: null,
                 reminder: null,
                 customInterval: null,
@@ -323,10 +340,6 @@ export default function Calendar() {
         onSave={(taskData) => {
           addTask(taskData)
           closeTaskFromEvent()
-        }}
-        onDelete={(id) => {
-          deleteTask(id)
-          taskModalClose()
         }}
       />
     </Box>

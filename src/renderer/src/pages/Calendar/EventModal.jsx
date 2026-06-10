@@ -10,7 +10,7 @@ import {
   ColorSwatch
 } from '@mantine/core'
 import { DateTimePicker } from '@mantine/dates'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 const colors = [
   'orange',
@@ -37,38 +37,18 @@ export default function EventModal({
   defaultStart,
   defaultEnd
 }) {
-  const [title, setTitle] = useState('Untitled')
-  const [description, setDescription] = useState('')
-  const [start, setStart] = useState()
-  const [end, setEnd] = useState()
-  const [allDay, setAllDay] = useState(false)
-  const [recurring, setRecurring] = useState(false)
-  const [frequency, setFrequency] = useState()
-  const [color, setColor] = useState('pink')
+  const [title, setTitle] = useState(event?.title ?? 'Untitled')
+  const [description, setDescription] = useState(event?.description ?? '')
+  const [start, setStart] = useState(event?.start ?? defaultStart ?? null)
+  const [end, setEnd] = useState(event?.end ?? defaultEnd ?? null)
+  const [allDay, setAllDay] = useState(event?.allDay ?? false)
+  const [recurring, setRecurring] = useState(event?.recurring ?? false)
+  const [frequency, setFrequency] = useState(event?.frequency ?? null)
+  const [color, setColor] = useState(event?.color ?? 'pink')
 
   const [titleError, setTitleError] = useState('')
   const [startError, setStartError] = useState('')
   const [endError, setEndError] = useState('')
-
-  useEffect(() => {
-    if (event) {
-      setTitle(event.title)
-      setDescription(event.description)
-      setStart(event.start)
-      setEnd(event.end)
-      setAllDay(event.allDay)
-      setFrequency(event.frequency)
-      setColor(event.color)
-    } else {
-      setTitle('Untitled')
-      setDescription('')
-      setStart(defaultStart ?? null)
-      setEnd(defaultEnd ?? null)
-      setAllDay(false)
-      setFrequency(null)
-      setColor('pink')
-    }
-  }, [event, opened])
 
   function handleSave() {
     if (!title.trim()) {
@@ -196,7 +176,14 @@ export default function EventModal({
           <Button color="pink" onClick={handleSave}>
             {event ? 'Save' : 'Add'}
           </Button>
-          <Button color="pink" variant="outline" onClick={() => onCreateTask({ title, start })}>
+          <Button
+            color="pink"
+            variant="outline"
+            onClick={() => {
+              onClose()
+              onCreateTask({ title, start })
+            }}
+          >
             Create Task
           </Button>
           <Button color="pink" variant="subtle" onClick={onClose}>
@@ -213,5 +200,20 @@ EventModal.propTypes = {
   onSave: PropTypes.func,
   onClose: PropTypes.func,
   onDelete: PropTypes.func,
-  onCreateTask: PropTypes.func
+  onCreateTask: PropTypes.func,
+  event: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    start: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+    end: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+    allDay: PropTypes.bool,
+    recurring: PropTypes.bool,
+    frequency: PropTypes.string,
+    color: PropTypes.string,
+    isTaskEvent: PropTypes.bool,
+    taskId: PropTypes.number
+  }),
+  defaultStart: PropTypes.instanceOf(Date),
+  defaultEnd: PropTypes.instanceOf(Date)
 }

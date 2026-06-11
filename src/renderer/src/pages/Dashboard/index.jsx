@@ -26,8 +26,8 @@ import {
   IconCircleCheck,
   IconAlertCircle
 } from '@tabler/icons-react'
-import { useNavigate } from 'react-router-dom'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
+import PropTypes from 'prop-types'
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
@@ -94,6 +94,12 @@ function SectionHeader({ icon: Icon, title, linkLabel, onLink }) {
       )}
     </Group>
   )
+}
+SectionHeader.propTypes = {
+  icon: PropTypes.elementType,
+  title: PropTypes.string,
+  linkLabel: PropTypes.string,
+  onLink: PropTypes.func
 }
 
 // ─── Tasks widget ─────────────────────────────────────────────────────────────
@@ -173,7 +179,11 @@ function TasksWidget({ tasks, onToggle, onNavigate }) {
     </Paper>
   )
 }
-
+TasksWidget.propTypes = {
+  tasks: PropTypes.array,
+  onToggle: PropTypes.func,
+  onNavigate: PropTypes.func
+}
 // ─── Calendar widget ──────────────────────────────────────────────────────────
 
 function CalendarWidget({ events, onNavigate }) {
@@ -254,6 +264,10 @@ function CalendarWidget({ events, onNavigate }) {
     </Paper>
   )
 }
+CalendarWidget.propTypes = {
+  events: PropTypes.array,
+  onNavigate: PropTypes.func
+}
 
 // ─── Quick Notes widget ───────────────────────────────────────────────────────
 
@@ -327,11 +341,11 @@ function QuickNotesWidget({ notes, onAddNote, onNavigate }) {
                 style={{
                   borderRadius: 8,
                   borderLeft: `3px solid ${NOTE_COLORS[note.color] || NOTE_COLORS.default}`,
-                  background: 'var(--mantine-color-gray-0)'
+                  background: 'var(--mantine-color-default-hover)'
                 }}
               >
                 <Text size="xs" lineClamp={2}>
-                  {note.content || note.text}
+                  {note.body || note.content}
                 </Text>
                 <Text size="xs" c="dimmed" mt={2}>
                   {new Date(note.updatedAt || note.createdAt).toLocaleDateString('en-US', {
@@ -347,14 +361,18 @@ function QuickNotesWidget({ notes, onAddNote, onNavigate }) {
     </Paper>
   )
 }
-
+QuickNotesWidget.propTypes = {
+  notes: PropTypes.array,
+  onAddNote: PropTypes.func,
+  onNavigate: PropTypes.func
+}
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
 
-export default function Dashboard() {
-  const navigate = useNavigate()
-  const [tasks, setTasks] = useLocalStorage('gratify-tasks', [])
-  const [events] = useLocalStorage('gratify-events', [])
-  const [notes, setNotes] = useLocalStorage('gratify-notes', [])
+export default function Dashboard({ onNavigate }) {
+  // const navigate = useNavigate()
+  const [tasks, setTasks] = useLocalStorage('tasks', [])
+  const [events] = useLocalStorage('calendarEvents', [])
+  const [notes, setNotes] = useLocalStorage('notes', [])
 
   const overdue = tasks.filter(
     (t) => !t.completed && t.deadline && new Date(t.deadline) < new Date()
@@ -367,7 +385,8 @@ export default function Dashboard() {
   const handleAddNote = (text) => {
     const note = {
       id: Date.now().toString(),
-      content: text,
+      body: text,
+      title: 'Quick Note',
       color: 'default',
       category: 'general',
       tags: [],
@@ -378,21 +397,51 @@ export default function Dashboard() {
     }
     setNotes([note, ...notes])
   }
-  const random = Math.floor(Math.random() * 10)+1
+  const random = Math.floor(Math.random() * 10) + 1
   console.log(random)
 
   return (
     <Box p="xl" style={{ height: '100%', overflowY: 'auto' }}>
       {/* Header */}
       <Stack gap={4} mb="xl">
+        <Box
+          style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', marginBottom: 8 }}
+        >
+          <Image
+            src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-${random}.png`}
+            height={160}
+            style={{ objectFit: 'cover', width: '100%' }}
+            alt="banner"
+          />
+          <Box
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background:
+                'linear-gradient(to bottom, transparent 40%, var(--mantine-color-body) 100%)'
+            }}
+          />
+          <Box style={{ position: 'absolute', bottom: 16, left: 16 }}>
+            <Title order={2} fw={600} c="white">
+              {greeting()}
+            </Title>
+            <Text size="sm" c="rgba(255,255,255,0.8)">
+              {new Date().toLocaleDateString('en-US', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </Text>
+          </Box>
+        </Box>
         <Title order={2} fw={600}>
           {greeting()}
           {/* TODO: See if this can be worked into a banner */}
-          <Image
-            src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-${random}.png`} 
+          {/* <Image
+            src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-${random}.png`}
             height={160}
             alt="Norway"
-          />
+          /> */}
         </Title>
         <Group gap={8}>
           <Text c="dimmed" size="sm">

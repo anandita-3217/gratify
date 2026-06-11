@@ -25,6 +25,14 @@ function isOverdue(task) {
   if (!task.deadline || task.completed) return false
   return new Date(task.deadline) < new Date()
 }
+function overdueMessage(task) {
+  const hoursOverdue = (new Date() - new Date(task.deadline)) / (1000 * 60 * 60)
+  if (hoursOverdue < 1) return '⏰ Due very soon!'
+  if (hoursOverdue < 24) return '😤 Overdue!'
+  if (hoursOverdue < 48) return '🔥 Really overdue!'
+  if (hoursOverdue < 72) return '💀 Very overdue!'
+  return '🚨 Critically overdue!'
+}
 
 export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
   const overdue = isOverdue(task)
@@ -34,8 +42,12 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
       padding="sm"
       radius="md"
       style={{
+        backgroundColor: overdue
+          ? `color-mix(in srgb, var(--mantine-color-red-5) 15%, var(--mantine-color-body))`
+          : `color-mix(in srgb, var(--mantine-color-${priorityColor(task.priority)}-5) 10%, var(--mantine-color-body))`,
         borderColor: overdue ? 'var(--mantine-color-red-6)' : undefined,
-        backgroundColor: `color-mix(in srgb, var(--mantine-color-${priorityColor(task.priority)}-5) 10%, var(--mantine-color-body))`
+        borderWidth: overdue ? 2 : 1,
+        animation: overdue ? 'pulse 2s ease-in-out infinite' : 'none'
       }}
     >
       <Group justify="space-between" wrap="nowrap">
@@ -51,13 +63,12 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
               </Text>
               {/* Refine this like prod the user into finishing the job */}
               {/* angry overdue indicator */}
-              {overdue && <Text size="sm">😤</Text>}
+              {overdue && (
+                <Text size="xs" c="red" fw={600}>
+                  {overdueMessage(task)}
+                </Text>
+              )}
             </Group>
-            {overdue && (
-              <Text size="xs" c="red">
-                Overdue
-              </Text>
-            )}
           </div>
         </Group>
         <Group gap={'xs'}>

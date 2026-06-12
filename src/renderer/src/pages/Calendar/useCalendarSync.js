@@ -36,7 +36,7 @@ export default function useCalendarSync(events) {
     })
 
   // merge real events with task events
-  const syncedEvents = [...events, ...taskEvents]
+  const syncedEvents = [...(events ?? []), ...taskEvents]
 
   return { syncedEvents, taskEvents }
 }

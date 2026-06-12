@@ -17,7 +17,7 @@ import { Plus, PlusIcon, SlidersHorizontal, Search } from 'lucide-react'
 
 import { useDisclosure } from '@mantine/hooks'
 import { useEffect, useRef, useState } from 'react'
-import { useTasks } from './useTasks'
+import useTasks from './useTasks'
 import useCalendar from '../Calendar/useCalendar'
 import useNotifications from '../../hooks/useNotifications'
 

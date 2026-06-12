@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import {
   Box,
   Text,
@@ -26,7 +26,11 @@ import {
   IconCircleCheck,
   IconAlertCircle
 } from '@tabler/icons-react'
-import { useLocalStorage } from '../../hooks/useLocalStorage'
+import useTasks from '../Tasks/useTasks'
+import useNotes from '../Notes/useNotes'
+import useCalendar from '../Calendar/useCalendar'
+import useCalendarSync from '../Calendar/useCalendarSync'
+
 import PropTypes from 'prop-types'
 
 // ─── helpers ────────────────────────────────────────────────────────────────
@@ -369,36 +373,17 @@ QuickNotesWidget.propTypes = {
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
 
 export default function Dashboard({ onNavigate }) {
-  // const navigate = useNavigate()
-  const [tasks, setTasks] = useLocalStorage('tasks', [])
-  const [events] = useLocalStorage('calendarEvents', [])
-  const [notes, setNotes] = useLocalStorage('notes', [])
+  const { tasks, toggleTask } = useTasks()
+  const { notes, addNote } = useNotes()
+  const { events = [] } = useCalendar()
+  const { syncedEvents } = useCalendarSync(events)
 
   const overdue = tasks.filter(
     (t) => !t.completed && t.deadline && new Date(t.deadline) < new Date()
   ).length
 
-  const handleToggleTask = (id) => {
-    setTasks(tasks.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)))
-  }
-
-  const handleAddNote = (text) => {
-    const note = {
-      id: Date.now().toString(),
-      body: text,
-      title: 'Quick Note',
-      color: 'default',
-      category: 'general',
-      tags: [],
-      pinned: false,
-      archived: false,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    }
-    setNotes([note, ...notes])
-  }
-  const random = Math.floor(Math.random() * 10) + 1
-  console.log(random)
+  // eslint-disable-next-line react-hooks/purity
+  const random = useRef(Math.floor(Math.random() * 10) + 1)
 
   return (
     <Box p="xl" style={{ height: '100%', overflowY: 'auto' }}>
@@ -409,7 +394,7 @@ export default function Dashboard({ onNavigate }) {
         >
           <Image
             src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-${random}.png`}
-            height={160}
+            height={100}
             style={{ objectFit: 'cover', width: '100%' }}
             alt="banner"
           />
@@ -434,24 +419,7 @@ export default function Dashboard({ onNavigate }) {
             </Text>
           </Box>
         </Box>
-        <Title order={2} fw={600}>
-          {greeting()}
-          {/* TODO: See if this can be worked into a banner */}
-          {/* <Image
-            src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-${random}.png`}
-            height={160}
-            alt="Norway"
-          /> */}
-        </Title>
         <Group gap={8}>
-          <Text c="dimmed" size="sm">
-            {new Date().toLocaleDateString('en-US', {
-              weekday: 'long',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </Text>
-
           {overdue > 0 && (
             <>
               <Text c="dimmed" size="sm">
@@ -506,18 +474,25 @@ export default function Dashboard({ onNavigate }) {
       </Group>
 
       <Stack gap="md">
-        <TasksWidget
-          tasks={tasks}
-          onToggle={handleToggleTask}
-          onNavigate={() => onNavigate('tasks')}
-        />
-        <CalendarWidget events={events} onNavigate={() => onNavigate('calendar')} />
+        <TasksWidget tasks={tasks} onToggle={toggleTask} onNavigate={() => onNavigate('tasks')} />
+        <CalendarWidget events={syncedEvents} onNavigate={() => onNavigate('calendar')} />
         <QuickNotesWidget
           notes={notes}
-          onAddNote={handleAddNote}
+          onAddNote={(text) =>
+            addNote({
+              title: 'Quick Note',
+              body: text,
+              tags: [],
+              color: 'pink',
+              pinned: false
+            })
+          }
           onNavigate={() => onNavigate('notes')}
         />
       </Stack>
     </Box>
   )
+}
+Dashboard.propTypes = {
+  onNavigate: PropTypes.func
 }

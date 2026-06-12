@@ -19,7 +19,7 @@ import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
 import TaskModal from '../Tasks/TaskModal'
-import { useTasks } from '../Tasks/useTasks'
+import useTasks from '../Tasks/useTasks'
 
 import useCalendarSync from './useCalendarSync'
 import useDragToCreate from './useDragToCreate'

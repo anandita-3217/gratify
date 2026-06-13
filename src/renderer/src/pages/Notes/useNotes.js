@@ -10,75 +10,80 @@
  * @property {number} updatedAt
  */
 
-import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { useLocalStorage } from '../../hooks/useLocalStorage'
 
-export default function useNotes(){
-    const [notes, setNotes] = useLocalStorage('notes', [
-        {
-          id: 1,
-          title: 'Shopping List',
-          body: 'Milk, eggs, bread, butter, coffee, bananas, chicken, pasta',
-          tags: ['personal', 'errands'],
-          color: 'teal',
-          pinned: true,
-          createdAt: Date.now(),
-          updatedAt: Date.now()
-        },
-        {
-          id: 2,
-          title: 'Project Ideas',
-          body: 'Build a habit tracker, create a recipe app, learn Three.js, experiment with WebGL animations',
-          tags: ['work', 'ideas'],
-          color: 'grape',
-          pinned: false,
-          createdAt: Date.now(),
-          updatedAt: Date.now()
-        },
-        {
-          id: 3,
-          title: 'Meeting Notes',
-          body: 'Discussed Q2 roadmap, assigned tasks to team members, next meeting Friday at 10am',
-          tags: ['work', 'meetings'],
-          color: 'red',
-          pinned: false,
-          createdAt: Date.now(),
-          updatedAt: Date.now()
-        },
-        {
-          id: 4,
-          title: 'Book Recommendations',
-          body: 'Atomic Habits, Deep Work, The Pragmatic Programmer, Clean Code, Thinking Fast and Slow',
-          tags: ['reading', 'personal'],
-          color: 'violet',
-          pinned: false,
-          createdAt: Date.now(),
-          updatedAt: Date.now()
-        }
+const DUMMY_NOTES = [
+  {
+    id: 1,
+    title: 'Meeting notes',
+    body: '<p>Discussed Q3 roadmap and deadlines</p>',
+    tags: ['work', 'meetings'],
+    color: 'blue',
+    pinned: true,
+    createdAt: Date.now(),
+    updatedAt: Date.now()
+  },
+  {
+    id: 2,
+    title: 'Book recommendations',
+    body: '<p>Atomic Habits, Deep Work, The Pragmatic Programmer</p>',
+    tags: ['reading'],
+    color: 'teal',
+    pinned: false,
+    createdAt: Date.now(),
+    updatedAt: Date.now()
+  },
+  {
+    id: 3,
+    title: 'Grocery list',
+    body: '<p>Milk, eggs, bread, coffee</p>',
+    tags: ['personal'],
+    color: 'yellow',
+    pinned: false,
+    createdAt: Date.now(),
+    updatedAt: Date.now()
+  },
+  {
+    id: 4,
+    title: 'App ideas',
+    body: '<p>Habit tracker, budget planner, recipe manager</p>',
+    tags: ['ideas', 'dev'],
+    color: 'pink',
+    pinned: true,
+    createdAt: Date.now(),
+    updatedAt: Date.now()
+  }
+]
+
+export default function useNotes() {
+  const [notes, setNotes] = useLocalStorage('notes', DUMMY_NOTES)
+
+  function addNote(note) {
+    setNotes([
+      ...notes,
+      {
+        ...note,
+        id: Date.now(),
+        pinned: false,
+        color: note.color ?? 'pink',
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      }
     ])
+  }
+  function deleteNote(id) {
+    setNotes(notes.filter((note) => note.id !== id))
+  }
+  function updateNote(id, updates) {
+    setNotes(
+      notes.map((note) => (note.id === id ? { ...note, ...updates, updatedAt: Date.now() } : note))
+    )
+  }
+  function pinNote(id) {
+    // map over notes, flip pinned on the matching one
+    // same pattern as toggleTask
+    setNotes(notes.map((note) => (note.id === id ? { ...note, pinned: !note.pinned } : note)))
+  }
 
-    function addNote(note){
-        setNotes([...notes,{...note,
-            id: Date.now(), 
-            pinned: false, 
-            color: note.color ?? 'pink',
-            createdAt: Date.now(), 
-            updatedAt: Date.now()}])
-    }
-    function deleteNote(id){
-        setNotes(notes.filter(note => note.id !== id))
-    }
-    function updateNote(id, updates){
-        setNotes(notes.map(note => 
-            note.id === id ? {...note, ...updates, updatedAt: Date.now()} : note
-        ))
-    }
-    function pinNote(id) {
-        // map over notes, flip pinned on the matching one
-        // same pattern as toggleTask
-        setNotes(notes.map(note =>
-            note.id === id ? {...note, pinned : !note.pinned} : note
-        ))
-    }
-
-    return { notes, addNote, deleteNote, updateNote, pinNote }
+  return { notes, addNote, deleteNote, updateNote, pinNote }
 }

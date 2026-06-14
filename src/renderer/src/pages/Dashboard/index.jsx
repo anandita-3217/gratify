@@ -393,11 +393,22 @@ export default function Dashboard({ onNavigate }) {
           style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', marginBottom: 8 }}
         >
           <Image
-            src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-${random}.png`}
-            height={100}
-            style={{ objectFit: 'cover', width: '100%' }}
+            src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-${random.current}.png`}
+            height={50}
+            // style={{ objectFit: 'cover', width: '100%' }}
             alt="banner"
           />
+          {/* <Image
+  src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800"
+  height={160}
+  alt="test"
+/> */}
+          {/* <Image
+  src="https://picsum.photos/600/200"
+  height={160}
+  alt="test"
+/> */}
+
           <Box
             style={{
               position: 'absolute',

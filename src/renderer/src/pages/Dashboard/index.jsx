@@ -390,14 +390,15 @@ export default function Dashboard({ onNavigate }) {
       {/* Header */}
       <Stack gap={4} mb="xl">
         <Box
-          style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', marginBottom: 8 }}
+          style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', height: 180 }}
         >
           <Image
             src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-${random.current}.png`}
-            height={50}
-            // style={{ objectFit: 'cover', width: '100%' }}
+            height={180}
+            style={{ objectFit: 'cover', width: '100%', display: 'block' }}
             alt="banner"
           />
+
           <Box
             style={{
               position: 'absolute',

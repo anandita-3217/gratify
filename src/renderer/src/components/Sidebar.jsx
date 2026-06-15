@@ -3,6 +3,8 @@ import NavItem from './NavItem'
 import { useEffect, useState } from 'react';
 import { useMantineColorScheme, useComputedColorScheme, Switch, Tooltip } from '@mantine/core'
 
+
+// TODO: Ensure that this is completely fixed and never moves
 function ThemeToggle({ collapsed }){
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light');

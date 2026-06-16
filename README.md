@@ -250,7 +250,16 @@ DayView.jsx           ← zoom in on week
 useDragToCreate.js    ← add drag last  
 
  -->
-
+5. 
+```Settings/
+├── index.jsx
+├── AppearanceSection.jsx
+├── TasksSection.jsx
+├── CalendarSection.jsx
+├── ShortcutsSection.jsx
+├── HelpSection.jsx
+└── DataSection.jsx
+```
 ## Project Setup
 ### Full file structure for Gratify
 ```

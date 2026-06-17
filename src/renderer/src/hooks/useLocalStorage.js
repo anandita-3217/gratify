@@ -19,24 +19,21 @@
 //   // return exactly like useState does
 //   return [value, setValue]
 // }
-import { useState,useEffect } from "react";
+import { useState, useEffect } from 'react'
 
-export function useLocalStorage(key, defaultValues){
-
-  
-  const [value, setValue] = useState(() =>{
-    try{
-      const saved = localStorage.getItem(key);
-      return saved ? JSON.parse(saved) : defaultValues;
+export function useLocalStorage(key, defaultValues) {
+  const [value, setValue] = useState(() => {
+    try {
+      const saved = localStorage.getItem(key)
+      if (saved !== null) return JSON.parse(saved)
+      return defaultValues
+    } catch (err) {
+      console.error('Could not read value: ', err)
+      return defaultValues
     }
-    catch(err){
-      console.error("Could not read value: ", err);
-      return defaultValues;
-    }
-
   })
   useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
-  },[key,value]);
-  return ([value , setValue]);
+    localStorage.setItem(key, JSON.stringify(value))
+  }, [key, value])
+  return [value, setValue]
 }

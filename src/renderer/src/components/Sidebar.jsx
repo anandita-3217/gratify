@@ -110,7 +110,7 @@ export default function Sidebar({ activePage, onNavigate }) {
         >
           <Tooltip label="Ctrl + B">
             <span className="min-w-[20px] flex">
-              {collapsed ? <PanelLeftOpen size={20} /> : <PanelLeftClose size={20} />}
+              {collapsed ? <PanelLeftOpen size={25} /> : <PanelLeftClose size={25} />}
             </span>
           </Tooltip>
         </button>

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import {
   Box,
   Text,
@@ -31,15 +31,24 @@ import useNotes from '../Notes/useNotes'
 import useCalendar from '../Calendar/useCalendar'
 import useCalendarSync from '../Calendar/useCalendarSync'
 
+import Dawn from './Dawn.png'
+import Day from './Day.png'
+import Dusk from './Dusk.png'
+import Night from './Night.png'
+
 import PropTypes from 'prop-types'
 
 // ─── helpers ────────────────────────────────────────────────────────────────
+const BANNERS = [
+  { maxHour: 6, greeting: 'Good Night', image: Dawn },
+  { maxHour: 12, greeting: 'Good Morning!', image: Day },
+  { maxHour: 18, greeting: 'Good Afternoon!', image: Dusk },
+  { maxHour: 24, greeting: 'Good Evening!', image: Night }
+]
 
-function greeting() {
+function bannerGreeting() {
   const hours = new Date().getHours()
-  if (hours < 12) return 'Good Morning!'
-  if (hours < 18) return 'Good Afternoon'
-  return 'Good Evening!'
+  return BANNERS.find((b) => hours < b.maxHour)
 }
 
 function todayKey() {
@@ -382,21 +391,18 @@ export default function Dashboard({ onNavigate }) {
     (t) => !t.completed && t.deadline && new Date(t.deadline) < new Date()
   ).length
 
-  // eslint-disable-next-line react-hooks/purity
-  const random = useRef(Math.floor(Math.random() * 10) + 1)
-
   return (
     <Box p="xl" style={{ height: '100%', overflowY: 'auto' }}>
       {/* Header */}
       <Stack gap={4} mb="xl">
         <Box style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', height: 180 }}>
+          {' '}
           <Image
-            src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-${random.current}.png`}
+            src={bannerGreeting().image}
             height={180}
             style={{ objectFit: 'cover', width: '100%', display: 'block' }}
             alt="banner"
           />
-
           <Box
             style={{
               position: 'absolute',
@@ -407,7 +413,7 @@ export default function Dashboard({ onNavigate }) {
           />
           <Box style={{ position: 'absolute', bottom: 16, left: 16 }}>
             <Title order={2} fw={600} c="white">
-              {greeting()}
+              {bannerGreeting().greeting}
             </Title>
             <Text size="sm" c="rgba(255,255,255,0.8)">
               {new Date().toLocaleDateString('en-US', {

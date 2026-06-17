@@ -154,7 +154,6 @@ export default function TaskModal({ opened, onSave, onClose, onDelete, task }) {
                     { label: 'Preset', value: 'preset' },
                     { label: 'Custom', value: 'custom' }
                   ]}
-                  color="pink"
                   size="xs"
                 />
                 {reminderType === 'preset' ? (
@@ -198,7 +197,6 @@ export default function TaskModal({ opened, onSave, onClose, onDelete, task }) {
           </Group>
 
           <Checkbox
-            color="pink"
             checked={recurring}
             onChange={(e) => setRecurring(e.currentTarget.checked)}
             label="Recurring"
@@ -233,8 +231,8 @@ export default function TaskModal({ opened, onSave, onClose, onDelete, task }) {
               Delete
             </Button>
           )}
-          <Button color="pink" onClick={handleSave}>{task ? 'Save' : 'Add'}</Button>
-          <Button color="pink" variant="subtle" onClick={onClose}>Cancel</Button>
+          <Button  onClick={handleSave}>{task ? 'Save' : 'Add'}</Button>
+          <Button  variant="subtle" onClick={onClose}>Cancel</Button>
         </Group>
         </Stack>
       </Box>

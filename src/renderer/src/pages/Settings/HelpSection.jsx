@@ -1,4 +1,4 @@
-import { Stack, Text, Accordion, Anchor, Divider, Group } from '@mantine/core'
+import { Stack, Text, Accordion, Anchor, Divider } from '@mantine/core'
 
 const FAQS = [
   {
@@ -48,7 +48,9 @@ export default function HelpSection() {
         <Text size="sm" c="dimmed">
           Built with Electron, React and Mantine
         </Text>
-        {/* <Anchor size="sm" href="mailto:you@email.com">Report a bug</Anchor> */}
+        <Anchor size="sm" href="mailto:example@email.com">
+          Report a bug
+        </Anchor>
       </Stack>
     </Stack>
   )

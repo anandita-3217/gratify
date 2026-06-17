@@ -135,7 +135,7 @@ export default function Calendar() {
               Organize your time!
             </Text>
           </Stack>
-          <Button variant="subtle" color="pink" size="xs" radius="xl" onClick={open}>
+          <Button variant="subtle" size="xs" radius="xl" onClick={open}>
             <Plus size={12} />
           </Button>
         </Group>
@@ -185,7 +185,7 @@ export default function Calendar() {
 
           {/* date display — center */}
           <Group gap={6} align="center">
-            <ActionIcon variant="subtle" color="pink" onClick={goBack}>
+            <ActionIcon variant="subtle" onClick={goBack}>
               <ChevronLeft size={16} />
             </ActionIcon>
 
@@ -225,11 +225,11 @@ export default function Calendar() {
               )}
             </Group>
 
-            <ActionIcon variant="subtle" color="pink" onClick={goForward}>
+            <ActionIcon variant="subtle" onClick={goForward}>
               <ChevronRight size={16} />
             </ActionIcon>
             <Tooltip label="T" withArrow position="bottom">
-              <Button variant="subtle" color="pink" size="xs" onClick={goToday}>
+              <Button variant="subtle" size="xs" onClick={goToday}>
                 Today
               </Button>
             </Tooltip>

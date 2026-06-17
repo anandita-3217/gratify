@@ -229,8 +229,7 @@ export default function Tasks() {
         </Text>
         <Box bg="pink" h="1px" />
         <Stack mt={'xl'}>
-          <Progress value={percentage} color="pink" />
-          {/* <Button onClick={open} color="pink" leftSection={<Plus size={16}/>} >New Task</Button> */}
+          <Progress value={percentage} />
         </Stack>
       </Stack>
       <Stack p="md">
@@ -242,7 +241,7 @@ export default function Tasks() {
             onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
             className="flex-1"
           />
-          <Button onClick={handleAdd} color="pink">
+          <Button onClick={handleAdd}>
             <Plus size={16} />
           </Button>
         </div>
@@ -251,7 +250,6 @@ export default function Tasks() {
           <Group gap={'xs'}>
             <Button
               variant="light"
-              color="pink"
               size="xs"
               leftSection={<SlidersHorizontal size={14} />}
               onClick={() => setFiltersOpen((f) => !f)}
@@ -261,7 +259,7 @@ export default function Tasks() {
             {(filter.priority.length > 0 ||
               filter.frequency.length > 0 ||
               filter.status !== 'all') && (
-              <Badge color="pink" size={'sm'} variant="light">
+              <Badge size={'sm'} variant="light">
                 {filter.priority.length +
                   filter.frequency.length * (filter.status !== 'all' ? 1 : 0)}{' '}
                 active
@@ -303,13 +301,13 @@ export default function Tasks() {
                 onChange={(val) => setFilter((f) => ({ ...f, status: val }))}
               >
                 <Group gap={'xs'}>
-                  <Chip fz="xs" value="all" color="pink" size="sm">
+                  <Chip fz="xs" value="all" size="sm">
                     All
                   </Chip>
-                  <Chip fz="xs" value="active" color="pink" size="sm">
+                  <Chip fz="xs" value="active" size="sm">
                     Active
                   </Chip>
-                  <Chip fz="xs" value="completed" color="pink" size="sm">
+                  <Chip fz="xs" value="completed" size="sm">
                     Completed
                   </Chip>
                 </Group>
@@ -352,16 +350,16 @@ export default function Tasks() {
                 onChange={(val) => setFilter((f) => ({ ...f, frequency: val }))}
               >
                 <Group gap={'xs'}>
-                  <Chip fz="xs" value="daily" color="pink" size="sm">
+                  <Chip fz="xs" value="daily" size="sm">
                     Daily
                   </Chip>
-                  <Chip fz="xs" value="weekly" color="pink" size="sm">
+                  <Chip fz="xs" value="weekly" size="sm">
                     Weekly
                   </Chip>
-                  <Chip fz="xs" value="monthly" color="pink" size="sm">
+                  <Chip fz="xs" value="monthly" size="sm">
                     Monthly
                   </Chip>
-                  <Chip fz="xs" value="custom" color="pink" size="sm">
+                  <Chip fz="xs" value="custom" size="sm">
                     Custom
                   </Chip>
                 </Group>

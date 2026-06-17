@@ -59,7 +59,7 @@ export default function MonthView({
                 <Text
                   size="sm"
                   fw={today ? 700 : 400}
-                  c={today ? '#cc225c' : 'dimmed'}
+                  c={today ? '#cc225c' : 'dimmed'} //// TODO: change this to be governed by the accent color in settings
                   style={{
                     width: 28,
                     height: 28,

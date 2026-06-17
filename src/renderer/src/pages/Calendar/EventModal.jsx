@@ -173,11 +173,8 @@ export default function EventModal({
               Delete
             </Button>
           )}
-          <Button color="pink" onClick={handleSave}>
-            {event ? 'Save' : 'Add'}
-          </Button>
+          <Button onClick={handleSave}>{event ? 'Save' : 'Add'}</Button>
           <Button
-            color="pink"
             variant="outline"
             onClick={() => {
               onClose()
@@ -186,7 +183,7 @@ export default function EventModal({
           >
             Create Task
           </Button>
-          <Button color="pink" variant="subtle" onClick={onClose}>
+          <Button variant="subtle" onClick={onClose}>
             Cancel
           </Button>
         </Group>

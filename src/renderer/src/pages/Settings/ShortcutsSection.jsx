@@ -27,7 +27,7 @@ export default function ShortcutsSection() {
           {SHORTCUTS.map((s, i) => (
             <Table.Tr key={i}>
               <Table.Td>
-                <Badge variant="light" color="pink" size="xs">
+                <Badge variant="light" size="xs">
                   {s.group}
                 </Badge>
               </Table.Td>

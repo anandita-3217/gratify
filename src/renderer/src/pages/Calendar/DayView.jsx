@@ -43,7 +43,7 @@ export default function DayView({
               <Box key={slot.hour} style={{ height: 60, paddingRight: 8 }}>
                 <Text
                   size="xs"
-                  c={slot.hour === now.getHours() ? 'pink' : 'dimmed'}
+                  c={slot.hour === now.getHours() ? 'pink' : 'dimmed'} //// TODO: change this to be governed by the accent color in settings
                   fw={slot.hour === now.getHours() ? 700 : 400}
                   ta="right"
                 >

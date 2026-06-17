@@ -389,9 +389,7 @@ export default function Dashboard({ onNavigate }) {
     <Box p="xl" style={{ height: '100%', overflowY: 'auto' }}>
       {/* Header */}
       <Stack gap={4} mb="xl">
-        <Box
-          style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', height: 180 }}
-        >
+        <Box style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', height: 180 }}>
           <Image
             src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-${random.current}.png`}
             height={180}
@@ -435,7 +433,8 @@ export default function Dashboard({ onNavigate }) {
             </>
           )}
         </Group>
-        <Box bg="pink" h="1px" />
+        <Divider />
+        {/* <Box bg="pink" h="1px" /> */}
       </Stack>
 
       {/* Stat pills */}

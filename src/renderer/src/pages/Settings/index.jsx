@@ -17,16 +17,9 @@ export default function Settings() {
         <Text c="dimmed" size="sm">
           Customize your Gratify experience
         </Text>
-        <Box
-          h={1}
-          style={{
-            background:
-              'linear-gradient(to right, transparent, var(--mantine-color-pink-6), transparent)'
-          }}
-        />
       </Stack>
 
-      <Tabs defaultValue="appearance" color="pink">
+      <Tabs defaultValue="appearance">
         <Tabs.List>
           <Tabs.Tab value="appearance" leftSection={<Palette size={14} />}>
             Appearance

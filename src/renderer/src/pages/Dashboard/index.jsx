@@ -396,7 +396,7 @@ export default function Dashboard({ onNavigate }) {
       {/* Header */}
       <Stack gap={4} mb="xl">
         <Box style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', height: 180 }}>
-          {' '}
+          {/* {' '} */}
           <Image
             src={bannerGreeting().image}
             height={180}

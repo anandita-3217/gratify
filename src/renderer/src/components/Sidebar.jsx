@@ -12,7 +12,13 @@ import {
 } from 'lucide-react'
 import NavItem from './NavItem'
 import { useEffect, useState } from 'react'
-import { useMantineColorScheme, useComputedColorScheme, Switch, Tooltip } from '@mantine/core'
+import {
+  useMantineColorScheme,
+  useComputedColorScheme,
+  Button,
+  Switch,
+  Tooltip
+} from '@mantine/core'
 import PropTypes from 'prop-types'
 
 // TODO: Ensure that this is completely fixed and never moves
@@ -81,7 +87,7 @@ export default function Sidebar({ activePage, onNavigate }) {
     <div
       className={`flex flex-col h-full border-r border-white/[0.07] transition-all duration-200 overflow-hidden ${collapsed ? 'w-14' : 'w-52'}`}
     >
-      <div className="flex items-center gap-2.5 px-5 h-14">
+      <div className="flex  gap-2.5 px-5 h-14">
         <div className="w-5 h-5 min-w-[20px] flex justify-center items-center rounded-md bg-[#cc225c]">
           <p className="text-white font-bold text-xs">G</p>
         </div>
@@ -104,16 +110,16 @@ export default function Sidebar({ activePage, onNavigate }) {
         ))}
       </div>
       <div className="pb-4 px-2 pt-3 border-t border-white/[0.07] flex flex-col gap-0.5">
-        <button
-          onClick={() => setCollapsed((c) => !c)}
-          className="flex items-center gap-2.5 w-full px-2.5 py-2 text-gray-600 hover:text-gray-600 cursor-pointer p-1 transition-colors"
-        >
-          <Tooltip label="Ctrl + B">
-            <span className="min-w-[20px] flex">
-              {collapsed ? <PanelLeftOpen size={25} /> : <PanelLeftClose size={25} />}
-            </span>
-          </Tooltip>
-        </button>
+        <Tooltip label="Ctrl + B">
+          <Button
+            variant="transparent"
+            justify="left"
+            onClick={() => setCollapsed((c) => !c)}
+            leftSection={collapsed ? <PanelLeftOpen size={25} /> : <PanelLeftClose size={25} />}
+          >
+            Collapse
+          </Button>
+        </Tooltip>
         <Tooltip label="Ctrl +  T">
           <ThemeToggle collapsed={collapsed} />
         </Tooltip>

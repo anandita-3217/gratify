@@ -15,7 +15,8 @@ import {
   ScrollArea,
   ThemeIcon,
   Image,
-  Button
+  Button,
+  useMantineTheme
 } from '@mantine/core'
 import {
   IconChecklist,
@@ -386,7 +387,7 @@ export default function Dashboard({ onNavigate }) {
   const { notes, addNote } = useNotes()
   const { events = [] } = useCalendar()
   const { syncedEvents } = useCalendarSync(events)
-
+  const theme = useMantineTheme()
   const overdue = tasks.filter(
     (t) => !t.completed && t.deadline && new Date(t.deadline) < new Date()
   ).length
@@ -439,7 +440,7 @@ export default function Dashboard({ onNavigate }) {
             </>
           )}
         </Group>
-        <Divider />
+        <Divider color={theme.primaryColor} />
         {/* <Box bg="pink" h="1px" /> */}
       </Stack>
 

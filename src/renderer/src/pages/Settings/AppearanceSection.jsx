@@ -9,7 +9,8 @@ import {
   useComputedColorScheme
 } from '@mantine/core'
 import { Sun, Moon } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
+import { useLocalStorage } from '../../hooks/useLocalStorage'
 const colors = [
   'orange',
   'red',
@@ -32,7 +33,7 @@ export default function AppearanceSection() {
   const { setColorScheme } = useMantineColorScheme()
   const computedColorScheme = useComputedColorScheme('light')
   const isDark = computedColorScheme === 'dark'
-  const [accent, setAccent] = useState('pink')
+  const [accent, setAccent] = useLocalStorage('accentColor', 'violet')
 
   useEffect(() => {
     const handler = (e) => {

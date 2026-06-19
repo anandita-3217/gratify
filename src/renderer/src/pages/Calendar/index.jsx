@@ -6,12 +6,14 @@ import {
   ActionIcon,
   Box,
   Button,
+  Divider,
   Group,
   SegmentedControl,
   Stack,
   Text,
   Title,
-  Tooltip
+  Tooltip,
+  useMantineTheme
 } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
@@ -54,6 +56,8 @@ export default function Calendar() {
 
   const [tasks] = useLocalStorage('tasks', [])
   const { editTask, deleteTask, addTask } = useTasks()
+
+  const theme = useMantineTheme()
   const { dragHandlers } = useDragToCreate(({ start, end }) => {
     if (start < new Date()) return
     setNewEventDefaults({ start, end })
@@ -139,15 +143,7 @@ export default function Calendar() {
             <Plus size={12} />
           </Button>
         </Group>
-
-        <Box
-          h={1}
-          style={{
-            background:
-              'linear-gradient(to right, transparent, var(--mantine-color-pink-6), transparent)'
-          }}
-        />
-
+        <Divider color={theme.primaryColor} />
         {/* nav row — segmented control + prev/next/today + date display */}
         <Group justify="space-between" align="center">
           <SegmentedControl

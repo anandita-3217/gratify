@@ -11,7 +11,9 @@ import {
   Text,
   Title,
   Progress,
-  Select
+  Select,
+  Divider,
+  useMantineTheme
 } from '@mantine/core'
 import { Plus, PlusIcon, SlidersHorizontal, Search } from 'lucide-react'
 
@@ -180,6 +182,8 @@ export default function Tasks() {
 
   const firedReminders = useRef(new Set())
 
+  const theme = useMantineTheme()
+
   useEffect(() => {
     taskRef.current = tasks
   }, [tasks])
@@ -227,7 +231,7 @@ export default function Tasks() {
         <Text c="dimmed" size="sm">
           Organize your tasks!
         </Text>
-        <Box bg="pink" h="1px" />
+        <Divider color={theme.primaryColor} />
         <Stack mt={'xl'}>
           <Progress value={percentage} />
         </Stack>

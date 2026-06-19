@@ -1,16 +1,41 @@
-
 import { useState } from 'react'
-import { ActionIcon, Badge, Box, Button, Chip, ColorSwatch,  Group, Select, Stack, Text, TextInput, Title  } from '@mantine/core'
+import {
+  ActionIcon,
+  Badge,
+  Box,
+  Button,
+  Chip,
+  ColorSwatch,
+  Divider,
+  Group,
+  Select,
+  Stack,
+  Text,
+  TextInput,
+  Title,
+  useMantineTheme
+} from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { Plus, PlusIcon, Search, SlidersHorizontal, X } from 'lucide-react'
+import { PlusIcon, Search, SlidersHorizontal, X } from 'lucide-react'
 import useNotes from './useNotes'
 import NoteCard from './NoteCard'
 import NoteModal from './NoteModal'
 import NoteDrawer from './NoteDrawer'
 
-const noteColors = ['orange', 'red', 'pink', 'grape', 
-      'violet', 'indigo', 'blue', 'cyan', 
-      'teal', 'green', 'lime', 'yellow']
+const noteColors = [
+  'orange',
+  'red',
+  'pink',
+  'grape',
+  'violet',
+  'indigo',
+  'blue',
+  'cyan',
+  'teal',
+  'green',
+  'lime',
+  'yellow'
+]
 // TODO: make markdown compatible and code recognizable and format it even if i need to use a packagae or a 3rd party app - later
 export default function Notes() {
   const { notes, addNote, deleteNote, updateNote, pinNote } = useNotes()
@@ -24,16 +49,18 @@ export default function Notes() {
   const [sort, setSort] = useState('createdAt-desc')
   const [filtersOpen, setFiltersOpen] = useState(false)
 
-  const allTags = [...new Set(notes.flatMap(n => n.tags))]
+  const allTags = [...new Set(notes.flatMap((n) => n.tags))]
   const visibleTags = showAllTags ? allTags : allTags.slice(0, 5)
   const [opened, { open, close }] = useDisclosure(false)
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false)
   const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
-  
+
   const [selectedNote, setSelectedNote] = useState(null)
   const [drawerNote, setDrawerNote] = useState(null)
 
-  function handleCardClick(note){
+  const theme = useMantineTheme()
+
+  function handleCardClick(note) {
     setDrawerNote(note)
     openDrawer()
   }
@@ -46,141 +73,215 @@ export default function Notes() {
 
   function handleSave(noteData) {
     // if selectedNote exists → updateNote
-    if(selectedNote){
-      updateNote(selectedNote.id,noteData)
+    if (selectedNote) {
+      updateNote(selectedNote.id, noteData)
       closeEdit()
-    }
-    else{
+    } else {
       // else → addNote
       // then close and clear selectedNote
       addNote(noteData)
       close()
     }
     setSelectedNote(null)
-  
   }
 
   // filter notes by search — check title and body
-  const filteredNotes = notes.filter(note => {
-    if (search){
+  const filteredNotes = notes.filter((note) => {
+    if (search) {
       const s = search.toLowerCase()
-      if (!note.title.toLowerCase().includes(s) && !note.body.toLowerCase().includes(s)) return false
+      if (!note.title.toLowerCase().includes(s) && !note.body.toLowerCase().includes(s))
+        return false
     }
-    if(filterColors.length > 0 && !filterColors.includes(note.color)) return false 
-    if(filterTags.length > 0 && !filterTags.some(t => note.tags.includes(t))) return false
+    if (filterColors.length > 0 && !filterColors.includes(note.color)) return false
+    if (filterTags.length > 0 && !filterTags.some((t) => note.tags.includes(t))) return false
     return true
   })
 
   // pinned notes always appear first
   const sortedNotes = [
-    ...filteredNotes.filter(n => n.pinned),
-    ...filteredNotes.filter(n => !n.pinned),
-  ].sort((a,b) => {
-    switch(sort) {
-      case 'createdAt-asc': return  a.createdAt - b.createdAt
-      case 'createdAt-desc': return b.createdAt - a.createdAt
-      case 'updatedAt-asc': return a.updatedAt - b.updatedAt
-      case 'updatedAt-desc': return b.updatedAt - a.updatedAt
-      case 'title-asc': return a.title.localeCompare(b.title)
-      case 'title-desc': return b.title.localeCompare(a.title)
-      default: return b.createdAt - a.createdAt
+    ...filteredNotes.filter((n) => n.pinned),
+    ...filteredNotes.filter((n) => !n.pinned)
+  ].sort((a, b) => {
+    switch (sort) {
+      case 'createdAt-asc':
+        return a.createdAt - b.createdAt
+      case 'createdAt-desc':
+        return b.createdAt - a.createdAt
+      case 'updatedAt-asc':
+        return a.updatedAt - b.updatedAt
+      case 'updatedAt-desc':
+        return b.updatedAt - a.updatedAt
+      case 'title-asc':
+        return a.title.localeCompare(b.title)
+      case 'title-desc':
+        return b.title.localeCompare(a.title)
+      default:
+        return b.createdAt - a.createdAt
     }
   })
 
-
-
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>
-
       {/* Header */}
       <Stack gap={4} mb="xl">
-        <Group gap={8} justify='space-between'>
-          <Title order={2} fw={600}>Notes</Title>
-          <Button size='sm' variant='subtle' aria-label="New note" onClick={open}><PlusIcon size={18}/></Button>
+        <Group gap={8} justify="space-between">
+          <Title order={2} fw={600}>
+            Notes
+          </Title>
+          <Button size="sm" variant="subtle" aria-label="New note" onClick={open}>
+            <PlusIcon size={18} />
+          </Button>
         </Group>
-          <Text c="dimmed" size='sm'>Record your thoughts!</Text>
-        <Box bg='pink' h={1}/>
+        <Text c="dimmed" size="sm">
+          Record your thoughts!
+        </Text>
+        <Divider color={theme.primaryColor} />
         {/* search input + new note button */}
         <Stack mt={'xl'}>
-
-          <Button variant='light' leftSection={<SlidersHorizontal size={14}/>} onClick={() => setFiltersOpen(f => !f)}>Search & Filters</Button>
+          <Button
+            variant="light"
+            leftSection={<SlidersHorizontal size={14} />}
+            onClick={() => setFiltersOpen((f) => !f)}
+          >
+            Search & Filters
+          </Button>
           {(filterColors.length > 0 || filterTags.length > 0) && (
-            <Badge color='pink' variant='light' size='sm' >{filterColors.length + filterTags.length} active</Badge>
+            <Badge color="pink" variant="light" size="sm">
+              {filterColors.length + filterTags.length} active
+            </Badge>
           )}
           {(filterColors.length > 0 || filterTags.length > 0) && (
-            <Button color='gray' variant='light' size='sm' onClick={() => {setFilterColors([]); setFilterTags([])}}>Clear</Button>
+            <Button
+              color="gray"
+              variant="light"
+              size="sm"
+              onClick={() => {
+                setFilterColors([])
+                setFilterTags([])
+              }}
+            >
+              Clear
+            </Button>
           )}
         </Stack>
       </Stack>
       {filtersOpen && (
-        <Stack size='xs' mb='sm' p='sm' style={{ border: '1px solid var(--mantine-color-default-border)', borderRadius: 8 }}>
-          <TextInput placeholder='Search Notes...' value={search} onChange={(e) => setSearch(e.target.value)} leftSection={<Search size={16} />}/>
-        <Group align='center' gap="xs" mb='md'>
-          <Text size='xs' c="dimmed">Color</Text>
+        <Stack
+          size="xs"
+          mb="sm"
+          p="sm"
+          style={{ border: '1px solid var(--mantine-color-default-border)', borderRadius: 8 }}
+        >
+          <TextInput
+            placeholder="Search Notes..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            leftSection={<Search size={16} />}
+          />
+          <Group align="center" gap="xs" mb="md">
+            <Text size="xs" c="dimmed">
+              Color
+            </Text>
             <Group gap="xs">
-                {noteColors.map(c => (
-                  <ColorSwatch
-                    key={c}
-                    color={`var(--mantine-color-${c}-8)`}
-                    size={20}
-                    style={{ cursor: 'pointer', outline: filterColors.includes(c) ? '2px solid white' : 'none', outlineOffset: '2px' }}
-                    onClick={() => setFilterColors(prev => prev.includes(c) ? prev.filter(x => x != c) : [...prev, c])}/>
-                ))}
-                {filterColors.length > 0 && (
-                  <ActionIcon variant='subtle' color='gray' size='xs' onClick={() => setFilterColors([])} >
-                    <X size={12}/>
-                  </ActionIcon>
-                )}
+              {noteColors.map((c) => (
+                <ColorSwatch
+                  key={c}
+                  color={`var(--mantine-color-${c}-8)`}
+                  size={20}
+                  style={{
+                    cursor: 'pointer',
+                    outline: filterColors.includes(c) ? '2px solid white' : 'none',
+                    outlineOffset: '2px'
+                  }}
+                  onClick={() =>
+                    setFilterColors((prev) =>
+                      prev.includes(c) ? prev.filter((x) => x != c) : [...prev, c]
+                    )
+                  }
+                />
+              ))}
+              {filterColors.length > 0 && (
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  size="xs"
+                  onClick={() => setFilterColors([])}
+                >
+                  <X size={12} />
+                </ActionIcon>
+              )}
             </Group>
-        </Group> 
-        {/* Tags Filter */}
-        {allTags.length > 0 && (
-          <Group gap='xs' align='center' mb="md">
-            <Text size='xs' c="dimmed" w={40}>Tags</Text>
-            <Chip.Group multiple value={filterTags} onChange={setFilterTags}>
-              <Group gap="xs">
-                {visibleTags.map(tag => (
-                  <Chip key={tag} value={tag} size='xs' color='pink'>{tag}</Chip>
-                ))}
-              </Group>
-            </Chip.Group>
-            {allTags.length > 5 && (
-              <Button color='gray' variant='subtle' size='xs' onClick={() => setShowAllTags(s => !s)}>{showAllTags ? 'Show less' : `+${allTags.length - 5} more`}</Button>
-            )}
           </Group>
-        )}
-        {/* Sort */}
-        <Group gap='xs' align='center' mb="md">
-          <Text size='xs' c="dimmed" w={40}>Sort</Text>
-          <Select size='xs' value={sort} onChange={setSort} style={{ width: 180 }}
-            data={[
-              { value: 'createdAt-desc', label: '↓ Newest first' },
-              { value: 'createdAt-asc', label: '↑ Oldest first' },
-              { value: 'updatedAt-desc', label: '↓ Recently edited' },
-              { value: 'updatedAt-asc', label: '↑ Least recently edited' },
-              { value: 'title-asc', label: '↑ Title A→Z' },
-              { value: 'title-desc', label: '↓ Title Z→A' },
-            ]}/>
-        </Group>
-
+          {/* Tags Filter */}
+          {allTags.length > 0 && (
+            <Group gap="xs" align="center" mb="md">
+              <Text size="xs" c="dimmed" w={40}>
+                Tags
+              </Text>
+              <Chip.Group multiple value={filterTags} onChange={setFilterTags}>
+                <Group gap="xs">
+                  {visibleTags.map((tag) => (
+                    <Chip key={tag} value={tag} size="xs" color="pink">
+                      {tag}
+                    </Chip>
+                  ))}
+                </Group>
+              </Chip.Group>
+              {allTags.length > 5 && (
+                <Button
+                  color="gray"
+                  variant="subtle"
+                  size="xs"
+                  onClick={() => setShowAllTags((s) => !s)}
+                >
+                  {showAllTags ? 'Show less' : `+${allTags.length - 5} more`}
+                </Button>
+              )}
+            </Group>
+          )}
+          {/* Sort */}
+          <Group gap="xs" align="center" mb="md">
+            <Text size="xs" c="dimmed" w={40}>
+              Sort
+            </Text>
+            <Select
+              size="xs"
+              value={sort}
+              onChange={setSort}
+              style={{ width: 180 }}
+              data={[
+                { value: 'createdAt-desc', label: '↓ Newest first' },
+                { value: 'createdAt-asc', label: '↑ Oldest first' },
+                { value: 'updatedAt-desc', label: '↓ Recently edited' },
+                { value: 'updatedAt-asc', label: '↑ Least recently edited' },
+                { value: 'title-asc', label: '↑ Title A→Z' },
+                { value: 'title-desc', label: '↓ Title Z→A' }
+              ]}
+            />
+          </Group>
         </Stack>
-
       )}
-        
-      
+
       {/* Empty state */}
       {sortedNotes.length === 0 && (
-        // show a message when no notes or no search results 
-        <Box p='xl' style={{ textAlign: 'center', border: '2px dashed var(--mantine-color-default-border)', borderRadius: '12px' }}>
-          <Text c='dimmed' size='sm'>
-            {notes.length === 0 ? "No notes - add some!" : "No notes matching these filters"}
+        // show a message when no notes or no search results
+        <Box
+          p="xl"
+          style={{
+            textAlign: 'center',
+            border: '2px dashed var(--mantine-color-default-border)',
+            borderRadius: '12px'
+          }}
+        >
+          <Text c="dimmed" size="sm">
+            {notes.length === 0 ? 'No notes - add some!' : 'No notes matching these filters'}
           </Text>
         </Box>
-      )} 
-      
+      )}
+
       {/* Notes grid */}
       <Stack gap="md">
-        {sortedNotes.map(note => (
+        {sortedNotes.map((note) => (
           <NoteCard
             key={note.id}
             note={note}
@@ -188,7 +289,7 @@ export default function Notes() {
             onEdit={() => handleEdit(note)}
             onDelete={() => deleteNote(note.id)}
             onPin={() => pinNote(note.id)}
-            onTagDelete={(tag) => updateNote(note.id,{ tags: note.tags.filter(t => t !=tag) })}
+            onTagDelete={(tag) => updateNote(note.id, { tags: note.tags.filter((t) => t != tag) })}
           />
         ))}
       </Stack>
@@ -196,25 +297,36 @@ export default function Notes() {
       {/* Modal — same pattern as Tasks, one modal for both create and edit */}
       <NoteModal
         opened={opened}
-        onClose={() => { close(); setSelectedNote(null) }}
+        onClose={() => {
+          close()
+          setSelectedNote(null)
+        }}
         onSave={handleSave}
         note={selectedNote}
       />
       <NoteModal
         opened={editOpened}
-        onClose={() => { closeEdit(); setSelectedNote(null) }}
+        onClose={() => {
+          closeEdit()
+          setSelectedNote(null)
+        }}
         onSave={handleSave}
         note={selectedNote}
       />
-    <NoteDrawer
-    opened={drawerOpened}
-    onClose={closeDrawer}
-    note={drawerNote}
-    onEdit={(noteData) => {updateNote(drawerNote.id, noteData)}}
-    onPin={() =>  pinNote(drawerNote.id) }
-    onTagDelete={(tag) => updateNote(drawerNote.id,{
-      tags: drawerNote.tags.filter(t => t !== tag)
-    })}/>
+      <NoteDrawer
+        opened={drawerOpened}
+        onClose={closeDrawer}
+        note={drawerNote}
+        onEdit={(noteData) => {
+          updateNote(drawerNote.id, noteData)
+        }}
+        onPin={() => pinNote(drawerNote.id)}
+        onTagDelete={(tag) =>
+          updateNote(drawerNote.id, {
+            tags: drawerNote.tags.filter((t) => t !== tag)
+          })
+        }
+      />
     </Box>
   )
 }

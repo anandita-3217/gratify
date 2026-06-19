@@ -1,4 +1,4 @@
-import { Box, Stack, Title, Text, Tabs } from '@mantine/core'
+import { Box, Stack, Title, Text, Tabs, Divider, useMantineTheme } from '@mantine/core'
 import { Palette, ListChecks, Calendar, Keyboard, HelpCircle, Database } from 'lucide-react'
 import AppearanceSection from './AppearanceSection'
 import TasksSection from './TasksSection'
@@ -8,6 +8,7 @@ import HelpSection from './HelpSection'
 import DataSection from './DataSection'
 
 export default function Settings() {
+  const theme = useMantineTheme()
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>
       <Stack gap={4} mb="xl">
@@ -17,6 +18,7 @@ export default function Settings() {
         <Text c="dimmed" size="sm">
           Customize your Gratify experience
         </Text>
+        <Divider color={theme.primaryColor} />
       </Stack>
 
       <Tabs defaultValue="appearance">

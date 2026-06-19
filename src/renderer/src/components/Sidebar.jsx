@@ -17,11 +17,13 @@ import {
   useComputedColorScheme,
   Button,
   Switch,
-  Tooltip
+  Tooltip,
+  useMantineTheme
 } from '@mantine/core'
 import PropTypes from 'prop-types'
 
 // TODO: Ensure that this is completely fixed and never moves
+// eslint-disable-next-line no-unused-vars
 function ThemeToggle({ collapsed }) {
   const { setColorScheme } = useMantineColorScheme()
   const computedColorScheme = useComputedColorScheme('light')
@@ -39,12 +41,6 @@ function ThemeToggle({ collapsed }) {
   }, [isDark, setColorScheme])
   return (
     <>
-      {/* <button
-    className='flex items-center gap-2 w-full pl-3 py-2 cursor-pointer text-gray-500 hover:text-gray-600  rounder-md transition-colors'
-    onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
-    >
-      {computedColorScheme === 'light' ? <Moon size={25}/> : <Sun size={25} />}
-    </button> */}
       <Switch
         p={8}
         size="sm"
@@ -52,8 +48,6 @@ function ThemeToggle({ collapsed }) {
         onChange={(event) => setColorScheme(event.currentTarget.checked ? 'dark' : 'light')}
         thumbIcon={isDark ? <Moon size={12} color="blue" /> : <Sun size={12} color="red" />}
       />
-
-      {/* <Switch checked={checked} onChange={(event) => setChecked(event.currentTarget.checked)}/> */}
     </>
   )
 }
@@ -63,7 +57,7 @@ ThemeToggle.propTypes = {
 
 export default function Sidebar({ activePage, onNavigate }) {
   const [collapsed, setCollapsed] = useState(false)
-
+  const theme = useMantineTheme()
   useEffect(() => {
     const handler = (e) => {
       if (e.ctrlKey && e.key === 'b') {
@@ -87,9 +81,9 @@ export default function Sidebar({ activePage, onNavigate }) {
     <div
       className={`flex flex-col h-full border-r border-white/[0.07] transition-all duration-200 overflow-hidden ${collapsed ? 'w-14' : 'w-52'}`}
     >
-      <div className="flex  gap-2.5 px-5 h-14">
+      <div className="flex  gap-2 px-7 h-10">
         <div className="w-5 h-5 min-w-[20px] flex justify-center items-center rounded-md bg-[#cc225c]">
-          <p className="text-white font-bold text-xs">G</p>
+          <p className="text-white font-bold text-sm">G</p>
         </div>
         <span
           className={`text-sm text-gray-500 font-semibold whitespace-nowrap transition-opacity duration-150 ${collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}
@@ -114,10 +108,12 @@ export default function Sidebar({ activePage, onNavigate }) {
           <Button
             variant="transparent"
             justify="left"
+            color={theme.primaryColor}
+            fullWidth
             onClick={() => setCollapsed((c) => !c)}
             leftSection={collapsed ? <PanelLeftOpen size={25} /> : <PanelLeftClose size={25} />}
           >
-            Collapse
+            {!collapsed && 'Collapse'}
           </Button>
         </Tooltip>
         <Tooltip label="Ctrl +  T">

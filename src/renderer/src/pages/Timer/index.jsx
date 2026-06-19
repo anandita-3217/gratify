@@ -1,4 +1,14 @@
-import { Box, Button, Group, Stack, Text, Title, SegmentedControl, useMantineTheme, Divider } from '@mantine/core'
+import {
+  Box,
+  Button,
+  Group,
+  Stack,
+  Text,
+  Title,
+  SegmentedControl,
+  useMantineTheme,
+  Divider
+} from '@mantine/core'
 import { Settings2 } from 'lucide-react'
 import useTimer from './useTimer'
 import TimerControls from './TimerControls'
@@ -76,7 +86,7 @@ export default function Timer() {
           Focus effectively!
         </Text>
         <Stack>
-          <Divider color={theme.primaryColor}/>
+          <Divider color={theme.primaryColor} />
           <TimerRing
             mode={mode}
             phaseIndex={phaseIndex}

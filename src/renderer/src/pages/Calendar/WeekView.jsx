@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Text } from '@mantine/core'
+import { ActionIcon, Box, Text, useMantineTheme } from '@mantine/core'
 import { useEffect, useRef, useState } from 'react'
 import {
   getEventsForDay,
@@ -26,6 +26,8 @@ export default function WeekView({
 
   const weekDays = getWeekDays(selectedDate)
   const hourSlots = getHourSlots()
+
+  const theme = useMantineTheme()
 
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), 60000)
@@ -59,19 +61,19 @@ export default function WeekView({
               style={{ cursor: 'pointer' }}
               onClick={() => onEventClick(day)}
             >
-              <Text c={today ? '#cc225c' : 'dimmed'} fw={today ? 700 : 400}>
+              <Text c={today ? theme.primaryColor : 'dimmed'} fw={today ? 700 : 400}>
                 {day.toLocaleString('default', { weekday: 'short' })}
               </Text>
-              <Text c={today ? '#cc225c' : 'dimmed'} fw={today ? 700 : 400}>
+              <Text c={today ? theme.primaryColor : 'dimmed'} fw={today ? 700 : 400}>
                 {day.toLocaleString('default', { day: '2-digit' })}
               </Text>
               {hasEvents && (
                 <Box
                   style={{
-                    width: 4,
-                    height: 4,
+                    width: 5,
+                    height: 5,
                     borderRadius: '50%',
-                    backgroundColor: 'var(--mantine-color-cyan-6)',
+                    backgroundColor: `var(--mantine-color-${theme.primaryColor}-6)`,
                     margin: '2px auto 0'
                   }}
                 />
@@ -88,7 +90,7 @@ export default function WeekView({
                 <Text
                   size="xs"
                   ta="right"
-                  c={slot.hour === now.getHours() && isCurrentWeek ? '#cc225c' : 'dimmed'}
+                  c={slot.hour === now.getHours() && isCurrentWeek ? theme.primaryColor : 'dimmed'}
                   fw={slot.hour === now.getHours() && isCurrentWeek ? 700 : 400}
                 >
                   {slot.label}
@@ -175,11 +177,6 @@ export default function WeekView({
                         width: '90%',
                         left: '5%',
                         zIndex: 1
-                        // backgroundColor: `var(--mantine-color-${event.color}-5)`,
-                        // borderRadius: 4,
-                        // cursor: 'pointer',
-                        // padding: '2px 4px',
-                        // overflow: 'hidden',
                       }}
                       onClick={() => onEventClick(event)}
                     >

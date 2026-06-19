@@ -1,5 +1,5 @@
 // props: events, selectedDate, onDateSelect, onEventClick, onSlotClick
-import { ActionIcon, Box, Grid, Group, Text } from '@mantine/core'
+import { ActionIcon, Box, Grid, Group, Text, useMantineTheme } from '@mantine/core'
 import PropTypes from 'prop-types'
 import { getMonthGrid, getEventsForDay, isToday } from './useCalendarGrid'
 import { Plus } from 'lucide-react'
@@ -16,6 +16,7 @@ export default function MonthView({
   const month = selectedDate.getMonth()
   const grid = getMonthGrid(year, month)
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const theme = useMantineTheme()
 
   return (
     <Box>
@@ -49,7 +50,7 @@ export default function MonthView({
                 minHeight: 100,
                 cursor: 'pointer',
                 opacity: isCurrentMonth ? 1 : 0.3,
-                borderColor: today ? '#cc225c' : 'dimmed',
+                borderColor: today ? theme.primaryColor : 'dimmed',
                 position: 'relative'
               }}
               onClick={() => onDateSelect(date)}
@@ -59,7 +60,7 @@ export default function MonthView({
                 <Text
                   size="sm"
                   fw={today ? 700 : 400}
-                  c={today ? '#cc225c' : 'dimmed'} //// TODO: change this to be governed by the accent color in settings
+                  c={today ? theme.primaryColor : 'dimmed'}
                   style={{
                     width: 28,
                     height: 28,

@@ -15,33 +15,11 @@
 // )
 
 import './assets/main.css'
-import { MantineProvider, createTheme, localStorageColorSchemeManager } from '@mantine/core'
 import '@mantine/core/styles.css'
 import '@mantine/notifications/styles.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App'
-import { useLocalStorage } from './hooks/useLocalStorage'
-
-const colorSchemeManager = localStorageColorSchemeManager({ key: 'colorScheme' })
-
-function ThemedApp() {
-  const [accentColor] = useLocalStorage('accentColor', 'violet')
-
-  const theme = createTheme({
-    primaryColor: accentColor
-  })
-
-  return (
-    <MantineProvider
-      theme={theme}
-      colorSchemeManager={colorSchemeManager}
-      defaultColorScheme="dark"
-    >
-      <App />
-    </MantineProvider>
-  )
-}
+import ThemedApp from './ThemedApp'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

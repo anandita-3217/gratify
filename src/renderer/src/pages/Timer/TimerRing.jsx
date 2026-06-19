@@ -1,12 +1,6 @@
-// // TimerRing.jsx
-// // SVG circular progress ring + time display in center
-// // props:
-// //   seconds      — current seconds remaining
-// //   totalSeconds — full duration (for progress calculation)
-// //   isRunning    — drives breathing animation
 import PropTypes from 'prop-types'
 import useTimer from './useTimer'
-import { RingProgress, Stack, Text } from '@mantine/core'
+import { RingProgress, Stack, Text, useMantineTheme } from '@mantine/core'
 
 const PHASE_COLOR = ['pink', 'teal', 'violet', 'orange', 'blue', 'green']
 
@@ -19,7 +13,9 @@ export default function TimerRing({
   mode,
   cyclesCompleted
 }) {
-  const color = mode === 'focus' ? (PHASE_COLOR[phaseIndex] ?? 'pink') : 'pink' // TODO: change this to be governed by the accent color in settings
+  const theme = useMantineTheme()
+  const color =
+    mode === 'focus' ? (PHASE_COLOR[phaseIndex] ?? theme.primaryColor) : theme.primaryColor // TODO: change this to be governed by the accent color in settings
   const progress = totalSeconds === 0 ? 0 : (seconds / totalSeconds) * 100
   const mm = Math.floor(seconds / 60)
     .toString()

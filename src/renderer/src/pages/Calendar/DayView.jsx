@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Text } from '@mantine/core'
+import { ActionIcon, Box, Text, useMantineTheme } from '@mantine/core'
 import { useEffect, useRef, useState } from 'react'
 import { getHourSlots, getEventsForDay, getEventPosition, isToday } from './useCalendarGrid'
 import { Plus } from 'lucide-react'
@@ -11,6 +11,7 @@ export default function DayView({
   onSlotClick,
   dragHandlers
 }) {
+  const theme = useMantineTheme()
   const hourSlots = getHourSlots()
   const dayEvents = getEventsForDay(events, selectedDate)
 
@@ -43,7 +44,7 @@ export default function DayView({
               <Box key={slot.hour} style={{ height: 60, paddingRight: 8 }}>
                 <Text
                   size="xs"
-                  c={slot.hour === now.getHours() ? 'pink' : 'dimmed'} //// TODO: change this to be governed by the accent color in settings
+                  c={slot.hour === now.getHours() ? theme.primaryColor : 'dimmed'}
                   fw={slot.hour === now.getHours() ? 700 : 400}
                   ta="right"
                 >

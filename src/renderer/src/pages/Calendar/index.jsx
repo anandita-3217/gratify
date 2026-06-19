@@ -139,7 +139,7 @@ export default function Calendar() {
               Organize your time!
             </Text>
           </Stack>
-          <Button variant="subtle" size="xs" radius="xl" onClick={open}>
+          <Button variant="subtle" size="xs" onClick={open}>
             <Plus size={12} />
           </Button>
         </Group>
@@ -147,6 +147,8 @@ export default function Calendar() {
         {/* nav row — segmented control + prev/next/today + date display */}
         <Group justify="space-between" align="center">
           <SegmentedControl
+            color={theme.primaryColor}
+            autoContrast
             withItemsBorders={false}
             radius="md"
             value={view}

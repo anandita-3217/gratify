@@ -1,4 +1,4 @@
-import { ActionIcon, Group, Stack, Text } from '@mantine/core'
+import { ActionIcon, Group, Stack, Text, useMantineTheme } from '@mantine/core'
 import { Play, Pause, Square, RotateCcw, SkipForward } from 'lucide-react'
 import { useEffect, useState } from 'react'
 // import { TimeInput } from '@mantine/dates'
@@ -34,6 +34,7 @@ export default function TimerControls({
   onDurationChange,
   totalSeconds
 }) {
+  const theme = useMantineTheme()
   const [inputMinutes, setInputMinutes] = useState(20)
   const [inputSeconds, setInputSeconds] = useState(0)
   const [activePreset, setActivePreset] = useState('25m')
@@ -79,14 +80,14 @@ export default function TimerControls({
                 width: '90px',
                 background: 'transparent',
                 border: 'none',
-                borderBottom: '2px solid var(--mantine-color-pink-8)',
+                borderBottom: `2px solid var(--mantine-color-${theme.primaryColor}-8)`,
                 borderRadius: 0,
                 padding: '0 8px',
                 color: 'inherit',
                 outline: 'none'
               }}
             />
-            <Text size="2.5rem" fw={700} c="pink">
+            <Text size="2.5rem" fw={700} c={theme.primaryColor}>
               :
             </Text>
             <input
@@ -104,7 +105,7 @@ export default function TimerControls({
                 width: '90px',
                 background: 'transparent',
                 border: 'none',
-                borderBottom: '2px solid var(--mantine-color-pink-8)',
+                borderBottom: `2px solid var(--mantine-color-${theme.primaryColor}-8)`,
                 borderRadius: 0,
                 padding: '0 8px',
                 color: 'inherit',

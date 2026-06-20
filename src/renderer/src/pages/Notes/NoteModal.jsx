@@ -31,7 +31,7 @@ const noteColors = [
 ]
 
 export default function NoteModal({ opened, onClose, onSave, note }) {
-  const [title, setTitle] = useState(note?. title ??'')
+  const [title, setTitle] = useState(note?. title ?? '')
   const [body, setBody] = useState(note?.body ?? '')
   const [tags, setTags] = useState(note?.tags ?? [])
   const [color, setColor] = useState(note?.color ?? 'pink')

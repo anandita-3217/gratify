@@ -296,15 +296,18 @@ export default function Notes() {
 
       {/* Modal — same pattern as Tasks, one modal for both create and edit */}
       <NoteModal
+        key="new-note"
         opened={opened}
         onClose={() => {
           close()
           setSelectedNote(null)
         }}
         onSave={handleSave}
-        note={selectedNote}
+        note={null}
       />
+      {/* TODO: This is not closing take care of that later */}
       <NoteModal
+        key={`edit-note-${selectedNote?.id ?? 'none'}`}
         opened={editOpened}
         onClose={() => {
           closeEdit()
@@ -314,17 +317,14 @@ export default function Notes() {
         note={selectedNote}
       />
       <NoteDrawer
+        key={`drawer-${drawerNote?.id ?? 'none'}`}
         opened={drawerOpened}
         onClose={closeDrawer}
         note={drawerNote}
-        onEdit={(noteData) => {
-          updateNote(drawerNote.id, noteData)
-        }}
+        onEdit={(noteData) => updateNote(drawerNote.id, noteData)}
         onPin={() => pinNote(drawerNote.id)}
         onTagDelete={(tag) =>
-          updateNote(drawerNote.id, {
-            tags: drawerNote.tags.filter((t) => t !== tag)
-          })
+          updateNote(drawerNote.id, { tags: drawerNote.tags.filter((t) => t !== tag) })
         }
       />
     </Box>

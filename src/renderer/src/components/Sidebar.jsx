@@ -81,12 +81,12 @@ export default function Sidebar({ activePage, onNavigate }) {
     <div
       className={`flex flex-col h-full border-r border-white/[0.07] transition-all duration-200 overflow-hidden ${collapsed ? 'w-14' : 'w-52'}`}
     >
-      <div className="flex  gap-2 px-7 h-10">
+      <div className="flex  gap-2 px-6 py-7 h-10">
         <div className="w-5 h-5 min-w-[20px] flex justify-center items-center rounded-md bg-[#cc225c]">
           <p className="text-white font-bold text-sm">G</p>
         </div>
         <span
-          className={`text-sm text-gray-500 font-semibold whitespace-nowrap transition-opacity duration-150 ${collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}
+          className={`text-sm text-[#cc225c] font-semibold whitespace-nowrap transition-opacity duration-150 ${collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}
         >
           Gratify
         </span>

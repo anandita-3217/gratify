@@ -1,4 +1,4 @@
-import { ActionIcon, Group, Select, Stack, Text } from '@mantine/core'
+import { ActionIcon, Group, Select, Stack, Text, useMantineTheme } from '@mantine/core'
 import { Pencil, Plus, Trash } from 'lucide-react'
 import PropTypes from 'prop-types'
 
@@ -12,6 +12,7 @@ export default function TechniquePicker({
   onDelete,
   onEdit
 }) {
+  const theme = useMantineTheme()
   const options = Object.entries(TECHNIQUES).map(([key, val]) => ({
     value: key,
     label: val.name
@@ -33,7 +34,7 @@ export default function TechniquePicker({
             allowDeselect={false}
             styles={{
               input: {
-                borderColor: 'var(--mantine-color-pink-8)',
+                borderColor: `var(--mantine-color-${theme.primaryColor}-5)`,
                 fontSize: '0.85rem'
               }
             }}

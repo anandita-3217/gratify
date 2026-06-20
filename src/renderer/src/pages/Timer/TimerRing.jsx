@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import useTimer from './useTimer'
 import { RingProgress, Stack, Text, useMantineTheme } from '@mantine/core'
 
-const PHASE_COLOR = ['pink', 'teal', 'violet', 'orange', 'blue', 'green']
+const PHASE_COLOR = ['red', 'teal', 'violet', 'orange', 'blue', 'green']
 
 export default function TimerRing({
   seconds,

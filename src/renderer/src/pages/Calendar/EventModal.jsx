@@ -7,7 +7,8 @@ import {
   Select,
   Button,
   Textarea,
-  ColorSwatch
+  ColorSwatch,
+  useMantineTheme
 } from '@mantine/core'
 import { DateTimePicker } from '@mantine/dates'
 import { useState } from 'react'
@@ -37,6 +38,8 @@ export default function EventModal({
   defaultStart,
   defaultEnd
 }) {
+  const theme = useMantineTheme()
+
   const [title, setTitle] = useState(event?.title ?? 'Untitled')
   const [description, setDescription] = useState(event?.description ?? '')
   const [start, setStart] = useState(event?.start ?? defaultStart ?? null)
@@ -77,14 +80,17 @@ export default function EventModal({
       centered
       styles={{
         title: {
-          color: '#cc225c',
+          color: `var(--mantine-color-${theme.primaryColor}-5)`,
           fontSize: '25px',
           fontWeight: 600,
           textAlign: 'center',
           width: '100%'
         },
         header: { justifyContent: 'center' },
-        content: { border: '2px solid #cc225c', borderRadius: '15px' }
+        content: {
+          border: `2px solid var(--mantine-color-${theme.primaryColor}-5)`,
+          borderRadius: '15px'
+        }
       }}
     >
       <Stack gap="md">
@@ -163,7 +169,6 @@ export default function EventModal({
         <Group justify="center">
           {event && onDelete && (
             <Button
-              color="red"
               variant="subtle"
               onClick={() => {
                 onDelete(event.id)

@@ -13,7 +13,8 @@ import {
   Group,
   ActionIcon,
   Divider,
-  Checkbox
+  Checkbox,
+  useMantineTheme
 } from '@mantine/core'
 import { Plus, Trash } from 'lucide-react'
 import PropTypes from 'prop-types'
@@ -33,6 +34,8 @@ export default function CustomTechniqueModal({
   const [hasCycles, setHasCycles] = useState(false)
   const [cycles, setCycles] = useState(null)
   const [techniqueError, setTechniqueError] = useState('')
+
+  const theme = useMantineTheme()
 
   // phases is an array of { name, duration }
   const [phases, setPhases] = useState([
@@ -115,14 +118,17 @@ export default function CustomTechniqueModal({
       size="md"
       styles={{
         title: {
-          color: '#c2255c',
+          color: `var(--mantine-color-${theme.primaryColor}-5)`,
           fontSize: '20px',
           fontWeight: 600,
           textAlign: 'center',
           width: '100%'
         },
         header: { justifyContent: 'center' },
-        content: { border: '2px solid #c2255c', borderRadius: '15px' }
+        content: {
+          border: `2px solid var(--mantine-color-${theme.primaryColor}-5)`,
+          borderRadius: '15px'
+        }
       }}
     >
       <Stack gap="md">
@@ -218,5 +224,4 @@ CustomTechniqueModal.propTypes = {
   onEdit: PropTypes.func,
   editingKey: PropTypes.string,
   editingTechnique: PropTypes.string
-
 }

@@ -11,6 +11,9 @@ const SHORTCUTS = [
 
 export default function ShortcutsSection() {
   return (
+    // TODO: add new shortcuts
+    // TODO: add filter by feature
+
     <Stack gap="lg">
       <Text size="xs" c="dimmed">
         All keyboard shortcuts available in Gratify

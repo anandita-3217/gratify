@@ -12,18 +12,16 @@ import { Sun, Moon } from 'lucide-react'
 import { useEffect } from 'react'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 const colors = [
-  'orange',
-  'red',
   'pink',
   'grape',
   'violet',
   'indigo',
   'blue',
   'cyan',
-  'teal',
   'green',
   'lime',
-  'yellow'
+  'yellow',
+  'orange'
 ]
 
 export default function AppearanceSection() {
@@ -60,7 +58,6 @@ export default function AppearanceSection() {
           onChange={(event) => setColorScheme(event.currentTarget.checked ? 'dark' : 'light')}
           thumbIcon={isDark ? <Moon size={12} color="blue" /> : <Sun size={12} color="red" />}
         />
-        {/* Switch — same as ThemeToggle in Sidebar */}
       </Stack>
 
       <Divider />
@@ -72,7 +69,9 @@ export default function AppearanceSection() {
         </Text>
         <Group gap="xs">
           {colors.map((c) => (
+            // TODO: make sure that there is some kind of feed back when a color selected
             <ColorSwatch
+              withShadow
               key={c}
               color={`var(--mantine-color-${c}-5)`}
               size={24}

@@ -1,7 +1,8 @@
-import { Stack, Text, Button, Divider } from '@mantine/core'
+import { Stack, Text,Title, Button, Divider, useMantineTheme } from '@mantine/core'
 import { Download, Upload, Trash } from 'lucide-react'
 
 export default function DataSection() {
+  const theme = useMantineTheme()
   // exportData — read all localStorage keys, JSON.stringify, download as file
   // importData — file input, JSON.parse, write to localStorage keys
   // clearData — confirm modal, then localStorage.clear()
@@ -29,6 +30,15 @@ export default function DataSection() {
   return (
     <Stack gap="lg">
       <Stack gap="xs">
+        <Title size="sm" c={theme.primaryColor}>
+          {' '}
+          Your data your business{' '}
+        </Title>
+        <Text size="xs" c="dimmed">
+          {' '}
+          Your data on the app is completely yours to do whatever you want to and with it. I cant
+          see nor do I want to. I dont want it. Thanks
+        </Text>
         <Text fw={600}>Export Data</Text>
         <Text size="xs" c="dimmed">
           Download all your tasks, notes, events and settings as a JSON file

@@ -86,7 +86,7 @@ export default function Sidebar({ activePage, onNavigate }) {
           <p className="text-white font-bold text-sm">G</p>
         </div>
         <span
-          className={`text-sm text-[#cc225c] font-semibold whitespace-nowrap transition-opacity duration-150 ${collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}
+          className={`text-sm text-[#cc225c] font-700 whitespace-nowrap transition-opacity duration-150 ${collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}
         >
           Gratify
         </span>

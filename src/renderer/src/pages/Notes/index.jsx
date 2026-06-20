@@ -221,7 +221,7 @@ export default function Notes() {
               <Chip.Group multiple value={filterTags} onChange={setFilterTags}>
                 <Group gap="xs">
                   {visibleTags.map((tag) => (
-                    <Chip key={tag} value={tag} size="xs" color="pink">
+                    <Chip key={tag} value={tag} size="xs">
                       {tag}
                     </Chip>
                   ))}

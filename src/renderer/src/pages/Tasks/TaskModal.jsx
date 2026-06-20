@@ -10,7 +10,8 @@ import {
   Select,
   Button,
   NumberInput,
-  SegmentedControl
+  SegmentedControl,
+  useMantineTheme
 } from '@mantine/core'
 import { DateTimePicker } from '@mantine/dates'
 import '@mantine/dates/styles.css'
@@ -63,6 +64,8 @@ export default function TaskModal({ opened, onSave, onClose, onDelete, task }) {
   const [textError, setTextError] = useState('')
   const [priorityError, setPriorityError] = useState('')
 
+  const theme = useMantineTheme()
+
   function handleSave() {
     if (!text.trim()) {
       setTextError('Task cannot be empty')
@@ -106,14 +109,14 @@ export default function TaskModal({ opened, onSave, onClose, onDelete, task }) {
       centered
       styles={{
         title: {
-          color: '#c2255c',
+          color: `var(--mantine-color-${theme.primaryColor}-5)`,
           fontSize: '25px',
           fontWeight: 600,
           textAlign: 'center',
           width: '100%'
         },
         header: { justifyContent: 'center' },
-        content: { border: '2px solid #c2255c', borderRadius: '15px' }
+        content: { border: `2px solid var(--mantine-color-${theme.primaryColor}-5)`, borderRadius: '15px' }
       }}
     >
       <Box>

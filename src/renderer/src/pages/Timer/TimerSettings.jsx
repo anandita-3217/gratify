@@ -7,8 +7,7 @@
 //   4. encouraging message toggle (placeholder for now)
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import useTimerPreferences from '../../hooks/useTimerPreferences'
-import { Drawer, Divider, Stack, Switch, Text } from '@mantine/core'
-import { useState } from 'react'
+import { Drawer, Divider, Stack, Switch, Text, useMantineTheme } from '@mantine/core'
 import { BellRing, BellOff } from 'lucide-react'
 import PropTypes from 'prop-types'
 
@@ -20,6 +19,7 @@ export default function TimerSettings({
   onTechniqueChange,
   onSettingsChange
 }) {
+  const theme = useMantineTheme()
   const { sound, setSound, notifications, setNotifications } = useTimerPreferences()
   return (
     <Drawer
@@ -28,7 +28,7 @@ export default function TimerSettings({
       title="Timer Settings"
       position="right"
       styles={{
-        title: { color: '#c2255c', fontWeight: 600 } // TODO: change this to be governed by the accent color in settings
+        title: { color: `var(--mantine-color-${theme.primaryColor}-5)`, fontWeight: 600 }
       }}
     >
       <Divider />
@@ -36,22 +36,18 @@ export default function TimerSettings({
         <Text>Sounds</Text>
         <Switch
           size="md"
-          thumbIcon={
-            sound ? <BellRing size={12}    /> : <BellOff size={12} color="gray" />  // TODO: change this to be governed by the accent color in settings
-          }
+          thumbIcon={sound ? <BellRing size={12} /> : <BellOff size={12} color="gray" />}
           onLabel="ON"
           offLabel="OFF"
           checked={sound}
           onChange={(e) => setSound(e.currentTarget.checked)}
           label="Sound On"
         />
-        <Divider    />
+        <Divider />
         <Text>Notifications</Text>
         <Switch
           size="md"
-          thumbIcon={
-            notifications ? <BellRing size={12}    /> : <BellOff size={12} color="gray" />
-          }
+          thumbIcon={notifications ? <BellRing size={12} /> : <BellOff size={12} color="gray" />}
           onLabel="ON"
           offLabel="OFF"
           checked={notifications}

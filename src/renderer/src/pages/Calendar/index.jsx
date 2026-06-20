@@ -213,7 +213,7 @@ export default function Calendar() {
               )}
               {view === 'weekview' && (
                 <Text size="sm" fw={600}>
-                  {`${getWeekDays(selectedDate)[0].toLocaleString('default', { month: 'short', day: 'numeric' })} — ${getWeekDays(selectedDate)[6].toLocaleString('default', { month: 'short', day: 'numeric', year: 'numeric' })}`}
+                  {`${getWeekDays(selectedDate)[0].toLocaleString('default', { month: 'short', day: 'numeric' })} - ${getWeekDays(selectedDate)[6].toLocaleString('default', { month: 'short', day: 'numeric', year: 'numeric' })}`}
                 </Text>
               )}
               {view === 'monthview' && (

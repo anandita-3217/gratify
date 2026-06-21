@@ -1,8 +1,9 @@
 import { Stack, Text, Select, Switch, Divider } from '@mantine/core'
+import { useLocalStorage } from '../../hooks/useLocalStorage'
 
 export default function TasksSection() {
-  // defaultPriority — useLocalStorage('defaultPriority', 'low')
-  // showCompleted — useLocalStorage('showCompleted', true)
+  const [defaultPriority, setDefaultPriority] = useLocalStorage('defaultPriority', 'low')
+  const [showCompleted, setShowCompleted] = useLocalStorage('showCompleted', true)
 
   return (
     <Stack gap="lg">
@@ -11,7 +12,12 @@ export default function TasksSection() {
         <Text size="xs" c="dimmed">
           Priority assigned to new tasks
         </Text>
-        <Select data={['low', 'medium', 'high', 'urgent']} />
+        <Select
+          data={['low', 'medium', 'high', 'urgent']}
+          placeholder="Priority"
+          value={defaultPriority}
+          onClick={setDefaultPriority}
+        />
         {/* Select — low / medium / high / urgent */}
       </Stack>
 
@@ -22,7 +28,10 @@ export default function TasksSection() {
         <Text size="xs" c="dimmed">
           Show or hide completed tasks by default
         </Text>
-        <Switch />
+        <Switch
+          checked={showCompleted}
+          onChange={(e) => setShowCompleted(e.currentTarget.checked)}
+        />
       </Stack>
     </Stack>
   )

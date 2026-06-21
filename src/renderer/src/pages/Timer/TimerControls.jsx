@@ -3,25 +3,12 @@ import { Play, Pause, Square, RotateCcw, SkipForward } from 'lucide-react'
 import { useEffect, useState } from 'react'
 // import { TimeInput } from '@mantine/dates'
 import PropTypes from 'prop-types'
-
-const PRESETS = [
-  { label: '25m', minutes: 25, seconds: 0 },
-  { label: '45m', minutes: 45, seconds: 0 },
-  { label: '60m', minutes: 60, seconds: 0 }
-]
-
-const INPUT_STYLES = {
-  input: {
-    fontSize: '2.5rem',
-    fontWeight: 400,
-    textAlign: 'center',
-    width: '120px',
-    background: 'transparent',
-    border: 'none',
-    borderRadius: '0',
-    padding: '0 8px'
-  }
-}
+// TODO: use presets
+// const PRESETS = [
+//   { label: '25m', minutes: 25, seconds: 0 },
+//   { label: '45m', minutes: 45, seconds: 0 },
+//   { label: '60m', minutes: 60, seconds: 0 }
+// ]
 
 export default function TimerControls({
   mode,

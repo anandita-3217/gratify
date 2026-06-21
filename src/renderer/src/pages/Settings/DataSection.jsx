@@ -1,4 +1,4 @@
-import { Stack, Text,Title, Button, Divider, useMantineTheme } from '@mantine/core'
+import { Stack, Text, Title, Button, Divider, useMantineTheme } from '@mantine/core'
 import { Download, Upload, Trash } from 'lucide-react'
 
 export default function DataSection() {

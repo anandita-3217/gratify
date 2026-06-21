@@ -1,5 +1,6 @@
 import { Stack, Text, Select, Switch, Divider } from '@mantine/core'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
+// TODO: changes not getting reflected
 
 export default function TasksSection() {
   const [defaultPriority, setDefaultPriority] = useLocalStorage('defaultPriority', 'low')
@@ -16,7 +17,7 @@ export default function TasksSection() {
           data={['low', 'medium', 'high', 'urgent']}
           placeholder="Priority"
           value={defaultPriority}
-          onClick={setDefaultPriority}
+          onChange={setDefaultPriority}
         />
         {/* Select — low / medium / high / urgent */}
       </Stack>

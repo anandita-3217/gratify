@@ -1,9 +1,9 @@
 import { Stack, Text, Select, Divider, SegmentedControl } from '@mantine/core'
-// import { useLocalStorage } from '../../hooks/useLocalStorage'
+import { useLocalStorage } from '../../hooks/useLocalStorage'
 
 export default function CalendarSection() {
-  //   const weekStartsOn = useLocalStorage('weekStartsOn', 'sunday')
-  //   const timeFormat = useLocalStorage('timeFormat', '12h')
+    const weekStartsOn = useLocalStorage('weekStartsOn', 'sunday')
+    const timeFormat = useLocalStorage('timeFormat', '12h')
   // timeFormat —
 
   return (

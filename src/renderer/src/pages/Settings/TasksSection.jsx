@@ -1,10 +1,8 @@
 import { Stack, Text, Select, Switch, Divider } from '@mantine/core'
-import { useLocalStorage } from '../../hooks/useLocalStorage'
-// TODO: changes not getting reflected
-
+import { useSettings } from '../../context/SettingsContext'
+// TODO: Settings not getting reeflected
 export default function TasksSection() {
-  const [defaultPriority, setDefaultPriority] = useLocalStorage('defaultPriority', 'low')
-  const [showCompleted, setShowCompleted] = useLocalStorage('showCompleted', true)
+  const { defaultPriority, setDefaultPriority, showCompleted, setShowCompleted } = useSettings()
 
   return (
     <Stack gap="lg">
@@ -15,15 +13,12 @@ export default function TasksSection() {
         </Text>
         <Select
           data={['low', 'medium', 'high', 'urgent']}
-          placeholder="Priority"
           value={defaultPriority}
           onChange={setDefaultPriority}
+          w={200}
         />
-        {/* Select — low / medium / high / urgent */}
       </Stack>
-
       <Divider />
-
       <Stack gap="xs">
         <Text fw={600}>Show Completed Tasks</Text>
         <Text size="xs" c="dimmed">

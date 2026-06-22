@@ -17,7 +17,7 @@ import TimerSettings from './TimerSettings'
 import TechniquePicker from './TechniquePicker'
 import CustomTechniqueModal from './CustomTechniqueModal'
 import { useDisclosure } from '@mantine/hooks'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Timer() {
   const {
@@ -51,13 +51,30 @@ export default function Timer() {
   const [settingsOpened, { open, close }] = useDisclosure(false)
   const [customOpened, { open: openCustom, close: closeCustom }] = useDisclosure(false)
   const [editingTechnique, setEditingTechnique] = useState(null)
-
+  // TODO: when reset called the input field changes the timer label is not reflecting the change
   const theme = useMantineTheme()
   function handleEditTechnique(key) {
     setEditingTechnique(key)
     openCustom()
   }
-
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key === ' ') {
+        e.preventDefault()
+        isRunning ? pause() : start()
+      }
+      if (e.key === 'r') {
+        e.preventDefault()
+        reset()
+      }
+      if (e.key === 's') {
+        e.preventDefault()
+        stop()
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [start, pause, stop, reset, isRunning])
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>
       <Stack gap={2} mb="xl">

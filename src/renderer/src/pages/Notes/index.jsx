@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   ActionIcon,
   Badge,
@@ -119,6 +119,16 @@ export default function Notes() {
         return b.createdAt - a.createdAt
     }
   })
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.ctrlKey && e.key === 'n') {
+        e.preventDefault()
+        open()
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [open])
 
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>

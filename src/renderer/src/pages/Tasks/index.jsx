@@ -217,6 +217,17 @@ export default function Tasks() {
     return () => clearInterval(interval)
   }, [notify])
 
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        e.preventDefault()
+        parseQuickTask(input)
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [input])
+
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>
       <Stack gap={4} mb="xl">

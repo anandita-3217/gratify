@@ -17,7 +17,7 @@ import { DateTimePicker } from '@mantine/dates'
 import '@mantine/dates/styles.css'
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-
+import { useSettings } from '../../context/SettingsContext'
 function PriorityOption(props) {
   const { option } = props
   const colors = {
@@ -49,8 +49,12 @@ PriorityOption.propTypes = {
 
 
 export default function TaskModal({ opened, onSave, onClose, onDelete, task }) {
+
+  const { defaultPriority } = useSettings()
+
   const [text, setText] = useState(task?.text ?? '')
-  const [priority, setPriority] = useState(task?.priority ?? 'low')
+  const [priority, setPriority] = useState(task?.priority ?? defaultPriority)
+  
   const [date, setDate] = useState(task?.deadline ? new Date(task.deadline) : null)
   const [recurring, setRecurring] = useState(task?.recurring ?? false)
   const [addToCalendar, setAddToCalendar] = useState(false)

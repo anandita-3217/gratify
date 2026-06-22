@@ -2,8 +2,8 @@ import { Stack, Text, Select, Divider, SegmentedControl } from '@mantine/core'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 
 export default function CalendarSection() {
-    const weekStartsOn = useLocalStorage('weekStartsOn', 'sunday')
-    const timeFormat = useLocalStorage('timeFormat', '12h')
+  const [weekStartsOn, setWeekStartsOn] = useLocalStorage('weekStartsOn', 'sunday')
+  const [timeFormat, setTimeFormat] = useLocalStorage('timeFormat', '12h')
   // timeFormat —
 
   return (
@@ -13,7 +13,7 @@ export default function CalendarSection() {
         <Text size="xs" c="dimmed">
           First day of the week in calendar views
         </Text>
-        <Select data={['Sunday', 'Monday']} />
+        <Select data={['Sunday', 'Monday']} value={weekStartsOn} onChange={setWeekStartsOn} />
       </Stack>
 
       <Divider />
@@ -23,8 +23,11 @@ export default function CalendarSection() {
         <Text size="xs" c="dimmed">
           12-hour or 24-hour time display
         </Text>
-        <SegmentedControl data={['12-hour', '24-hour']} />
-        {/* SegmentedControl — 12h / 24h */}
+        <SegmentedControl
+          data={['12-hour', '24-hour']}
+          value={timeFormat}
+          onChange={setTimeFormat}
+        />
       </Stack>
     </Stack>
   )

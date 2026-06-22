@@ -24,6 +24,7 @@ import useCalendar from '../Calendar/useCalendar'
 import useNotifications from '../../hooks/useNotifications'
 
 import * as chrono from 'chrono-node'
+import useKeyboardShortcuts from '../../hooks/useKeyboardShortcuts'
 
 export default function Tasks() {
   const { tasks, addTask, deleteTask, toggleTask, updateTask } = useTasks()
@@ -217,16 +218,7 @@ export default function Tasks() {
     return () => clearInterval(interval)
   }, [notify])
 
-  useEffect(() => {
-    const handler = (e) => {
-      if (e.ctrlKey && e.key === 'Enter') {
-        e.preventDefault()
-        parseQuickTask(input)
-      }
-    }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [input])
+  useKeyboardShortcuts([{ key: 'Enter', ctrl: true, action: parseQuickTask }], [input])
 
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>

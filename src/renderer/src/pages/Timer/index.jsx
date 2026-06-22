@@ -17,7 +17,8 @@ import TimerSettings from './TimerSettings'
 import TechniquePicker from './TechniquePicker'
 import CustomTechniqueModal from './CustomTechniqueModal'
 import { useDisclosure } from '@mantine/hooks'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import useKeyboardShortcuts from '../../hooks/useKeyboardShortcuts'
 
 export default function Timer() {
   const {
@@ -57,24 +58,14 @@ export default function Timer() {
     setEditingTechnique(key)
     openCustom()
   }
-  useEffect(() => {
-    const handler = (e) => {
-      if (e.key === ' ') {
-        e.preventDefault()
-        isRunning ? pause() : start()
-      }
-      if (e.key === 'r') {
-        e.preventDefault()
-        reset()
-      }
-      if (e.key === 's') {
-        e.preventDefault()
-        stop()
-      }
-    }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [start, pause, stop, reset, isRunning])
+  useKeyboardShortcuts(
+    [
+      { key: ' ', action: isRunning ? pause : start },
+      { key: 'r', action: reset },
+      { key: 's', action: stop }
+    ],
+    []
+  )
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>
       <Stack gap={2} mb="xl">

@@ -18,7 +18,7 @@ import {
 import { notifications } from '@mantine/notifications'
 
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import TaskModal from '../Tasks/TaskModal'
 import useTasks from '../Tasks/useTasks'
@@ -33,6 +33,7 @@ import useCalendar from './useCalendar'
 import EventModal from './EventModal'
 import { useDisclosure } from '@mantine/hooks'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
+import useKeyboardShortcuts from '../../hooks/useKeyboardShortcuts'
 
 export default function Calendar() {
   const { events, addEvent, editEvent, deleteEvent } = useCalendar()
@@ -112,19 +113,15 @@ export default function Calendar() {
     }
   }
 
-  useEffect(() => {
-    function handleKeyDown(e) {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
-      if (opened || editOpened) return
-
-      if (e.key === 'd') setView('dayview')
-      if (e.key === 'w') setView('weekview')
-      if (e.key === 'm') setView('monthview')
-      if (e.key === 't') goToday()
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [opened, editOpened])
+  useKeyboardShortcuts(
+    [
+      { key: 'd', action: () => setView('dayview') },
+      { key: 'w', action: () => setView('weekview') },
+      { key: 'm', action: () => setView('monthview') },
+      { key: 't', action: goToday }
+    ],
+    [opened, editOpened]
+  )
 
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>

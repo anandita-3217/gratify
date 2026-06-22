@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   ActionIcon,
   Badge,
@@ -21,6 +21,7 @@ import useNotes from './useNotes'
 import NoteCard from './NoteCard'
 import NoteModal from './NoteModal'
 import NoteDrawer from './NoteDrawer'
+import useKeyboardShortcuts from '../../hooks/useKeyboardShortcuts'
 
 const noteColors = [
   'orange',
@@ -119,16 +120,8 @@ export default function Notes() {
         return b.createdAt - a.createdAt
     }
   })
-  useEffect(() => {
-    const handler = (e) => {
-      if (e.ctrlKey && e.key === 'n') {
-        e.preventDefault()
-        open()
-      }
-    }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [open])
+
+  useKeyboardShortcuts([{ key: 'n', ctrl: true, action: open }], [open])
 
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>

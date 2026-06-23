@@ -69,13 +69,15 @@ export default function AppearanceSection() {
         </Text>
         <Group gap="xs">
           {colors.map((c) => (
-            // TODO: make sure that there is some kind of feed back when a color selected
             <ColorSwatch
               withShadow
               key={c}
               color={`var(--mantine-color-${c}-5)`}
               size={24}
-              style={{ cursor: 'pointer', outline: accent == c ? '2px solid white' : 'none' }}
+              style={{
+                cursor: 'pointer',
+                outline: accent == c ? '2px solid var(--mantine-color-dimmed)' : 'none'
+              }}
               onClick={() => setAccent(c)}
             />
           ))}

@@ -10,7 +10,7 @@ import {
 } from '@mantine/core'
 import { Sun, Moon } from 'lucide-react'
 import { useEffect } from 'react'
-import { useLocalStorage } from '../../hooks/useLocalStorage'
+import { useSettings } from '../../context/SettingsContext'
 const colors = [
   'pink',
   'grape',
@@ -25,13 +25,10 @@ const colors = [
 ]
 
 export default function AppearanceSection() {
-  // theme toggle — same pattern as Sidebar ThemeToggle
-  // accent accent — useLocalStorage('accentaccent', 'pink')
-  // accent accents to pick from: pink, violet, blue, teal, orange
   const { setColorScheme } = useMantineColorScheme()
   const computedColorScheme = useComputedColorScheme('light')
   const isDark = computedColorScheme === 'dark'
-  const [accent, setAccent] = useLocalStorage('accentColor', 'violet')
+  const { accentColor: accent, setAccentColor: setAccent } = useSettings()
 
   useEffect(() => {
     const handler = (e) => {

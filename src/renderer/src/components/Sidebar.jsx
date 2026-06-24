@@ -5,6 +5,7 @@ import {
   Timer,
   ChartLine,
   Settings,
+  Info,
   Sun,
   Moon,
   PanelLeftOpen,
@@ -75,7 +76,8 @@ export default function Sidebar({ activePage, onNavigate }) {
     { id: 'notes', label: 'Notes', icon: <NotepadText size={20} /> },
     { id: 'timer', label: 'Timer', icon: <Timer size={20} /> },
     { id: 'calendar', label: 'Calendar', icon: <Calendar size={20} /> },
-    { id: 'settings', label: 'Settings', icon: <Settings size={20} /> }
+    { id: 'settings', label: 'Settings', icon: <Settings size={20} /> },
+    { id: 'about', label: 'About', icon: <Info size={20} /> }
   ]
   return (
     <div

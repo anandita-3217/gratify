@@ -22,12 +22,14 @@ import { useEffect, useRef, useState } from 'react'
 import useTasks from './useTasks'
 import useCalendar from '../Calendar/useCalendar'
 import useNotifications from '../../hooks/useNotifications'
+import { useSettings } from '../../context/SettingsContext'
 
 import * as chrono from 'chrono-node'
 import useKeyboardShortcuts from '../../hooks/useKeyboardShortcuts'
 
 export default function Tasks() {
   const { tasks, addTask, deleteTask, toggleTask, updateTask } = useTasks()
+  const { showCompleted, defaultPriority } = useSettings()
   const { addEvent } = useCalendar()
   const [input, setInput] = useState('')
   const [search, setSearch] = useState('')
@@ -176,7 +178,8 @@ export default function Tasks() {
         return b.id - a.id
     }
   })
-
+  // filter completed tasks based on showCompleted setting
+  const visibleTasks = showCompleted ? sortedTasks : sortedTasks.filter((t) => !t.completed)
   const { notify } = useNotifications()
 
   const taskRef = useRef(tasks)
@@ -395,7 +398,7 @@ export default function Tasks() {
           </Stack>
         )}
         <Stack gap="sm">
-          {sortedTasks.length === 0 ? (
+          {visibleTasks.length === 0 ? (
             <Box
               p="xl"
               style={{
@@ -409,7 +412,7 @@ export default function Tasks() {
               </Text>
             </Box>
           ) : (
-            sortedTasks.map((task) => (
+            visibleTasks.map((task) => (
               <TaskItem
                 key={task.id}
                 task={task}
@@ -422,7 +425,7 @@ export default function Tasks() {
         </Stack>
       </Stack>
       <TaskModal
-        key={'new'}
+        key={`new-${defaultPriority}`}
         opened={opened}
         onClose={close}
         onSave={(taskData) => {

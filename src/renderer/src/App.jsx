@@ -11,6 +11,7 @@ import Notes from './pages/Notes'
 import Timer from './pages/Timer'
 import Calendar from './pages/Calendar'
 import Settings from './pages/Settings'
+import About from './pages/About'
 import { useState } from 'react'
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
             {activePage === 'timer' && <Timer />}
             {activePage === 'calendar' && <Calendar />}
             {activePage === 'settings' && <Settings />}
+            {activePage === 'about' && <About />}
           </main>
         </div>
       </HashRouter>

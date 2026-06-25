@@ -1,6 +1,6 @@
 import { Box, Divider, Group, Stack, Text, Title, useMantineTheme } from '@mantine/core'
 import AboutCard from './AboutCard'
-import Dawn from '../../assets/Dawn.png'
+import Dev from '../../assets/dev_svg.svg'
 
 // Data shape — pass this as the `socials` prop
 const socials = [
@@ -28,7 +28,7 @@ export default function About() {
       <Box justify="center">
         <Stack align="center">
           <AboutCard
-            thumbnail={Dawn}
+            thumbnail={Dev}
             name={'Alka'}
             position={'Lead dev'}
             socials={socials}

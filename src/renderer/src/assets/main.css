@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import './base.css';
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
 
 .tiptap {
   outline: none;
@@ -19,6 +20,14 @@
 .tiptap em { font-style: italic  !important; }
 .tiptap s {text-decoration: line-through !important;}
 
+/* 
+.jost-<uniquifier> {
+  font-family: "Jost", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+} */
+
 body {
   /* display: flex; */
   align-items: center;
@@ -27,6 +36,10 @@ body {
   /* background-image: url('./wavy-lines.svg'); */
   background-size: cover;
   user-select: none;
+  font-family: "Jost", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 code {
@@ -161,6 +174,7 @@ code {
     border: none;
   }
 }
+
 
 @media (max-width: 720px) {
   .text {

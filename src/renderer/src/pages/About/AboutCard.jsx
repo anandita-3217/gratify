@@ -23,15 +23,16 @@ export default function AboutCard({ thumbnail, name, position, description, soci
   return (
     <Card
       style={{
+        width: '60%',
         borderRadius: 12,
         backgroundColor: `color-mix(in srgb, var(--mantine-color-${theme.primaryColor}-5) 10%, var(--mantine-color-body))`
       }}
     >
       <Stack>
-        <Box style={{ position: 'relative', borderRadius: 12, overflow: 'hidden' }}>
+        <Box style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', maxHeight: 200 }}>
           <Image
             src={thumbnail}
-            height={180}
+            height={150}
             style={{ objectFit: 'cover', width: '100%', display: 'block' }}
           />
           {/* Lighter blurring affect */}
@@ -130,8 +131,7 @@ AboutCard.propTypes = {
   thumbnail: PropTypes.string,
   name: PropTypes.string,
   position: PropTypes.string,
-  // eslint-disable-next-line no-undef
-  socials: PropTypes.arrayOf(PropTypes.shape({ label, url })),
+  socials: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string, url: PropTypes.string })),
   description: PropTypes.string,
   nickname: PropTypes.string
 }

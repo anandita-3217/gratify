@@ -6,7 +6,7 @@ const colorSchemeManager = localStorageColorSchemeManager({ key: 'colorScheme' }
 
 function MantineThemedApp() {
   const { accentColor } = useSettings()
-  const theme = createTheme({ primaryColor: accentColor })
+  const theme = createTheme({ primaryColor: accentColor, fontFamily: '"Jost", sans-serif' })
 
   return (
     <MantineProvider

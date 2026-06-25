@@ -9,10 +9,11 @@ export default function DayView({
   selectedDate = new Date(),
   onEventClick,
   onSlotClick,
-  dragHandlers
+  dragHandlers,
+  timeFormat = '12h'
 }) {
   const theme = useMantineTheme()
-  const hourSlots = getHourSlots()
+  const hourSlots = getHourSlots(timeFormat)
   const dayEvents = getEventsForDay(events, selectedDate)
 
   const [now, setNow] = useState(new Date())
@@ -157,5 +158,6 @@ DayView.propTypes = {
     onMouseDown: PropTypes.func,
     onMouseMove: PropTypes.func,
     onMouseUp: PropTypes.func
-  })
+  }),
+  timeFormat: PropTypes.string
 }

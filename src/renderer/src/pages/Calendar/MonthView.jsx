@@ -10,12 +10,16 @@ export default function MonthView({
   selectedDate = new Date(),
   onDateSelect,
   onEventClick,
-  onSlotClick
+  onSlotClick,
+  weekStartsOn = 'sunday'
 }) {
   const year = selectedDate.getFullYear()
   const month = selectedDate.getMonth()
-  const grid = getMonthGrid(year, month)
-  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const grid = getMonthGrid(year, month, weekStartsOn)
+  const dayNames =
+    weekStartsOn === 'monday'
+      ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   const theme = useMantineTheme()
 
   return (
@@ -100,5 +104,6 @@ MonthView.propTypes = {
   selectedDate: PropTypes.instanceOf(Date),
   onDateSelect: PropTypes.func,
   onEventClick: PropTypes.func,
-  onSlotClick: PropTypes.func
+  onSlotClick: PropTypes.func,
+  weekStartsOn: PropTypes.string
 }

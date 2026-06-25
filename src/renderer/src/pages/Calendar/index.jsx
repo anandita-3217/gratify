@@ -34,8 +34,10 @@ import EventModal from './EventModal'
 import { useDisclosure } from '@mantine/hooks'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import useKeyboardShortcuts from '../../hooks/useKeyboardShortcuts'
+import { useSettings } from '../../context/SettingsContext'
 
 export default function Calendar() {
+  const { weekStartsOn, timeFormat } = useSettings()
   const { events, addEvent, editEvent, deleteEvent } = useCalendar()
   const { syncedEvents } = useCalendarSync(events)
 
@@ -144,8 +146,6 @@ export default function Calendar() {
         {/* nav row — segmented control + prev/next/today + date display */}
         <Group justify="space-between" align="center">
           <SegmentedControl
-            color={theme.primaryColor}
-            autoContrast
             withItemsBorders={false}
             radius="md"
             value={view}
@@ -234,6 +234,7 @@ export default function Calendar() {
         {/* views */}
         {view === 'monthview' && (
           <MonthView
+            weekStartsOn={weekStartsOn}
             events={syncedEvents}
             selectedDate={selectedDate}
             onDateSelect={(date) => {
@@ -246,6 +247,8 @@ export default function Calendar() {
         )}
         {view === 'weekview' && (
           <WeekView
+            weekStartsOn={weekStartsOn}
+            timeFormat={timeFormat}
             events={syncedEvents}
             selectedDate={selectedDate}
             onEventClick={handleEventClick}
@@ -259,6 +262,7 @@ export default function Calendar() {
         )}
         {view === 'dayview' && (
           <DayView
+            timeFormat={timeFormat}
             events={syncedEvents}
             selectedDate={selectedDate}
             onEventClick={handleEventClick}

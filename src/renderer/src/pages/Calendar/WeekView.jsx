@@ -18,14 +18,16 @@ export default function WeekView({
   onEventClick,
   // onDayClick,
   onSlotClick,
-  dragHandlers
+  dragHandlers,
+  weekStartsOn = 'sunday',
+  timeFormat = '12h'
 }) {
   // TODO: sth like freeze panes for week and mont views so day labels stay in vision
   const [now, setNow] = useState(new Date())
   const currentHourRef = useRef(null)
 
-  const weekDays = getWeekDays(selectedDate)
-  const hourSlots = getHourSlots()
+  const weekDays = getWeekDays(selectedDate, weekStartsOn)
+  const hourSlots = getHourSlots(timeFormat)
 
   const theme = useMantineTheme()
 
@@ -205,5 +207,7 @@ WeekView.propTypes = {
     onMouseDown: PropTypes.func,
     onMouseMove: PropTypes.func,
     onMouseUp: PropTypes.func
-  })
+  }),
+  weekStartsOn: PropTypes.string,
+  timeFormat: PropTypes.string
 }

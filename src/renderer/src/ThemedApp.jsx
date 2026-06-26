@@ -1,6 +1,7 @@
 import { MantineProvider, createTheme, localStorageColorSchemeManager } from '@mantine/core'
 import App from './App'
-import { SettingsProvider, useSettings } from './context/SettingsContext'
+import SettingsProvider from './context/SettingsProvider'
+import useSettings from './hooks/useSettings'
 
 const colorSchemeManager = localStorageColorSchemeManager({ key: 'colorScheme' })
 

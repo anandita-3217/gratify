@@ -1,5 +1,5 @@
 import { Stack, Text, Select, Divider, SegmentedControl } from '@mantine/core'
-import { useSettings } from '../../context/SettingsContext'
+import useSettings from '../../hooks/useSettings'
 
 export default function CalendarSection() {
   const { weekStartsOn, setWeekStartsOn, timeFormat, setTimeFormat } = useSettings()

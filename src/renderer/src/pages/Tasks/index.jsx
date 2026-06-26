@@ -22,7 +22,7 @@ import { useEffect, useRef, useState } from 'react'
 import useTasks from './useTasks'
 import useCalendar from '../Calendar/useCalendar'
 import useNotifications from '../../hooks/useNotifications'
-import { useSettings } from '../../context/SettingsContext'
+import useSettings from '../../hooks/useSettings'
 
 import * as chrono from 'chrono-node'
 import useKeyboardShortcuts from '../../hooks/useKeyboardShortcuts'

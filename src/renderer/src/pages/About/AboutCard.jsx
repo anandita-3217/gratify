@@ -114,7 +114,7 @@ export default function AboutCard({ thumbnail, name, position, description, soci
                   inset: 5
                 }}
               >
-                <Text size='sm' >{description}</Text>
+                <Text size="sm">{description}</Text>
               </Box>
             </Stack>
           </Collapse>

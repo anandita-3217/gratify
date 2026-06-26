@@ -1,6 +1,5 @@
 import { Stack, Text, Select, Switch, Divider } from '@mantine/core'
-import { useSettings } from '../../context/SettingsContext'
-// TODO: Settings not getting reeflected
+import useSettings from '../../hooks/useSettings'
 export default function TasksSection() {
   const { defaultPriority, setDefaultPriority, showCompleted, setShowCompleted } = useSettings()
 

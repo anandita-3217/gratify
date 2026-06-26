@@ -17,7 +17,7 @@ import { DateTimePicker } from '@mantine/dates'
 import '@mantine/dates/styles.css'
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import { useSettings } from '../../context/SettingsContext'
+import useSettings  from '../../hooks/useSettings'
 function PriorityOption(props) {
   const { option } = props
   const colors = {

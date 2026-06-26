@@ -10,7 +10,7 @@ import {
 } from '@mantine/core'
 import { Sun, Moon } from 'lucide-react'
 import { useEffect } from 'react'
-import { useSettings } from '../../context/SettingsContext'
+import useSettings  from '../../hooks/useSettings'
 const colors = [
   'pink',
   'grape',

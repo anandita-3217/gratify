@@ -34,7 +34,7 @@ import EventModal from './EventModal'
 import { useDisclosure } from '@mantine/hooks'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import useKeyboardShortcuts from '../../hooks/useKeyboardShortcuts'
-import { useSettings } from '../../context/SettingsContext'
+import useSettings  from '../../hooks/useSettings'
 
 export default function Calendar() {
   const { weekStartsOn, timeFormat } = useSettings()

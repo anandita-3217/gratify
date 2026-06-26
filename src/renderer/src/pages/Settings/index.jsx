@@ -12,7 +12,7 @@ export default function Settings() {
   return (
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>
       <Stack gap={4} mb="xl">
-        <Title fw={600} order={2}>
+        <Title fw={600} order={2} style={{ color: `var(--mantine-color-${theme.primaryColor}-5)` }}>
           Settings
         </Title>
         <Text c="dimmed" size="sm">

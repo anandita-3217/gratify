@@ -15,30 +15,46 @@ export default function About() {
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>
       <Stack gap={2} mb="sm">
         <Group gap={4} justify="space-between">
-          <Title order={2} fw={600}>
+          <Title
+            order={2}
+            fw={600}
+            style={{ color: `var(--mantine-color-${theme.primaryColor}-5)` }}
+          >
             About
           </Title>
         </Group>
         <Text c="dimmed" size="sm">
           {' '}
-          Meet the team!
+          About the app
         </Text>
         <Divider color={theme.primaryColor} />
       </Stack>
-      <Box justify="center">
-        <Stack align="center">
-          <AboutCard
-            thumbnail={Dev}
-            name={'Alka'}
-            position={'Lead dev'}
-            socials={socials}
-            nickname={'panda'}
-            description={
-              'Hi I am redacted I am the lead dev (P.S.: Only dev) of this Project. I built this as a personal productivity app because I have a hard time getting things done. If you find this useful and helpful drop me a star and if you have any issues open an issue and i will look into it, suggestions are welcome too.'
-            }
-          />
-        </Stack>
-      </Box>
+      <Stack>
+        <Box justify="center">
+          <Stack align="center" justify="center">
+            <Box>
+              <Title
+                order={3}
+                fw={600}
+                style={{ color: `var(--mantine-color-${theme.primaryColor}-8)` }}
+              >
+                {' '}
+                Meet the team
+              </Title>
+            </Box>
+            <AboutCard
+              thumbnail={Dev}
+              name={'Alka'}
+              position={'Lead dev'}
+              socials={socials}
+              nickname={'panda'}
+              description={
+                'Hi I am redacted I am the lead dev (P.S.: Only dev) of this Project. I built this as a personal productivity app because I have a hard time getting things done. If you find this useful and helpful drop me a star and if you have any issues open an issue and i will look into it, suggestions are welcome too.'
+              }
+            />
+          </Stack>
+        </Box>
+      </Stack>
     </Box>
   )
 }

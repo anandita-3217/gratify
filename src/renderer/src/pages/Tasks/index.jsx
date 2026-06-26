@@ -227,7 +227,11 @@ export default function Tasks() {
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>
       <Stack gap={4} mb="xl">
         <Group gap={8} justify="space-between">
-          <Title order={2} fw={600}>
+          <Title
+            order={2}
+            fw={600}
+            style={{ color: `var(--mantine-color-${theme.primaryColor}-5)` }}
+          >
             Tasks
           </Title>
           <Button variant="subtle" size="sm" onClick={open} aria-label="New Task">

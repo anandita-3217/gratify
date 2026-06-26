@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 
 const SettingsContext = createContext()
 
-
 export function SettingsProvider({ children }) {
   const [accentColor, setAccentColor] = useLocalStorage('accentColor', 'violet')
   const [defaultPriority, setDefaultPriority] = useLocalStorage('defaultPriority', 'low')
@@ -32,8 +31,8 @@ export function SettingsProvider({ children }) {
     </SettingsContext.Provider>
   )
 }
-SettingsProvider.prototype = {
-  children: PropTypes.array
+SettingsProvider.propTypes = {
+  children: PropTypes.node
 }
 
 export function useSettings() {

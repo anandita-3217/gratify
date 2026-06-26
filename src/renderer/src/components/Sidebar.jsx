@@ -26,6 +26,7 @@ import PropTypes from 'prop-types'
 // TODO: Ensure that this is completely fixed and never moves
 // eslint-disable-next-line no-unused-vars
 function ThemeToggle({ collapsed }) {
+  const theme = useMantineTheme()
   const { setColorScheme } = useMantineColorScheme()
   const computedColorScheme = useComputedColorScheme('light')
   const isDark = computedColorScheme === 'dark'
@@ -45,6 +46,7 @@ function ThemeToggle({ collapsed }) {
       <Switch
         p={8}
         size="sm"
+        color={theme.primaryColor}
         checked={isDark}
         onChange={(event) => setColorScheme(event.currentTarget.checked ? 'dark' : 'light')}
         thumbIcon={isDark ? <Moon size={12} color="blue" /> : <Sun size={12} color="red" />}

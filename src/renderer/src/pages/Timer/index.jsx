@@ -70,7 +70,11 @@ export default function Timer() {
     <Box p="xl" style={{ height: '100%', overflow: 'auto' }}>
       <Stack gap={2} mb="xl">
         <Group gap={8} justify="space-between">
-          <Title fw={600} order={2}>
+          <Title
+            fw={600}
+            order={2}
+            style={{ color: `var(--mantine-color-${theme.primaryColor}-5)` }}
+          >
             Timer
           </Title>
           <Group gap="xs">

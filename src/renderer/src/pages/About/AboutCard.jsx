@@ -51,7 +51,7 @@ export default function AboutCard({ thumbnail, name, position, description, soci
                   order={1}
                   fw={600}
                   style={{
-                    color: `var(--mantine-color-${theme.primaryColor}-9)`
+                    color: `var(--mantine-color-${theme.primaryColor}-5)`
                   }}
                 >
                   {name}
@@ -114,7 +114,7 @@ export default function AboutCard({ thumbnail, name, position, description, soci
                   inset: 5
                 }}
               >
-                <Text>{description}</Text>
+                <Text size='sm' >{description}</Text>
               </Box>
             </Stack>
           </Collapse>

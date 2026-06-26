@@ -131,7 +131,11 @@ export default function Calendar() {
         {/* title row */}
         <Group justify="space-between" align="center">
           <Stack gap={0}>
-            <Title fw={600} order={2}>
+            <Title
+              fw={600}
+              order={2}
+              style={{ color: `var(--mantine-color-${theme.primaryColor}-5)` }}
+            >
               Calendar
             </Title>
             <Text c="dimmed" size="sm">

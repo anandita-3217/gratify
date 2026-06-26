@@ -128,7 +128,11 @@ export default function Notes() {
       {/* Header */}
       <Stack gap={4} mb="xl">
         <Group gap={8} justify="space-between">
-          <Title order={2} fw={600}>
+          <Title
+            order={2}
+            fw={600}
+            style={{ color: `var(--mantine-color-${theme.primaryColor}-5)` }}
+          >
             Notes
           </Title>
           <Button size="sm" variant="subtle" aria-label="New note" onClick={open}>

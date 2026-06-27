@@ -49,7 +49,7 @@ export default function About() {
               socials={socials}
               nickname={'panda'}
               description={
-                'Hi I am redacted I am the lead dev (P.S.: Only dev) of this Project. I built this as a personal productivity app because I have a hard time getting things done. If you find this useful and helpful drop me a star and if you have any issues open an issue and i will look into it, suggestions are welcome too.'
+                'Hi I am redacted I am the lead dev (P.S.: Only dev) lead designer everything of this Project. My family helped test it (AKA: Tear everything down) so hopefully it should break. I built this as a personal productivity app because I have a hard time getting things done. If you find this useful and helpful drop me a star and if you have any issues open an issue and i will look into it, suggestions are welcome too.'
               }
             />
           </Stack>

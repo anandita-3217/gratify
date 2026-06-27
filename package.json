@@ -29,6 +29,7 @@
     "@tiptap/pm": "^3.22.5",
     "@tiptap/react": "^3.22.5",
     "@tiptap/starter-kit": "^3.22.5",
+    "better-sqlite3": "^12.11.1",
     "chrono-node": "^2.9.0",
     "electron-updater": "^6.3.9",
     "lucide-react": "^1.8.0",

@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain, Notification, session } from 'elect
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import db from './database'
 
 function createWindow() {
   // Create the browser window.
@@ -66,6 +67,10 @@ app.whenReady().then(() => {
 
   ipcMain.handle('notify', (event, { title, body }) => {
     new Notification({ title, body }).show()
+  })
+
+  ipcMain.handle('tasks:getAll', () => {
+    return db.prepare('SELECT * FROM tasks').all()
   })
 
   createWindow()

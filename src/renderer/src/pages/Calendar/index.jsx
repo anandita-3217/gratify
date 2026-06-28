@@ -24,7 +24,6 @@ import TaskModal from '../Tasks/TaskModal'
 import useTasks from '../Tasks/useTasks'
 
 import useCalendarSync from './useCalendarSync'
-import useDragToCreate from './useDragToCreate'
 import { getWeekDays, getEventsForDay } from './useCalendarGrid'
 
 import useCalendar from './useCalendar'
@@ -34,7 +33,7 @@ import EventModal from './EventModal'
 import { useDisclosure } from '@mantine/hooks'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import useKeyboardShortcuts from '../../hooks/useKeyboardShortcuts'
-import useSettings  from '../../hooks/useSettings'
+import useSettings from '../../hooks/useSettings'
 
 export default function Calendar() {
   const { weekStartsOn, timeFormat } = useSettings()
@@ -61,11 +60,11 @@ export default function Calendar() {
   const { editTask, deleteTask, addTask } = useTasks()
 
   const theme = useMantineTheme()
-  const { dragHandlers } = useDragToCreate(({ start, end }) => {
-    if (start < new Date()) return
-    setNewEventDefaults({ start, end })
-    open()
-  })
+  // const { dragHandlers } = useDragToCreate(({ start, end }) => {
+  //   if (start < new Date()) return
+  //   setNewEventDefaults({ start, end })
+  //   open()
+  // })
 
   function goBack() {
     const d = new Date(selectedDate)
@@ -261,7 +260,7 @@ export default function Calendar() {
               setSelectedDate(day)
               setView('dayview')
             }}
-            dragHandlers={dragHandlers}
+            // dragHandlers={dragHandlers}
           />
         )}
         {view === 'dayview' && (
@@ -271,7 +270,7 @@ export default function Calendar() {
             selectedDate={selectedDate}
             onEventClick={handleEventClick}
             onSlotClick={(day, hour) => handleSlotClick(day, hour)}
-            dragHandlers={dragHandlers}
+            // dragHandlers={dragHandlers}
           />
         )}
       </Stack>

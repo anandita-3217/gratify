@@ -5,7 +5,7 @@ import AboutCard from './AboutCard'
 
 const teamMembers = [
   {
-    thumbnail: {Dev1},
+    thumbnail: { Dev1 },
     name: 'Alice Kim',
     position: 'Lead Designer',
     nickname: 'Pixel Witch',
@@ -16,7 +16,7 @@ const teamMembers = [
     ]
   },
   {
-    thumbnail: {Test1},
+    thumbnail: { Test1 },
     name: 'Ben Torres',
     position: 'Frontend Engineer',
     nickname: 'CSS Whisperer',

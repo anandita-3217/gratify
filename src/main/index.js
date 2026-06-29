@@ -2,7 +2,7 @@ import { app, shell, BrowserWindow, ipcMain, Notification, session } from 'elect
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-// import db from './database'
+import db from './database'
 
 function createWindow() {
   // Create the browser window.
@@ -69,9 +69,22 @@ app.whenReady().then(() => {
     new Notification({ title, body }).show()
   })
 
-  // ipcMain.handle('tasks:getAll', () => {
-  //   return db.prepare('SELECT * FROM tasks').all()
-  // })
+  ipcMain.handle('tasks:getAll', () => {
+    return db.prepare('SELECT * FROM tasks').all()
+  })
+  ipcMain.handle('tasks:add', () => {
+    return db.prepare(
+      'INSERT INTO tasks (text, priority, deadline, completed, recurring, frequency, customInterval, customUnit, remider, addToCalendar) VALUES (v1, v2, v3, v4, v5, v6, v7,v8,v9,v10)'
+    )
+  })
+  ipcMain.handle('tasks:update', (id) => {
+    return db.prepare(
+      `UPDATE tasks SET text = v1, priority = v2, deadline = v3, completed = v4, recurring  = v5, frequency= v6, customInterval = v7, customUnit = v8, remider = v9, addToCalendar = v10 WHERE id = ${id}`
+    )
+  })
+  ipcMain.handle('tasks:remove', (id) => {
+    return db.prepare(`DELETE FROM tasks WHERE id = ${id}`)
+  })
 
   createWindow()
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {

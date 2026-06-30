@@ -72,18 +72,16 @@ app.whenReady().then(() => {
   ipcMain.handle('tasks:getAll', () => {
     return db.prepare('SELECT * FROM tasks').all()
   })
-  ipcMain.handle('tasks:add', () => {
-    return db.prepare(
-      'INSERT INTO tasks (text, priority, deadline, completed, recurring, frequency, customInterval, customUnit, remider, addToCalendar) VALUES (v1, v2, v3, v4, v5, v6, v7,v8,v9,v10)'
-    )
+  ipcMain.handle('tasks:add', (_, task) => {
+    return db.prepare('INSERT INTO tasks (text, priority) VALUES (@text, @priority)').run(task)
   })
-  ipcMain.handle('tasks:update', (id) => {
+  ipcMain.handle('tasks:update', (_, task) => {
     return db.prepare(
-      `UPDATE tasks SET text = v1, priority = v2, deadline = v3, completed = v4, recurring  = v5, frequency= v6, customInterval = v7, customUnit = v8, remider = v9, addToCalendar = v10 WHERE id = ${id}`
-    )
+      'UPDATE tasks SET text = v1, priority = v2, deadline = v3, completed = v4, recurring  = v5, frequency= v6, customInterval = v7, customUnit = v8, reminder = v9, addToCalendar = v10 WHERE id = ?'
+    ).run(task)
   })
-  ipcMain.handle('tasks:remove', (id) => {
-    return db.prepare(`DELETE FROM tasks WHERE id = ${id}`)
+  ipcMain.handle('tasks:remove', (_, id) => {
+    return db.prepare('DELETE FROM tasks WHERE id = ?').run(id)
   })
 
   createWindow()

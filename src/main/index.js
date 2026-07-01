@@ -62,6 +62,24 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
+  function serializeTask(task) {
+    return {
+      ...task,
+      completed: task.completed ? 1 : 0,
+      recurring: task.recurring ? 1 : 0,
+      addToCalendar: task.addToCalendar ? 1 : 0
+    }
+  }
+
+  function deserializeTask(row) {
+    return {
+      ...row,
+      completed: Boolean(row.completed),
+      recurring: Boolean(row.recurring),
+      addToCalendar: Boolean(row.addToCalendar)
+    }
+  }
+
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
 
@@ -70,18 +88,41 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('tasks:getAll', () => {
-    return db.prepare('SELECT * FROM tasks').all()
+    return db.prepare('SELECT * FROM tasks').all().map(deserializeTask)
   })
   ipcMain.handle('tasks:add', (_, task) => {
-    return db.prepare('INSERT INTO tasks (text, priority) VALUES (@text, @priority)').run(task)
+    const s = serializeTask(task)
+
+    const result = db
+      .prepare(
+        `
+    INSERT INTO tasks (text, priority, deadline, completed, recurring, frequency, customInterval, customUnit, reminder, addToCalendar)
+    VALUES (@text, @priority, @deadline, @completed, @recurring, @frequency, @customInterval, @customUnit, @reminder, @addToCalendar)
+  `
+      )
+      .run(s)
+
+    return deserializeTask(
+      db.prepare('SELECT * FROM tasks WHERE id = ?').get(result.lastInsertRowid)
+    )
   })
   ipcMain.handle('tasks:update', (_, task) => {
-    return db.prepare(
-      'UPDATE tasks SET text = v1, priority = v2, deadline = v3, completed = v4, recurring  = v5, frequency= v6, customInterval = v7, customUnit = v8, reminder = v9, addToCalendar = v10 WHERE id = ?'
-    ).run(task)
+    const s = serializeTask(task)
+    db.prepare(
+      `
+    UPDATE tasks SET text = @text, priority = @priority, deadline = @deadline,
+    completed = @completed, recurring = @recurring, frequency = @frequency,
+    customInterval = @customInterval, customUnit = @customUnit,
+    reminder = @reminder, addToCalendar = @addToCalendar
+    WHERE id = @id
+  `
+    ).run(s)
+
+    return deserializeTask(db.prepare('SELECT * FROM tasks WHERE id = ?').get(task.id))
   })
   ipcMain.handle('tasks:remove', (_, id) => {
-    return db.prepare('DELETE FROM tasks WHERE id = ?').run(id)
+    db.prepare('DELETE FROM tasks WHERE id = ?').run(id)
+    return { success: true }
   })
 
   createWindow()

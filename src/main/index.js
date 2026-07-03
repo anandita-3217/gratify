@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { app, shell, BrowserWindow, ipcMain, Notification, session } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
@@ -94,7 +95,21 @@ function deserializeEvent(row) {
     ...row,
     allDay: Boolean(row.allDay),
     recurring: Boolean(row.recurring),
-    isTaskEvent: Boolean(row.is)
+    isTaskEvent: Boolean(row.isTaskEvent)
+  }
+}
+
+function serializeTechnique(technique) {
+  return {
+    ...technique,
+    phases: JSON.stringify(technique.phases || [])
+  }
+}
+
+function deserializeTechnique(row) {
+  return {
+    ...row,
+    phases: JSON.parse(row.phases || '[]')
   }
 }
 
@@ -224,6 +239,49 @@ app.whenReady().then(() => {
 
   ipcMain.handle('calendar_events:remove', (_, id) => {
     db.prepare('DELETE FROM calendar_events WHERE id = ?').run(id)
+    return { success: true }
+  })
+  //  Settings
+  ipcMain.handle('settings:getAll', () => {
+    const rows = db.prepare('SELECT * FROM settings').all()
+    return Object.fromEntries(rows.map((r) => [r.key, r.value]))
+  })
+
+  ipcMain.handle('settings:set', (_, key, value) => {
+    db.prepare(
+      `
+      INSERT OR REPLACE INTO settings (key, value) VALUES (? , ?) 
+      `
+    ).run(key, value)
+    return { key, value }
+  })
+  // TimerTechniques
+  ipcMain.handle('techniques:getAll', () => {
+    return db.prepare('SELECT * FROM timer_techniques').all().map(deserializeTechnique)
+  })
+
+  ipcMain.handle('techniques:add', (_, technique) => {
+    const s = serializeTechnique(technique)
+     db
+      .prepare(
+        `INSERT INTO timer_techniques (key, name, phases, cyclesBeforeLongBreak) VALUES (@key, @name, @phases, @cyclesBeforeLongBreak)`
+      )
+      .run(s)
+    return deserializeTechnique(
+      db.prepare('SELECT * FROM timer_techniques WHERE key = ?').get(s.key)
+    )
+  })
+
+  ipcMain.handle('techniques:update', (_, technique) => {
+    const s = serializeTechnique(technique)
+    db.prepare(
+      'UPDATE timer_techniques SET name = @name, phases = @phases, cyclesBeforeLongBreak = @cyclesBeforeLongBreak WHERE key = @key'
+    ).run(s)
+    return deserializeTechnique(db.prepare('SELECT * FROM timer_techniques WHERE key = ?').get(technique.key))
+  })
+
+  ipcMain.handle('techniques:remove', (_, id) => {
+    db.prepare('DELETE FROM timer_techniques WHERE key = ? ').run(id)
     return { success: true }
   })
 

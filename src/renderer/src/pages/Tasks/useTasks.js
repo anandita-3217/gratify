@@ -10,80 +10,34 @@
  * @property {'daily'|'weekly'|'monthly'|'custom' | null} frequency
  */
 
-import { useLocalStorage } from '../../hooks/useLocalStorage'
+import { useEffect, useState } from 'react'
 
-const DUMMY_TASKS = [
-  {
-    id: 1,
-    text: 'Review project proposal',
-    priority: 'high',
-    deadline: new Date(Date.now() + 86400000).toISOString(),
-    completed: false,
-    recurring: false,
-    frequency: null,
-    reminder: '60'
-  },
-  {
-    id: 2,
-    text: 'Buy groceries',
-    priority: 'low',
-    deadline: null,
-    completed: false,
-    recurring: false,
-    frequency: null,
-    reminder: null
-  },
-  {
-    id: 3,
-    text: 'Morning workout',
-    priority: 'medium',
-    deadline: null,
-    completed: true,
-    recurring: true,
-    frequency: 'daily',
-    reminder: null
-  },
-  {
-    id: 4,
-    text: 'Call dentist',
-    priority: 'urgent',
-    deadline: new Date(Date.now() - 86400000).toISOString(),
-    completed: false,
-    recurring: false,
-    frequency: null,
-    reminder: null
-  },
-  {
-    id: 5,
-    text: 'Read 30 pages',
-    priority: 'low',
-    deadline: new Date(Date.now() + 3 * 86400000).toISOString(),
-    completed: false,
-    recurring: true,
-    frequency: 'daily',
-    reminder: null
-  }
-]
 
 export default function useTasks() {
-  const [tasks, setTasks] = useLocalStorage('tasks', DUMMY_TASKS)
-  function addTask(task) {
-    setTasks([...tasks, { ...task, id: Date.now(), completed: false }])
+  const [tasks, setTasks] = useState([])
+  useEffect(() => {
+    window.api.tasks
+      .getAll()
+      .then(setTasks)
+      .catch((err) => console.error('Failed to load tasks: ', err))
+  }, [])
+  async function addTask(task) {
+    const newTask = await window.api.tasks.add({ ...task, id: Date.now(), completed: false })
+    setTasks((prev) => [...prev, newTask])
   }
-
-  function deleteTask(id) {
-    setTasks(tasks.filter((task) => task.id !== id))
+  async function deleteTask(id) {
+    await window.api.tasks.remove(id)
+    setTasks((prev) => prev.filter((t) => t.id !== id))
   }
-
-  function toggleTask(id) {
-    // hint: map over tasks, flip completed on the matching one
-    setTasks(tasks.map((task) => (task.id === id ? { ...task, completed: !task.completed } : task)))
+  async function updateTask(id, updates) {
+    const task = tasks.find((t) => t.id === id)
+    const updated = await window.api.tasks.update({ ...task, ...updates })
+    setTasks((prev) => prev.map((t) => (t.id === id ? updated : t)))
   }
-
-  function updateTask(id, updates) {
-    // hint: map over tasks, spread updates onto the matching one
-    setTasks(tasks.map((task) => (task.id === id ? { ...task, ...updates } : task)))
+  async function toggleTask(id) {
+    const task = tasks.find((t) => t.id === id)
+    const updated = await window.api.tasks.update({ ...task, completed: !task.completed })
+    setTasks((prev) => prev.map((t) => (t.id === id ? updated : t)))
   }
-
   return { tasks, addTask, deleteTask, toggleTask, updateTask }
 }

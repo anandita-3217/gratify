@@ -12,7 +12,6 @@
 
 import { useEffect, useState } from 'react'
 
-
 export default function useTasks() {
   const [tasks, setTasks] = useState([])
   useEffect(() => {

@@ -66,20 +66,21 @@ export default function useNotes() {
       .catch((err) => console.error('Failed to load notes: ', err))
   }, [])
   async function addNote(note) {
-    const newNote = await window.api.notes.add(note)
+    const now = Date.now()
+    const newNote = await window.api.notes.add({ ...note, id: now, createdAt: now, updatedAt: now })
     setNotes((prev) => [...prev, newNote])
   }
   async function deleteNote(id) {
     await window.api.notes.remove(id)
-    setNotes((prev) => prev.filter((n) => n.id === id))
+    setNotes((prev) => prev.filter((n) => n.id !== id))
   }
   async function updateNote(id, updates) {
-    const note = note.find((n) => n.id === id)
-    const updated = await window.api.notes.update({ ...note, ...updates })
+    const note = notes.find((n) => n.id === id)
+    const updated = await window.api.notes.update({ ...note, ...updates, updatedAt: Date.now() })
     setNotes((prev) => prev.map((n) => (n.id === id ? updated : n)))
   }
   async function pinNote(id) {
-    const note = note.find((n) => n.id === id)
+    const note = notes.find((n) => n.id === id)
     const updated = await window.api.notes.update({ ...note, pinned: !note.pinned })
     setNotes((prev) => prev.map((n) => (n.id === id ? updated : n)))
   }

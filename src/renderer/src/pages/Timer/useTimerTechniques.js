@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 
 const BUILT_IN_TECHNIQUES = {
@@ -21,10 +22,17 @@ const BUILT_IN_TECHNIQUES = {
 }
 
 export default function useTimerTechniques() {
-  const [technique, setTechnique] = useLocalStorage('technique', 'pomodoro')
+  const [technique, setTechnique] = useState({})
 
   // only user-created techniques in localStorage
-  const [customTechniques, setCustomTechniques] = useLocalStorage('customTechniques', {})
+  const [customTechniques, setCustomTechniques] = useState({})
+
+  useEffect(() => {
+    window.api.techniques
+      .getAll()
+      .then(setTechnique)
+      .catch((err) => console.error('Failed to load techniques: ', err))
+  }, [])
 
   // merge built-ins with user-created — built-ins always win on conflict
   const settings = { ...customTechniques, ...BUILT_IN_TECHNIQUES }

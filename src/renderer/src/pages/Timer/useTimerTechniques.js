@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLocalStorage } from '../../hooks/useLocalStorage'
+// import { useLocalStorage } from '../../hooks/useLocalStorage'
 
 const BUILT_IN_TECHNIQUES = {
   pomodoro: {
@@ -30,7 +30,10 @@ export default function useTimerTechniques() {
   useEffect(() => {
     window.api.techniques
       .getAll()
-      .then(setTechnique)
+      .then((rows) => {
+        const asRecord = Object.fromEntries(rows.map((r) => [r.key, r]))
+        setCustomTechniques(asRecord)
+      })
       .catch((err) => console.error('Failed to load techniques: ', err))
   }, [])
 
@@ -44,24 +47,25 @@ export default function useTimerTechniques() {
     if (!phases || !phases[phaseIndex]) return 0
     return phases[phaseIndex].duration
   }
-
-  function addCustomTechnique(name, phases, cyclesBeforeLongBreak) {
+  async function addCustomTechnique(name, phases, cyclesBeforeLongBreak) {
     const key = name.toLowerCase().replace(/\s+/g, '-')
-    setCustomTechniques((prev) => ({
-      ...prev,
-      [key]: { name, phases, cyclesBeforeLongBreak }
-    }))
-    setTechnique(key)
+    const newTechnique = await window.api.techniques.add({
+      key,
+      name,
+      phases,
+      cyclesBeforeLongBreak
+    })
+    setCustomTechniques(newTechnique)
   }
 
-  function deleteTechnique(key) {
-    if (BUILT_IN_TECHNIQUES[key]) return // can't delete built-ins
-    setCustomTechniques((prev) => {
-      const next = { ...prev }
-      delete next[key]
-      return next
-    })
-    if (technique === key) setTechnique('pomodoro')
+  async function deleteTechnique(key) {
+    await window.api.techniques.remove(key)
+    setCustomTechniques((prev) => prev.filter((t) => t.key !== key))
+  }
+
+  async function updateSettings(techniqueKey, newValues) {
+    if(BUILT_IN_TECHNIQUES[techniqueKey]) return
+    await editTechnique(techniqueKey, newValues)
   }
 
   function editTechnique(key, newValues) {
@@ -72,10 +76,6 @@ export default function useTimerTechniques() {
     }))
   }
 
-  function updateSettings(techniqueKey, newValues) {
-    if (BUILT_IN_TECHNIQUES[techniqueKey]) return
-    editTechnique(techniqueKey, newValues)
-  }
 
   return {
     technique,

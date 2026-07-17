@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-// import { useLocalStorage } from '../../hooks/useLocalStorage'
+import { useLocalStorage } from '../../hooks/useLocalStorage'
 
 const BUILT_IN_TECHNIQUES = {
   pomodoro: {
@@ -22,7 +22,7 @@ const BUILT_IN_TECHNIQUES = {
 }
 
 export default function useTimerTechniques() {
-  const [technique, setTechnique] = useState({})
+  const [technique, setTechnique] = useLocalStorage('technique', 'pomodoro')
 
   // only user-created techniques in localStorage
   const [customTechniques, setCustomTechniques] = useState({})
@@ -55,7 +55,7 @@ export default function useTimerTechniques() {
       phases,
       cyclesBeforeLongBreak
     })
-    setCustomTechniques(newTechnique)
+    setCustomTechniques((prev) => ({ ...prev, [key]: newTechnique }))
   }
 
   async function deleteTechnique(key) {
@@ -64,7 +64,7 @@ export default function useTimerTechniques() {
   }
 
   async function updateSettings(techniqueKey, newValues) {
-    if(BUILT_IN_TECHNIQUES[techniqueKey]) return
+    if (BUILT_IN_TECHNIQUES[techniqueKey]) return
     await editTechnique(techniqueKey, newValues)
   }
 
@@ -75,7 +75,6 @@ export default function useTimerTechniques() {
       [key]: { ...prev[key], ...newValues }
     }))
   }
-
 
   return {
     technique,

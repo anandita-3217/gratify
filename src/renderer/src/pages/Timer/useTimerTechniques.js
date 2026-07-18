@@ -68,12 +68,11 @@ export default function useTimerTechniques() {
     await editTechnique(techniqueKey, newValues)
   }
 
-  function editTechnique(key, newValues) {
-    if (BUILT_IN_TECHNIQUES[key]) return // can't edit built-ins
-    setCustomTechniques((prev) => ({
-      ...prev,
-      [key]: { ...prev[key], ...newValues }
-    }))
+  async function editTechnique(key, newValues) {
+    if (BUILT_IN_TECHNIQUES[key]) return
+    const existing = customTechniques[key]
+    await window.api.techniques.update({ ...existing, ...newValues, key })
+    setCustomTechniques((prev) => ({ ...prev, [key]: { ...prev[key], ...newValues } }))
   }
 
   return {

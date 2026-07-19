@@ -60,7 +60,12 @@ export default function useTimerTechniques() {
 
   async function deleteTechnique(key) {
     await window.api.techniques.remove(key)
-    setCustomTechniques((prev) => prev.filter((t) => t.key !== key))
+    setCustomTechniques((prev) => {
+      const next = { ...prev }
+      delete next[key]
+      return next
+    })
+    if (technique === key) setTechnique('pomodoro')
   }
 
   async function updateSettings(techniqueKey, newValues) {

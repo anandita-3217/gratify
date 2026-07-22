@@ -194,6 +194,7 @@ function MetaField({ label, value }) {
     <Stack gap={2}>
       <Text size="xs" tt="uppercase" fw={600} c="dimmed" lh={1}>
         {label}
+        {/* Change this */}
       </Text>
       <Text size="sm" fw={500}>
         {value}

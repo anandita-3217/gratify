@@ -1,10 +1,4 @@
-// import { Card } from "@mantine/core";
 
-// export default function AboutCard(){
-//     return (
-//         <Card bg='red'></Card>
-//     )
-// }
 import { useState } from 'react'
 import {
   Card,

@@ -1,7 +1,7 @@
 import { SettingsContext } from './SettingsContext'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
-
+// Bugs in Tasks
 const DEFAULTS = {
   accentColor: 'violet',
   defaultPriority: 'low',

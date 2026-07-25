@@ -54,8 +54,14 @@ function serializeTask(task) {
     ...task,
     completed: task.completed ? 1 : 0,
     recurring: task.recurring ? 1 : 0,
-    addToCalendar: task.addToCalendar ? 1 : 0
+    addToCalendar: task.addToCalendar ? 1 : 0,
+    deadline: task.deadline ?? null,
+    frequency: task.frequency ?? null,
+    customInterval: task.customInterval ?? null,
+    customUnit: task.customUnit ?? null,
+    reminder: task.reminder ?? null
   }
+
 }
 
 function deserializeTask(row) {

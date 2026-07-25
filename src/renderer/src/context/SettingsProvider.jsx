@@ -40,7 +40,7 @@ export default function SettingsProvider({ children }) {
   }
 
   async function setShowCompleted(value) {
-    await window.api.settings.set('showCompleted', value)
+    await window.api.settings.set('showCompleted', String(value))
     setShowCompletedState(value)
   }
 

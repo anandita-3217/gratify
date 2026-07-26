@@ -92,7 +92,11 @@ function serializeEvent(event) {
     ...event,
     allDay: event.allDay ? 1 : 0,
     recurring: event.recurring ? 1 : 0,
-    isTaskEvent: event.isTaskEvent ? 1 : 0
+    isTaskEvent: event.isTaskEvent ? 1 : 0,
+    taskId: event.taskId ?? null,
+    labelId: event.labelId ?? null,
+    frequency: event.frequency ?? null,
+    description: event.description ?? null
   }
 }
 

@@ -1,3 +1,4 @@
+// TODO: Event modal needs changing the new event modal needs to be chnaged once i click on any cell day,hour in week, month or day view , the time corresponding to that celll should be preentered into the modal and the start and end has to have an hours interval by default which the user can then change
 import {
   Checkbox,
   Stack,

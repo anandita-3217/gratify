@@ -276,6 +276,7 @@ export default function Calendar() {
       </Stack>
 
       <EventModal
+        key={`new-${newEventDefaults?.start?.getTime() ?? 'event'}`}
         opened={opened}
         onClose={() => {
           close()
@@ -293,6 +294,7 @@ export default function Calendar() {
         defaultEnd={newEventDefaults?.end}
       />
       <EventModal
+        key={`edit-${selectedEvent?.id ?? 'event'}`}
         opened={editOpened}
         onClose={editClose}
         onDelete={deleteEvent}

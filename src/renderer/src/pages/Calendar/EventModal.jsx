@@ -1,4 +1,3 @@
-// TODO: Event modal needs changing the new event modal needs to be chnaged once i click on any cell day,hour in week, month or day view , the time corresponding to that celll should be preentered into the modal and the start and end has to have an hours interval by default which the user can then change
 import {
   Checkbox,
   Stack,
@@ -43,8 +42,8 @@ export default function EventModal({
 
   const [title, setTitle] = useState(event?.title ?? 'Untitled')
   const [description, setDescription] = useState(event?.description ?? '')
-  const [start, setStart] = useState(event?.start ?? defaultStart ?? null)
-  const [end, setEnd] = useState(event?.end ?? defaultEnd ?? null)
+  const [start, setStart] = useState(event?.start ? new Date(event.start) : (defaultStart ?? null))
+  const [end, setEnd] = useState(event?.end ? new Date(event.end) : (defaultEnd ?? null))
   const [allDay, setAllDay] = useState(event?.allDay ?? false)
   const [recurring, setRecurring] = useState(event?.recurring ?? false)
   const [frequency, setFrequency] = useState(event?.frequency ?? null)

@@ -75,12 +75,23 @@ export default function useCalendar() {
       .catch((err) => console.error('Failed to load Events: ', err))
   }, [])
   async function addEvent(event) {
-    const newEvent = await window.api.calendarEvents.add({ ...event, id: Date.now() })
+    const sanitized = {
+      ...event,
+      id: Date.now(),
+      start: event.start instanceof Date ? event.start.toISOString() : event.start,
+      end: event.end instanceof Date ? event.end.toISOString() : event.end
+    }
+    const newEvent = await window.api.calendarEvents.add(sanitized)
     setEvents((prev) => [...prev, newEvent])
   }
   async function editEvent(id, updates) {
-    const event = events.find((e) => e.id === id)
-    const updated = await window.api.calendarEvents.update({ ...event, ...updates })
+    const sanitized = {
+      ...updates,
+      id, // ← must include id in the object
+      start: updates.start instanceof Date ? updates.start.toISOString() : updates.start,
+      end: updates.end instanceof Date ? updates.end.toISOString() : updates.end
+    }
+    const updated = await window.api.calendarEvents.update(sanitized) // ← single argument
     setEvents((prev) => prev.map((e) => (e.id === id ? updated : e)))
   }
 

@@ -54,6 +54,7 @@ export default function EventModal({
   const [endError, setEndError] = useState('')
 
   function handleSave() {
+    console.log('handleSave called', { title, start, end, allDay, frequency, color })
     if (!title.trim()) {
       setTitleError('Title cannot be empty')
       return
@@ -66,8 +67,20 @@ export default function EventModal({
       setEndError('End Time cannot be empty')
       return
     }
+    if (end && start && end < start) {
+      setEndError('End time must be after start time')
+      return
+    }
     setTitleError('')
-    onSave({ title, description, start, end, allDay, frequency, color })
+    onSave({
+      title,
+      description,
+      start: start instanceof Date ? start.toISOString() : start,
+      end: end instanceof Date ? end.toISOString() : end,
+      allDay,
+      frequency,
+      color
+    })
     onClose()
   }
 
@@ -126,7 +139,6 @@ export default function EventModal({
             error={startError}
           />
           <DateTimePicker
-            minDate={new Date()}
             label="End"
             aria-label="end"
             withAsterisk

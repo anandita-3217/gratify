@@ -332,7 +332,7 @@ export default function Calendar() {
                 text: taskFromEvent.title,
                 deadline: taskFromEvent.start,
                 priorty: 'low',
-                reccuring: false,
+                recurring: false,
                 frequency: null,
                 reminder: null,
                 customInterval: null,

@@ -94,7 +94,7 @@ export default function TaskModal({ opened, onSave, onClose, onDelete, task }) {
     onSave({
       text,
       priority,
-      deadline: date,
+      deadline: date instanceof Date ? date.toISOString() : date,
       addToCalendar,
       recurring,
       frequency,

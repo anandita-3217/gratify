@@ -1,3 +1,5 @@
+// TODO: make search across all features possible along with suggestions
+
 import { useState } from 'react'
 import {
   Box,

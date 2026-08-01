@@ -23,6 +23,7 @@ export default function useTasks() {
   async function addTask(task) {
     const newTask = await window.api.tasks.add({ ...task, id: Date.now(), completed: false })
     setTasks((prev) => [...prev, newTask])
+    return newTask
   }
   async function deleteTask(id) {
     await window.api.tasks.remove(id)

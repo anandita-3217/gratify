@@ -331,7 +331,7 @@ export default function Calendar() {
             ? {
                 text: taskFromEvent.title,
                 deadline: taskFromEvent.start,
-                priorty: 'low',
+                priority: 'low',
                 recurring: false,
                 frequency: null,
                 reminder: null,
@@ -340,8 +340,27 @@ export default function Calendar() {
               }
             : null
         }
-        onSave={(taskData) => {
-          addTask(taskData)
+        onSave={async (taskData) => {
+          const newTask = await addTask(taskData)
+          // create corresponding calendar event
+          if (taskFromEvent?.start) {
+            const start = new Date(taskFromEvent.start)
+            const end = new Date(taskFromEvent.start)
+            end.setHours(end.getHours() + 1)
+            await addEvent({
+              title: taskData.text,
+              description: '',
+              start: start.toISOString(),
+              end: end.toISOString(),
+              color: 'pink',
+              allDay: false,
+              recurring: false,
+              frequency: null,
+              taskId: newTask?.id ?? null,
+              isTaskEvent: false,
+              labelId: null
+            })
+          }
           closeTaskFromEvent()
         }}
       />

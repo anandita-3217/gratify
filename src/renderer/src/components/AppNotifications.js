@@ -1,4 +1,5 @@
 import { notifications } from '@mantine/notifications'
+//TODO: Change color of mantine notifications
 export const notify = {
   error: (title, message) =>
     notifications.show({

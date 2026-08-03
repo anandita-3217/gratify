@@ -5,7 +5,6 @@
 //   2. duration inputs (only editable when custom)
 //   3. sound settings (placeholder for now)
 //   4. encouraging message toggle (placeholder for now)
-import { useLocalStorage } from '../../hooks/useLocalStorage'
 import useTimerPreferences from '../../hooks/useTimerPreferences'
 import { Drawer, Divider, Stack, Switch, Text, useMantineTheme } from '@mantine/core'
 import { BellRing, BellOff } from 'lucide-react'
@@ -14,10 +13,10 @@ import PropTypes from 'prop-types'
 export default function TimerSettings({
   opened,
   onClose,
-  settings,
-  technique,
-  onTechniqueChange,
-  onSettingsChange
+  // settings,
+  // technique,
+  // onTechniqueChange,
+  // onSettingsChange
 }) {
   const theme = useMantineTheme()
   const { sound, setSound, notifications, setNotifications } = useTimerPreferences()

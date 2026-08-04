@@ -10,14 +10,7 @@ import { Drawer, Divider, Stack, Switch, Text, useMantineTheme } from '@mantine/
 import { BellRing, BellOff } from 'lucide-react'
 import PropTypes from 'prop-types'
 
-export default function TimerSettings({
-  opened,
-  onClose,
-  // settings,
-  // technique,
-  // onTechniqueChange,
-  // onSettingsChange
-}) {
+export default function TimerSettings({ opened, onClose }) {
   const theme = useMantineTheme()
   const { sound, setSound, notifications, setNotifications } = useTimerPreferences()
   return (

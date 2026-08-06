@@ -1,10 +1,4 @@
-// Drawer from the right — same pattern as NoteDrawer
-// props: opened, onClose, settings, technique, onTechniqueChange, onSettingsChange
-// sections:
-//   1. technique picker (Pomodoro / 52-17 / Custom)
-//   2. duration inputs (only editable when custom)
-//   3. sound settings (placeholder for now)
-//   4. encouraging message toggle (placeholder for now)
+
 import useTimerPreferences from '../../hooks/useTimerPreferences'
 import { Drawer, Divider, Stack, Switch, Text, useMantineTheme } from '@mantine/core'
 import { BellRing, BellOff } from 'lucide-react'

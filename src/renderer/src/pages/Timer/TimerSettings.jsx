@@ -1,4 +1,3 @@
-
 import useTimerPreferences from '../../hooks/useTimerPreferences'
 import { Drawer, Divider, Stack, Switch, Text, useMantineTheme } from '@mantine/core'
 import { BellRing, BellOff } from 'lucide-react'

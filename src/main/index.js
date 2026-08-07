@@ -48,7 +48,7 @@ function createWindow() {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 }
-
+// TODO: Error here 
 function serializeTask(task) {
   return {
     ...task,
@@ -149,6 +149,7 @@ app.whenReady().then(() => {
   ipcMain.handle('tasks:getAll', () => {
     return db.prepare('SELECT * FROM tasks').all().map(deserializeTask)
   })
+  // TODO: Error here 
   ipcMain.handle('tasks:add', (_, task) => {
     const s = serializeTask(task)
 

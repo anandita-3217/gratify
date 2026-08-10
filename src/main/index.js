@@ -48,7 +48,7 @@ function createWindow() {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 }
-// TODO: Error here 
+
 function serializeTask(task) {
   return {
     ...task,

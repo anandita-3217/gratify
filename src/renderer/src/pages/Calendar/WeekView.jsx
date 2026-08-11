@@ -22,7 +22,7 @@ export default function WeekView({
   weekStartsOn = 'sunday',
   timeFormat = '12h'
 }) {
-  // TODO: sth like freeze panes for week and mont views so day labels stay in vision
+  // TODO: sth like freeze panes for week and month views so day labels stay in vision
   const [now, setNow] = useState(new Date())
   const currentHourRef = useRef(null)
 

@@ -16,7 +16,6 @@ export default function WeekView({
   events = [],
   selectedDate = new Date(),
   onEventClick,
-  // onDayClick,
   onSlotClick,
   dragHandlers,
   weekStartsOn = 'sunday',

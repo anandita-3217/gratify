@@ -11,7 +11,6 @@ import { Plus } from 'lucide-react'
 
 import PropTypes from 'prop-types'
 import EventCard from './EventCard'
-
 export default function WeekView({
   events = [],
   selectedDate = new Date(),

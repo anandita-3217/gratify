@@ -41,7 +41,6 @@ import Night from './Night.png'
 
 import PropTypes from 'prop-types'
 
-// ─── helpers ────────────────────────────────────────────────────────────────
 const BANNERS = [
   { maxHour: 4, greeting: 'Good Night', image: Night },
   { maxHour: 7, greeting: 'Good Morning', image: Dawn },

@@ -481,7 +481,9 @@ export default function Dashboard({ onNavigate }) {
           </Paper>
         ))}
       </Group>
-
+      <Stack gap="4">
+        <TextInput label="Search Sth"/>
+      </Stack>
       <Stack gap="md">
         <TasksWidget tasks={tasks} onToggle={toggleTask} onNavigate={() => onNavigate('tasks')} />
         <CalendarWidget events={syncedEvents} onNavigate={() => onNavigate('calendar')} />

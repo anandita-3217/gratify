@@ -482,7 +482,7 @@ export default function Dashboard({ onNavigate }) {
         ))}
       </Group>
       <Stack gap={4}>
-        <TextInput label="Search Sth"/>
+        <TextInput label="Search Sth" />
       </Stack>
       <Stack gap="md">
         <TasksWidget tasks={tasks} onToggle={toggleTask} onNavigate={() => onNavigate('tasks')} />

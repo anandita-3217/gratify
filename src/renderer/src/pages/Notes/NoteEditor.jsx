@@ -19,7 +19,7 @@
 //             editor.commands.setContent(content)
 //         }
 //     },[content])
-    
+
 //     useEffect(() => {
 //         if(editor){
 //             editor.setEditable(editable)
@@ -27,7 +27,6 @@
 //     },[editor, editable])
 
 //     return (
-       
 
 // // inside return
 // <>
@@ -58,15 +57,32 @@
 //     );
 // }
 import { useEditor, EditorContent } from '@tiptap/react'
+import TaskList from '@tiptap/extension-task-list'
+import TaskItem from '@tiptap/extension-task-item'
 import StarterKit from '@tiptap/starter-kit'
 import { useEffect } from 'react'
 import { ActionIcon, Group, Divider } from '@mantine/core'
-import { Bold, Italic, Strikethrough, Code, List, ListOrdered, Quote, Heading1, Heading2, Heading3 } from 'lucide-react'
+import { ListTodo } from 'lucide-react'
+import {
+  Bold,
+  Italic,
+  Strikethrough,
+  Code,
+  List,
+  ListOrdered,
+  Quote,
+  Heading1,
+  Heading2,
+  Heading3
+} from 'lucide-react'
 
 export default function NoteEditor({ content, onChange, editable }) {
-
   const editor = useEditor({
     extensions: [StarterKit],
+    TaskList,
+  TaskItem.configure({
+  nested: true,
+}),
     content,
     editable,
     onUpdate: ({ editor }) => {
@@ -90,11 +106,16 @@ export default function NoteEditor({ content, onChange, editable }) {
     <div>
       {/* toolbar — only shows when editable */}
       {editable && editor && (
-        <Group gap="xs" mb="sm" p="xs" style={{ 
-          border: '1px solid var(--mantine-color-default-border)', 
-          borderRadius: 8,
-          flexWrap: 'wrap'
-        }}>
+        <Group
+          gap="xs"
+          mb="sm"
+          p="xs"
+          style={{
+            border: '1px solid var(--mantine-color-default-border)',
+            borderRadius: 8,
+            flexWrap: 'wrap'
+          }}
+        >
           <ActionIcon
             variant={editor.isActive('bold') ? 'filled' : 'subtle'}
             color="gray"
@@ -188,6 +209,13 @@ export default function NoteEditor({ content, onChange, editable }) {
           >
             <Quote size={14} />
           </ActionIcon>
+          <ActionIcon
+  variant={editor.isActive('taskList') ? 'filled' : 'subtle'}
+  size="sm"
+  onClick={() => editor.chain().focus().toggleTaskList().run()}
+>
+  <ListTodo size={14} />
+</ActionIcon>
         </Group>
       )}
 

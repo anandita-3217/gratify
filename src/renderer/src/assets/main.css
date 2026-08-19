@@ -20,6 +20,30 @@
 .tiptap em { font-style: italic  !important; }
 .tiptap s {text-decoration: line-through !important;}
 
+.tiptap ul[data-type="taskList"] {
+  list-style: none !important;
+  padding: 0 !important;
+}
+
+.tiptap ul[data-type="taskList"] li {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 8px !important;
+}
+
+.tiptap ul[data-type="taskList"] li > label {
+  margin-top: 2px !important;
+}
+
+.tiptap ul[data-type="taskList"] li > div {
+  flex: 1 !important;
+}
+
+.tiptap ul[data-type="taskList"] li[data-checked="true"] > div {
+  text-decoration: line-through !important;
+  opacity: 0.6 !important;
+}
+
 /* 
 .jost-<uniquifier> {
   font-family: "Jost", sans-serif;

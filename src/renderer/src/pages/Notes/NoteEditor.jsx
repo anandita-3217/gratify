@@ -80,9 +80,9 @@ export default function NoteEditor({ content, onChange, editable }) {
   const editor = useEditor({
     extensions: [StarterKit],
     TaskList,
-  TaskItem.configure({
-  nested: true,
-}),
+//   TaskItem.configure({
+//   nested: true,
+// }),
     content,
     editable,
     onUpdate: ({ editor }) => {

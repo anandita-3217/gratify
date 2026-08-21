@@ -75,14 +75,17 @@ import {
   Heading2,
   Heading3
 } from 'lucide-react'
+import PropTypes from 'prop-types'
 
 export default function NoteEditor({ content, onChange, editable }) {
   const editor = useEditor({
-    extensions: [StarterKit],
-    TaskList,
-//   TaskItem.configure({
-//   nested: true,
-// }),
+    extensions: [
+      StarterKit,
+      TaskList,
+      TaskItem.configure({
+        nested: true
+      })
+    ],
     content,
     editable,
     onUpdate: ({ editor }) => {
@@ -210,12 +213,12 @@ export default function NoteEditor({ content, onChange, editable }) {
             <Quote size={14} />
           </ActionIcon>
           <ActionIcon
-  variant={editor.isActive('taskList') ? 'filled' : 'subtle'}
-  size="sm"
-  onClick={() => editor.chain().focus().toggleTaskList().run()}
->
-  <ListTodo size={14} />
-</ActionIcon>
+            variant={editor.isActive('taskList') ? 'filled' : 'subtle'}
+            size="sm"
+            onClick={() => editor.chain().focus().toggleTaskList().run()}
+          >
+            <ListTodo size={14} />
+          </ActionIcon>
         </Group>
       )}
 
@@ -223,5 +226,10 @@ export default function NoteEditor({ content, onChange, editable }) {
       <EditorContent editor={editor} />
     </div>
   )
+}
+NoteEditor.propTypes = {
+  content: PropTypes.array,
+  onChange: PropTypes.bool,
+  editable: PropTypes.bool
 }
 // TODO: redo this and the changes arent getting reflected even if i have italicized or bolded the text it is not showing up. snd save is triggering the editmodal to open

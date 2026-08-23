@@ -152,7 +152,6 @@ app.whenReady().then(() => {
   ipcMain.handle('tasks:getAll', () => {
     return db.prepare('SELECT * FROM tasks').all().map(deserializeTask)
   })
-  // TODO: Error here 
   ipcMain.handle('tasks:add', (_, task) => {
     const s = serializeTask(task)
 

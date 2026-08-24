@@ -1,3 +1,4 @@
+// TODO: errors in packages to be resolved
 import { useEditor, EditorContent } from '@tiptap/react'
 import TaskList from '@tiptap/extension-task-list'
 import TaskItem from '@tiptap/extension-task-item'

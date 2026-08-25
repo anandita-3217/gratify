@@ -481,7 +481,7 @@ export default function Dashboard({ onNavigate }) {
           </Paper>
         ))}
       </Group>
-      <Stack gap={4}>
+      <Stack gap={'md'}>
         <TextInput label="Search Sth" />
       </Stack>
       <Stack gap="md">

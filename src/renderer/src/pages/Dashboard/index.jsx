@@ -507,3 +507,4 @@ export default function Dashboard({ onNavigate }) {
 Dashboard.propTypes = {
   onNavigate: PropTypes.func
 }
+// TODO: fix dayjs errors

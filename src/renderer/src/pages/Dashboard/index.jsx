@@ -18,7 +18,8 @@ import {
   ThemeIcon,
   Image,
   Button,
-  useMantineTheme
+  useMantineTheme,
+  Autocomplete
 } from '@mantine/core'
 import {
   IconChecklist,
@@ -482,7 +483,8 @@ export default function Dashboard({ onNavigate }) {
         ))}
       </Group>
       <Stack gap={'md'}>
-        <TextInput label="Search Sth" />
+        {/* <TextInput label="Search Sth" /> */}
+        <Autocomplete label="Sth sth"/>
       </Stack>
       <Stack gap="md">
         <TasksWidget tasks={tasks} onToggle={toggleTask} onNavigate={() => onNavigate('tasks')} />
@@ -508,3 +510,4 @@ Dashboard.propTypes = {
   onNavigate: PropTypes.func
 }
 // TODO: fix dayjs error
+// TODO: https://mantine.dev/core/autocomplete/ for search bar and make it smart

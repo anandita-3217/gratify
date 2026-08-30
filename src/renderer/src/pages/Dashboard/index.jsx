@@ -482,7 +482,7 @@ export default function Dashboard({ onNavigate }) {
           </Paper>
         ))}
       </Group>
-      <Stack gap={'md'}>
+      <Stack gap={8} m={8}>
         {/* <TextInput label="Search Sth" /> */}
         <Autocomplete label="Sth sth" />
       </Stack>

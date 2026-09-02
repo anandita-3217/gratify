@@ -1,4 +1,5 @@
-// TODO: errors in packages to be resolved
+// TODO: use regex to see if the typed text is a list and appropriately give a dialog box to turn the text into a list. also spaces arent list values we need to take care of that too
+
 import { useEditor, EditorContent } from '@tiptap/react'
 import TaskList from '@tiptap/extension-task-list'
 import TaskItem from '@tiptap/extension-task-item'

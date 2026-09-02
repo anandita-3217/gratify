@@ -483,7 +483,7 @@ export default function Dashboard({ onNavigate }) {
         ))}
       </Group>
       <Stack gap={8} m={8}>
-        <Autocomplete label="Search Dashboard" data={['Tasks', 'Timer', 'NOtes', 'Calendar']} />
+        <Autocomplete label="Search Dashboard" data={['Tasks', 'Timer', 'Notes', 'Calendar']} />
       </Stack>
       <Stack gap="md">
         <TasksWidget tasks={tasks} onToggle={toggleTask} onNavigate={() => onNavigate('tasks')} />

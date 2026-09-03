@@ -13,11 +13,19 @@ import {
   Transition,
   useMantineTheme
 } from '@mantine/core'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { ChevronDown, ChevronUp, Icon } from 'lucide-react'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 
-export default function AboutCard({ thumbnail, name, position, description, socials, nickname }) {
+export default function AboutCard({
+  thumbnail,
+  name,
+  position,
+  description,
+  socials,
+  nickname,
+  icon
+}) {
   const theme = useMantineTheme()
   const [isOpen, setIsOpen] = useState(false)
   return (
@@ -61,9 +69,11 @@ export default function AboutCard({ thumbnail, name, position, description, soci
                 </Text>
               </Stack>
             </Box>
+              {/* //TODO: add an icon that is passed to the function */}
             <Transition mounted={isOpen} transition="fade-up" duration={300} timingFunction="ease">
               {(styles) => (
                 <Box style={{ position: 'absolute', bottom: 14, right: 15, ...styles }}>
+                  {/* <Icon /> */} 
                   <Badge variant="dot">{nickname}</Badge>
                 </Box>
               )}
@@ -84,7 +94,7 @@ export default function AboutCard({ thumbnail, name, position, description, soci
             style={{
               borderRadius: 12,
               backgroundColor: `color-mix(in srgb, var(--mantine-color-${theme.primaryColor}-5) 20%, var(--mantine-color-body))`,
-              overflow: 'hidden' // ✅ prevents content from pushing width during animation
+              overflow: 'hidden'
             }}
           >
             <Stack mt="sm" px="xs">
@@ -133,5 +143,6 @@ AboutCard.propTypes = {
   position: PropTypes.string,
   socials: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string, url: PropTypes.string })),
   description: PropTypes.string,
-  nickname: PropTypes.string
+  nickname: PropTypes.string,
+  icon: PropTypes.string
 }

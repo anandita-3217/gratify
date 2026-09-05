@@ -20,7 +20,7 @@
 //   Heading2,
 //   Heading3
 // } from 'lucide-react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 
 // export default function NoteEditor({ content, onChange, editable }) {
 //   const editor = useEditor({
@@ -435,4 +435,9 @@ export default function NoteEditor({ content, onChange, editable }) {
       <EditorContent editor={editor} />
     </div>
   )
+}
+NoteEditor.propTypes = {
+  content: PropTypes.array,
+  onChange: PropTypes.bool,
+  editable: PropTypes.bool
 }

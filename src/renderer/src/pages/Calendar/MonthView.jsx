@@ -1,4 +1,3 @@
-// props: events, selectedDate, onDateSelect, onEventClick, onSlotClick
 import { ActionIcon, Box, Grid, Group, Text, useMantineTheme } from '@mantine/core'
 import PropTypes from 'prop-types'
 import { getMonthGrid, getEventsForDay, isToday } from './useCalendarGrid'

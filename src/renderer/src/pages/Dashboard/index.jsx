@@ -508,5 +508,4 @@ export default function Dashboard({ onNavigate }) {
 Dashboard.propTypes = {
   onNavigate: PropTypes.func
 }
-// TODO: fix dayjs error
 // TODO: https://mantine.dev/core/autocomplete/ for search bar and make it smart

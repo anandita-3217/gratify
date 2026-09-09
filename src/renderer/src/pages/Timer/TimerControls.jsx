@@ -24,7 +24,7 @@ export default function TimerControls({
   const theme = useMantineTheme()
   const [inputMinutes, setInputMinutes] = useState(20)
   const [inputSeconds, setInputSeconds] = useState(0)
-  const [activePreset, setActivePreset] = useState('25m')
+  // const [activePreset, setActivePreset] = useState('25m')
 
   useEffect(() => {
     if (!isRunning) {

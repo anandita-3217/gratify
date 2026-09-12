@@ -79,7 +79,7 @@ function isUpcoming(dateStr) {
 }
 
 function completeSearch(){
-  return
+  return ""
 }
 
 const PRIORITY_COLOR = {

@@ -242,7 +242,7 @@ function convertToBulletList(editor) {
   editor.commands.setContent(html)
 }
 // TODO: Check refresh thingy
-
+// Not working
 export function extractChecklistItems(html) {
   const parser = new DOMParser()
   const doc = parser.parseFromString(html, 'text/html')

@@ -1,5 +1,5 @@
 // TODO: use regex to see if the typed text is a list and appropriately give a dialog box to turn the text into a list. also spaces arent list values we need to take care of that too
-
+// TODO: remove dead code
 // import { useEditor, EditorContent } from '@tiptap/react'
 // import TaskList from '@tiptap/extension-task-list'
 // import TaskItem from '@tiptap/extension-task-item'
@@ -242,7 +242,7 @@ function convertToBulletList(editor) {
   editor.commands.setContent(html)
 }
 // TODO: Check refresh thingy
-// Not working
+// Not working 
 export function extractChecklistItems(html) {
   const parser = new DOMParser()
   const doc = parser.parseFromString(html, 'text/html')
@@ -339,6 +339,7 @@ export default function NoteEditor({ content, onChange, editable }) {
             size="sm"
             onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
           >
+
             <Heading1 size={14} />
           </ActionIcon>
           <ActionIcon

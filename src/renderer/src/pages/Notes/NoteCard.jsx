@@ -1,12 +1,24 @@
-import { ActionIcon, Badge, Card, Group, Text } from '@mantine/core'
-import { Pencil, Pin, PinOff, Trash, X } from 'lucide-react'
+import { ActionIcon, Badge, Button, Card, Group, Text } from '@mantine/core'
+import { Pencil, Pin, PinOff, ListTodo, Trash, X } from 'lucide-react'
+import { extractChecklistItems } from '../../utils/noteUtils'
 
 import PropTypes from 'prop-types'
 function stripHtml(html) {
   return html.replace(/<[^>]*>/g, '')
 }
 
-export default function NoteCard({ note, onClick, onEdit, onDelete, onPin, onTagDelete }) {
+export default function NoteCard({
+  note,
+  onClick,
+  onEdit,
+  onDelete,
+  onPin,
+  onTagDelete,
+  onSendToTasks
+}) {
+  const checklistItems = extractChecklistItems(note.body)
+  const hasChecklist = checklistItems.length > 0
+
   return (
     <Card
       onClick={onClick}
@@ -81,6 +93,20 @@ export default function NoteCard({ note, onClick, onEdit, onDelete, onPin, onTag
           >
             <Trash size={16} />
           </ActionIcon>
+          {hasChecklist && (
+            <Button
+              size="xs"
+              variant="light"
+              color="pink"
+              leftSection={<ListTodo size={12} />}
+              onClick={(e) => {
+                e.stopPropagation()
+                onSendToTasks(checklistItems)
+              }}
+            >
+              Send to Tasks
+            </Button>
+          )}
         </Group>
       </Group>
     </Card>
@@ -98,5 +124,6 @@ NoteCard.propTypes = {
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
   onPin: PropTypes.func,
-  onTagDelete: PropTypes.func
+  onTagDelete: PropTypes.func,
+  onSendToTasks: PropTypes.func
 }

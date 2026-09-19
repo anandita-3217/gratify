@@ -241,18 +241,6 @@ function convertToBulletList(editor) {
   const html = `<ul>${lines.map((l) => `<li><p>${l}</p></li>`).join('')}</ul>`
   editor.commands.setContent(html)
 }
-// TODO: Check refresh thingy
-// Not working 
-export function extractChecklistItems(html) {
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(html, 'text/html')
-  const items = doc.querySelectorAll('li[data-type="taskItem"]')
-  return Array.from(items)
-    .filter((item) => item.getAttribute('data-checked') !== 'true')
-    .map((item) => item.textContent.trim())
-    .filter((text) => text !== '')
-}
-
 export default function NoteEditor({ content, onChange, editable }) {
   const [showListPrompt, setShowListPrompt] = useState(false)
 
@@ -339,7 +327,6 @@ export default function NoteEditor({ content, onChange, editable }) {
             size="sm"
             onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
           >
-
             <Heading1 size={14} />
           </ActionIcon>
           <ActionIcon

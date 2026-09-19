@@ -4,17 +4,26 @@ import {
   Stack,
   Text,
   Badge,
+  Button,
   Group,
   ActionIcon,
-  TextInput,
-  Button
+  TextInput
 } from '@mantine/core'
-import { Pin, PinOff, X } from 'lucide-react'
+import { Pin, PinOff, X, ListTodo } from 'lucide-react'
 import { useState } from 'react'
 import NoteEditor from './NoteEditor'
 import PropTypes from 'prop-types'
+import { extractChecklistItems } from '../../utils/noteUtils'
 
-export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTagDelete }) {
+export default function NoteDrawer({
+  note,
+  opened,
+  onClose,
+  onEdit,
+  onPin,
+  onTagDelete,
+  onSendToTasks
+}) {
   const [editTitle, setEditTitle] = useState(note?.title ?? '')
   const [editingTitle, setEditingTitle] = useState(false)
   const [editBody, setEditBody] = useState(note?.body ?? '')
@@ -40,6 +49,9 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
     setEditBody(note.body)
     setEditingBody(false)
   }
+
+  const checklistItems = extractChecklistItems(note.body)
+  const hasChecklist = checklistItems.length > 0
 
   return (
     <Drawer
@@ -191,6 +203,20 @@ export default function NoteDrawer({ note, opened, onClose, onEdit, onPin, onTag
                   {tag}
                 </Badge>
               ))}
+              {hasChecklist && (
+                <Button
+                  size="xs"
+                  variant="light"
+                  color="pink"
+                  leftSection={<ListTodo size={12} />}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onSendToTasks(checklistItems)
+                  }}
+                >
+                  Send to Tasks
+                </Button>
+              )}
             </Group>
           </Box>
         )}
@@ -214,5 +240,6 @@ NoteDrawer.propTypes = {
   onClose: PropTypes.func,
   onEdit: PropTypes.func,
   onPin: PropTypes.func,
-  onTagDelete: PropTypes.func
+  onTagDelete: PropTypes.func,
+  onSendToTasks: PropTypes.func
 }

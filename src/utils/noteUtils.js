@@ -7,3 +7,4 @@ export function extractChecklistItems(html) {
     .map((item) => item.textContent.trim())
     .filter((text) => text !== '')
 }
+// TODO: incerease no of functions here

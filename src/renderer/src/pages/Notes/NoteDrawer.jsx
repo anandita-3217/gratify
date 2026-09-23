@@ -14,7 +14,7 @@ import { useState } from 'react'
 import NoteEditor from './NoteEditor'
 import PropTypes from 'prop-types'
 import { extractChecklistItems } from '../../utils/noteUtils'
-
+// TODO: SHOULD WORK NOW
 export default function NoteDrawer({
   note,
   opened,

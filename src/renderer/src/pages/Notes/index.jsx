@@ -299,6 +299,10 @@ export default function Notes() {
             onEdit={() => handleEdit(note)}
             onDelete={() => deleteNote(note.id)}
             onPin={() => pinNote(note.id)}
+            onSendToTasks={(items) => {
+              setChecklistItems(items)
+              openChecklist()
+            }}
             onTagDelete={(tag) => updateNote(note.id, { tags: note.tags.filter((t) => t != tag) })}
           />
         ))}

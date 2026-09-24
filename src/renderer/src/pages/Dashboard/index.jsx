@@ -78,9 +78,9 @@ function isUpcoming(dateStr) {
   return d >= now && d <= sevenDays
 }
 
-function completeSearch(){
-  return 
-}
+// function completeSearch(){
+//   return -1
+// }
 
 const PRIORITY_COLOR = {
   urgent: 'red',

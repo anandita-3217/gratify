@@ -305,9 +305,9 @@ export default function Notes() {
             }}
             onTagDelete={(tag) => updateNote(note.id, { tags: note.tags.filter((t) => t != tag) })}
           />
+          
         ))}
       </Stack>
-
       {/* Modal — same pattern as Tasks, one modal for both create and edit */}
       <NoteModal
         key="new-note"

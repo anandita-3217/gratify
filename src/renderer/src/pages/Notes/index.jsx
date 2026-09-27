@@ -295,17 +295,17 @@ export default function Notes() {
           <NoteCard
             key={note.id}
             note={note}
-            onClick={() => handleCardClick(note)}
-            onEdit={() => handleEdit(note)}
+            onEdit={() => {
+              setSelectedNote(note)
+              openEdit()
+            }}
             onDelete={() => deleteNote(note.id)}
             onPin={() => pinNote(note.id)}
             onSendToTasks={(items) => {
               setChecklistItems(items)
               openChecklist()
             }}
-            onTagDelete={(tag) => updateNote(note.id, { tags: note.tags.filter((t) => t != tag) })}
           />
-          
         ))}
       </Stack>
       {/* Modal — same pattern as Tasks, one modal for both create and edit */}

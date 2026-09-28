@@ -28,7 +28,6 @@ export default function NoteCard({
         backgroundColor: `color-mix(in srgb, var(--mantine-color-${note.color}-5) 10%, var(--mantine-color-body))`
       }}
     >
-      {/* top row: title + pin button */}
       <div className="group flex items-center justify-between mb-2">
         <Text fw={note.pinned ? 600 : undefined} truncate>
           {note.title}

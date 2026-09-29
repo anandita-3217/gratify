@@ -63,7 +63,7 @@ export default function Notes() {
   const [checklistItems, setChecklistItems] = useState([])
   const [checklistOpened, { open: openChecklist, close: closeChecklist }] = useDisclosure(false)
   const theme = useMantineTheme()
-
+// TODO: handle these
   function handleCardClick(note) {
     setDrawerNote(note)
     openDrawer()

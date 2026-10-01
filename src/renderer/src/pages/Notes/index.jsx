@@ -70,7 +70,6 @@ export default function Notes() {
   }
 
   function handleEdit(note) {
-    // set selectedNote and open modal
     setSelectedNote(note)
     openEdit()
   }

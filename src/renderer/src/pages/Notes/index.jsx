@@ -329,6 +329,15 @@ export default function Notes() {
         onSave={handleSave}
         note={selectedNote}
       />
+      <ChecklistToTasksModal
+  opened={checklistOpened}
+  onClose={closeChecklist}
+  items={checklistItems}
+  onSend={(tasks) => {
+    tasks.forEach(task => addTask(task))
+    closeChecklist()
+  }}
+/>
       <NoteDrawer
         key={`drawer-${drawerNote?.id ?? 'none'}`}
         opened={drawerOpened}

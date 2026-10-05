@@ -8,7 +8,7 @@ import {
   isToday
 } from './useCalendarGrid'
 import { Plus } from 'lucide-react'
-// TODO: work towards wanting to finish this 
+
 import PropTypes from 'prop-types'
 import EventCard from './EventCard'
 export default function WeekView({

@@ -23,7 +23,7 @@ import NoteCard from './NoteCard'
 import NoteModal from './NoteModal'
 import NoteDrawer from './NoteDrawer'
 import useKeyboardShortcuts from '../../hooks/useKeyboardShortcuts'
-
+// TODO: debug this
 const noteColors = [
   'orange',
   'red',

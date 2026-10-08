@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 function stripHtml(html) {
   return html.replace(/<[^>]*>/g, '')
 }
+// TODO: make this work
 
 export default function NoteCard({
   note,

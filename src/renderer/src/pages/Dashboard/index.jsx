@@ -516,8 +516,8 @@ Dashboard.propTypes = {
 // TODO: https://mantine.dev/core/autocomplete/ for search bar and make it smart
 
 
-import { Skeleton, Stack, Group } from '@mantine/core'
+// import { Skeleton, Stack, Group } from '@mantine/core'
 
-// show skeleton while loading, real content when ready
-if (isLoading) return <TasksSkeleton />
-return <TasksContent />
+// // show skeleton while loading, real content when ready
+// if (isLoading) return <TasksSkeleton />
+// return <TasksContent />

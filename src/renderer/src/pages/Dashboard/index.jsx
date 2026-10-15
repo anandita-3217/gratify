@@ -515,7 +515,7 @@ Dashboard.propTypes = {
 }
 // TODO: https://mantine.dev/core/autocomplete/ for search bar and make it smart
 
-// TODO: for today
+
 // import { Skeleton, Stack, Group } from '@mantine/core'
 
 // // show skeleton while loading, real content when ready

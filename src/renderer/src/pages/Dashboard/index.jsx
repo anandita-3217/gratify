@@ -514,5 +514,4 @@ Dashboard.propTypes = {
   onNavigate: PropTypes.func
 }
 // TODO: https://mantine.dev/core/autocomplete/ for search bar and make it smart
-
-
+// TODO
